@@ -1,0 +1,5 @@
+name: Hub
+main: me.frostythedev.hivecraft.hub.HubPlugin
+version: 0.0.1
+description: Main Hub Plugin for HiveCraft
+author: frostythedev

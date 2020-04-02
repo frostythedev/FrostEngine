@@ -1,0 +1,6 @@
+name: Example
+main: me.frostythedev.example.game.ModuleExample
+version: 1.0.0
+depend: [FrostEngine]
+author: frostythedev
+commands:

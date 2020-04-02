@@ -1,0 +1,17 @@
+Champions:
+  Players:
+    aaaaa-bbbbb-ccccc-ddddd:
+      A:
+        Build 1:
+          Set: true
+        Build 2:
+          Set: true
+        Build 3:
+          Set: true
+      B:
+        Build 1:
+          Set: true
+        Build 2:
+          Set: true
+        Build 3:
+          Set: true

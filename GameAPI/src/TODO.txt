@@ -1,0 +1,15 @@
+Arena Management - Planned
+=================================
+    - Make an arena class (interface) that has all arena defaults
+
+    - Make GameArena class to hold our information for the arenas
+        - Responsive adaptor to convert to and from json
+
+    - Work on ArenaManager
+        - Loading Arenas from MySQL (serializing and deserialziing arena data)
+        - Make easy utils for getting a specific arena (or random)
+
+Minigame Core / Management
+=================================
+    - Implement Arenas into the Minigame core functioanlity
+        - Saving current arena and all its data

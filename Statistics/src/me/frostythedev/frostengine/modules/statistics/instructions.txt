@@ -1,0 +1,18 @@
+ // Initialize StatisticsManager
+ private StatisticManager sm;
+
+ // Instantize StatisticsManager  in your onEnable
+this.sm = new StatisticManager(this);
+
+// Create a stat to track
+this.sm.create("Kills", false, true, true, true, false);
+
+// Get a stat that you created
+TrackableStatistic<UUID, Integer> kills = (TrackableStatistic<UUID, Integer>) this.sm.getByName("Kills");
+
+// Get previous data stored by the stat
+UUID test = UUID.fromString("Tevin-Is-Bae");
+int previousKills = kills.getStored(test);
+
+// Modify that data with new data
+kills.modify(test, previousKills+1);

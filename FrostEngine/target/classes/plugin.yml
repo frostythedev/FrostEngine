@@ -1,0 +1,18 @@
+name: FrostEngine
+main: me.frostythedev.frostengine.bukkit.FEPlugin
+version: 1.0.0
+author: frostythedev
+commands:
+  giverank:
+  takerank:
+  fetest:
+  mute:
+  unmute:
+  module:
+  tag:
+  debug:
+  hats:
+  givehat:
+  achievements:
+  example:
+  acreator:
