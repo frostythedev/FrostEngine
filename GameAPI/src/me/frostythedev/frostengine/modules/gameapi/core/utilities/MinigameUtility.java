@@ -1,4 +1,6 @@
-package gameapi.
+package me.frostythedev.frostengine.modules.gameapi.core.utilities;
+
+import me.frostythedev.frostengine.modules.gameapi.Minigame;
 
 public class MinigameUtility<T extends Minigame> implements GameUtility<T> {
 

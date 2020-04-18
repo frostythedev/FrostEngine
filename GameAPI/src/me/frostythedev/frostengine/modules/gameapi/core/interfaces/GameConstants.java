@@ -1,4 +1,4 @@
-package gameapi.
+package me.frostythedev.frostengine.modules.gameapi.core.interfaces;
 
 public interface GameConstants {
     int TICKS = 90;

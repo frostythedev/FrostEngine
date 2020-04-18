@@ -1,6 +1,8 @@
-package gameapi.
+package me.frostythedev.frostengine.modules.gameapi.core;
 
-import me.frostythedev.frostengine.bukkit.utilities.StringUtil;
+import me.frostythedev.frostengine.bukkit.utils.items.ItemBuilder;
+import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -9,19 +11,25 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.ItemStack;
 
 public class GameSettings implements Listener {
 
+    public static final ItemStack ENABLED = new ItemBuilder(Material.INK_SACK)
+            .withData((byte) 10).build();
+    public static final ItemStack DISABLED = new ItemBuilder(Material.INK_SACK)
+            .withData((byte) 8).build();
+
     private boolean notify, build, destroy, pickup, drop, teleport,
             pvp, pve, buckets, interact, interactEntity, chat, explode,
-            tracking, target;
+            tracking, target, movement;
 
     public GameSettings() {
     }
 
     public GameSettings(boolean notify, boolean build, boolean destroy, boolean pickup, boolean drop, boolean teleport,
                         boolean pvp, boolean pve, boolean buckets, boolean interact, boolean interactEntity, boolean chat,
-                        boolean explode, boolean tracking, boolean target) {
+                        boolean explode, boolean tracking, boolean target, boolean movement) {
         this.notify = notify;
         this.build = build;
         this.destroy = destroy;
@@ -37,6 +45,7 @@ public class GameSettings implements Listener {
         this.explode = explode;
         this.tracking = tracking;
         this.target = target;
+        this.movement = movement;
     }
 
     public boolean isNotify() {
@@ -159,12 +168,20 @@ public class GameSettings implements Listener {
         this.target = target;
     }
 
+    public boolean isMovement() {
+        return movement;
+    }
+
+    public void setMovement(boolean movement) {
+        this.movement = movement;
+    }
+
     @EventHandler
     public void onBuild(BlockPlaceEvent event) {
         if (!isBuild()) {
             event.setCancelled(true);
             if (isNotify()) {
-                event.getPlayer().sendMessage(StringUtil.formatColorCodes("&4>> &cYou are not allowed to build!"));
+                event.getPlayer().sendMessage(ChatColor.RED + ">> You are not allowed to build!");
             }
         }
     }
@@ -174,7 +191,7 @@ public class GameSettings implements Listener {
         if (!isDestroy()) {
             event.setCancelled(true);
             if (isNotify()) {
-                event.getPlayer().sendMessage(StringUtil.formatColorCodes("&4>> &cYou are not allowed to destroy!"));
+                event.getPlayer().sendMessage(ChatColor.RED + ">> &ou are not allowed to destroy!");
             }
         }
     }
@@ -184,7 +201,7 @@ public class GameSettings implements Listener {
         if (!isPickup()) {
             event.setCancelled(true);
             if (isNotify()) {
-                event.getPlayer().sendMessage(StringUtil.formatColorCodes("&4>> &cYou are not allowed to pickup!"));
+                event.getPlayer().sendMessage(ChatColor.RED + ">> You are not allowed to pickup!");
             }
         }
     }
@@ -194,7 +211,7 @@ public class GameSettings implements Listener {
         if (!isDrop()) {
             event.setCancelled(true);
             if (isNotify()) {
-                event.getPlayer().sendMessage(StringUtil.formatColorCodes("&4>> &cYou are not allowed to drop items!"));
+                event.getPlayer().sendMessage(ChatColor.RED + ">> You are not allowed to drop items!");
             }
         }
     }
@@ -204,7 +221,7 @@ public class GameSettings implements Listener {
         if (!isTeleport()) {
             event.setCancelled(true);
             if (isNotify()) {
-                event.getPlayer().sendMessage(StringUtil.formatColorCodes("&4>> &cYou are not allowed to teleport!"));
+                event.getPlayer().sendMessage(ChatColor.RED + ">> You are not allowed to teleport!");
             }
         }
     }
@@ -216,14 +233,14 @@ public class GameSettings implements Listener {
                 if (!isPvp()) {
                     event.setCancelled(true);
                     if (isNotify()) {
-                        event.getDamager().sendMessage(StringUtil.formatColorCodes("&4>> &cYou are not allowed to harm players!"));
+                        event.getDamager().sendMessage(ChatColor.RED + ">> You are not allowed to harm players!");
                     }
                 }
             } else {
                 if (!isPve()) {
                     event.setCancelled(true);
                     if (isNotify()) {
-                        event.getDamager().sendMessage(StringUtil.formatColorCodes("&4>> &cYou are not allowed to harm entities!"));
+                        event.getDamager().sendMessage(ChatColor.RED + ">> You are not allowed to harm entities!");
                     }
                 }
             }
@@ -235,7 +252,7 @@ public class GameSettings implements Listener {
         if (!isBuckets()) {
             event.setCancelled(true);
             if (isNotify()) {
-                event.getPlayer().sendMessage(StringUtil.formatColorCodes("&4>> &cYou are not allowed to fill buckets!"));
+                event.getPlayer().sendMessage(ChatColor.RED + ">> You are not allowed to fill buckets!");
             }
         }
     }
@@ -245,7 +262,7 @@ public class GameSettings implements Listener {
         if (!isInteractEntity()) {
             event.setCancelled(true);
             if (isNotify()) {
-                event.getPlayer().sendMessage(StringUtil.formatColorCodes("&4>> &cYou are not allowed to interact with entities!"));
+                event.getPlayer().sendMessage(ChatColor.RED + ">> You are not allowed to interact with entities!");
             }
         }
     }
@@ -255,7 +272,7 @@ public class GameSettings implements Listener {
         if (!isChat()) {
             event.setCancelled(true);
             if (isNotify()) {
-                event.getPlayer().sendMessage(StringUtil.formatColorCodes("&4>> &cYou are not allowed to chat!"));
+                event.getPlayer().sendMessage(ChatColor.RED + ">> You are not allowed to chat!");
             }
         }
     }
@@ -265,5 +282,19 @@ public class GameSettings implements Listener {
         if (!isTarget()) {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onMove(PlayerMoveEvent event) {
+        if (!isMovement()) {
+            if (event.getTo().getBlockX() != event.getFrom().getBlockX() ||
+                    event.getTo().getBlockZ() != event.getFrom().getBlockZ()) {
+                event.setTo(event.getFrom());
+                if (isNotify()) {
+                    event.getPlayer().sendMessage(ChatColor.RED + ">> You are not allowed to move!");
+                }
+            }
+        }
+
     }
 }
