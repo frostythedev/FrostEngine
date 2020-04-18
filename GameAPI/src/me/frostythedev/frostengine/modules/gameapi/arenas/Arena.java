@@ -1,4 +1,4 @@
-package gameapi.arenas;
+package me.frostythedev.frostengine.modules.gameapi.arenas;
 
 import org.bukkit.Location;
 import org.bukkit.World;

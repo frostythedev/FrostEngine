@@ -1,13 +1,11 @@
-package gameapi.teams;
+package me.frostythedev.frostengine.modules.gameapi.teams;
 
 import com.google.common.collect.Maps;
-import gameapi.exception.TeamAlreadyLoadedException;
+import me.frostythedev.frostengine.modules.gameapi.exception.TeamAlreadyLoadedException;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class GameTeamManager {
 
@@ -29,6 +27,34 @@ public class GameTeamManager {
         } else {
             teams.put(name, team);
         }
+    }
+
+    public Set<Player> getPlayersOfTeam(String teamName){
+
+        if(getTeam(teamName) != null){
+            Set<Player> players = new HashSet<>();
+            for(UUID uuid : getTeam(teamName).getPlayers()){
+
+                Player p = Bukkit.getPlayer(uuid);
+                if(p == null || !p.isOnline()){
+                    getTeam(teamName).removePlayer(p);
+                }
+                players.add(p);
+
+
+            }
+            return players;
+        }
+
+        return null;
+    }
+
+    public ArrayList<Player> getAllPlayers(){
+        ArrayList<Player> allPlayers = new ArrayList<>();
+        for(String team : getTeams().keySet()){
+            allPlayers.addAll(getPlayersOfTeam(team));
+        }
+        return allPlayers;
     }
 
     public void loadTeam(GameTeam team) throws TeamAlreadyLoadedException {

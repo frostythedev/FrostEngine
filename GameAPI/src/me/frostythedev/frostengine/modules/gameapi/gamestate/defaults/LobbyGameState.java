@@ -1,11 +1,11 @@
-package gameapi.gamestate.defaults;
+package me.frostythedev.frostengine.modules.gameapi.gamestate.defaults;
 
+import me.frostythedev.frostengine.modules.gameapi.Minigame;
+import me.frostythedev.frostengine.modules.gameapi.gamestate.core.IStateConstants;
+import me.frostythedev.frostengine.modules.gameapi.gamestate.core.MinigameState;
+import me.frostythedev.frostengine.modules.gameapi.gamestate.core.StateAction;
+import me.frostythedev.frostengine.modules.gameapi.teams.GameTeam;
 import me.frostythedev.frostengine.bukkit.messaging.Locale;
-import gameapi.Minigame;
-import gameapi.gamestate.MinigameState;
-import gameapi.gamestate.StateAction;
-import gameapi.gamestate.StateConstants;
-import gameapi.teams.GameTeam;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
@@ -13,7 +13,7 @@ import java.util.Collections;
 public class LobbyGameState<T extends Minigame> extends MinigameState<T> {
 
     public LobbyGameState(T game) {
-        super(game, 0, StateConstants.LOBBY_NAME, StateConstants.LOBBY_DISPLAY, true);
+        super(game, 0, IStateConstants.LOBBY_NAME, IStateConstants.LOBBY_DISPLAY, true);
     }
 
     @Override

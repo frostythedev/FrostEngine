@@ -1,9 +1,9 @@
-package gameapi.listeners;
+package me.frostythedev.frostengine.modules.gameapi.listeners;
 
+import me.frostythedev.frostengine.modules.gameapi.Minigame;
+import me.frostythedev.frostengine.modules.gameapi.gamestate.core.StateAction;
+import me.frostythedev.frostengine.modules.gameapi.teams.GameTeam;
 import me.frostythedev.frostengine.bukkit.messaging.Locale;
-import gameapi.Minigame;
-import gameapi.gamestate.StateAction;
-import gameapi.teams.GameTeam;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;

@@ -1,4 +1,4 @@
-package gameapi.teams;
+package me.frostythedev.frostengine.modules.gameapi.teams;
 
 import org.bukkit.entity.Player;
 

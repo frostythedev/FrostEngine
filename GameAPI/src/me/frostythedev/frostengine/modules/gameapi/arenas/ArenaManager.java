@@ -1,14 +1,14 @@
-package gameapi.arenas;
+package me.frostythedev.frostengine.modules.gameapi.arenas;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import me.frostythedev.frostengine.bukkit.FEPlugin;
-import me.frostythedev.frostengine.data.mysql.MySQL;
-import gameapi.Minigame;
-import gameapi.exception.ArenaAlreadyLoadedException;
+import me.frostythedev.frostengine.modules.gameapi.Minigame;
+import me.frostythedev.frostengine.data.core.Database;
+import me.frostythedev.frostengine.data.core.DatabaseField;
+import me.frostythedev.frostengine.modules.gameapi.arenas.data.GameArenaGatherCallback;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 public class ArenaManager {
@@ -61,23 +61,98 @@ public class ArenaManager {
         return null;
     }
 
+    public void loadArenas(){
+        if(Database.get().hasConnection()){
+            GameArenaGatherCallback gaCallback = new GameArenaGatherCallback(minigame);
+            Database.get().syncQuery("SELECT * FROM " + DatabaseField.ARENA_TABLE +
+                            " WHERE minigameName=?"
+                    , new Object[]{minigame.getName()}, gaCallback);
+
+            if(gaCallback.result() != null && !gaCallback.result().isEmpty()){
+                gaCallback.result().values().forEach(arena -> arenaIds.put(arena.getId(), arena.getArenaName()));
+                this.arenas = gaCallback.result();
+            }
+        }
+    }
+
+    /*public void loadArenas(File folder) throws ArenaAlreadyLoadedException {
+        if(!folder.exists()){
+            return;
+        }
+
+        if(folder.isDirectory()){
+            File[] files = folder.listFiles();
+            for(File file : files){
+                BukkitDocument document = BukkitDocument.of(file.getAbsolutePath());
+                if(!document.getKeys(false).isEmpty()){
+                    for(String key : document.getKeys(false)){
+                        GameArena arena = FEPlugin.getGson().fromJson(key, GameArena.class);
+                        if (arena != null) {
+                            arena.setMinigame(minigame);
+                            if (getArena(arena.getArenaName()) != null) {
+                                throw new ArenaAlreadyLoadedException(arena.getArenaName());
+                            } else {
+                                arenas.put(arena.getArenaName(), arena);
+                                arenaIds.put(arena.getId(), arena.getArenaName());
+                            }
+                        }
+                    }
+                }
+            }
+        }else{
+            BukkitDocument document = BukkitDocument.of(folder.getAbsolutePath());
+            if(!document.getKeys(false).isEmpty()){
+              for(String key : document.getKeys(false)){
+                GameArena arena = FEPlugin.getGson().fromJson(key, GameArena.class);
+                  if (arena != null) {
+                      arena.setMinigame(minigame);
+                      if (getArena(arena.getArenaName()) != null) {
+                          throw new ArenaAlreadyLoadedException(arena.getArenaName());
+                      } else {
+                          arenas.put(arena.getArenaName(), arena);
+                          arenaIds.put(arena.getId(), arena.getArenaName());
+                      }
+                  }
+              }
+            }
+        }
+    }
+
     public void loadArenas(MySQL mySQL) throws ArenaAlreadyLoadedException {
         if (!mySQL.hasConnection()) {
             try {
-                mySQL.openConnection();
-                loadArenas(mySQL);
+               if(mySQL.openConnection()){
+                   loadArenas(mySQL);
+               }else{
+                   //TODO Error logging
+               }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         } else {
-            String query = "SELECT * FROM `fe_arenas`;";
+            String query = "SELECT * FROM `" + DatabaseField.ARENA_TABLE + "`;";
             ResultSet rs = mySQL.syncQuery(query);
 
             if (rs != null) {
                 try {
+
                     if (rs.next()) {
+                        do {
+                            GameArena arena = FEPlugin.getGson().fromJson(rs.getString("data"), GameArena.class);
+                            if (arena != null) {
+                                arena.setMinigame(minigame);
+                                if (getArena(arena.getArenaName()) != null) {
+                                    throw new ArenaAlreadyLoadedException(arena.getArenaName());
+                                } else {
+                                    arenas.put(arena.getArenaName(), arena);
+                                    arenaIds.put(arena.getId(), arena.getArenaName());
+                                }
+                            }
+                        } while (rs.next());
+
+                    *//*if (rs.next()) {
                         while (rs.next()) {
-                            GameArena arena = FEPlugin.getGson().fromJson("data", GameArena.class);
+                            GameArena arena = FEPlugin.getGson().fromJson(rs.getString("data"), GameArena.class);
                             if (arena != null) {
                                 arena.setMinigame(minigame);
                                 if (getArena(arena.getArenaName()) != null) {
@@ -88,6 +163,7 @@ public class ArenaManager {
                                 }
                             }
                         }
+                    }*//*
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -100,10 +176,14 @@ public class ArenaManager {
                 }
             }
         }
-    }
+    }*/
 
 
     public Collection<GameArena> getArenas() {
         return arenas.values();
+    }
+
+    public List<String> getArenaNames(){
+        return Lists.newArrayList(arenas.keySet());
     }
 }

@@ -1,15 +1,15 @@
-package gameapi.gamestate.defaults;
+package me.frostythedev.frostengine.modules.gameapi.gamestate.defaults;
 
-import gameapi.gamestate.StateAction;
-import gameapi.gamestate.StateConstants;
-import gameapi.Minigame;
-import gameapi.gamestate.MinigameState;
+import me.frostythedev.frostengine.modules.gameapi.Minigame;
+import me.frostythedev.frostengine.modules.gameapi.gamestate.core.IStateConstants;
+import me.frostythedev.frostengine.modules.gameapi.gamestate.core.MinigameState;
+import me.frostythedev.frostengine.modules.gameapi.gamestate.core.StateAction;
 import org.bukkit.entity.Player;
 
 public class EndedGameState<T extends Minigame> extends MinigameState<T> {
 
     public EndedGameState(T game) {
-        super(game, 3, StateConstants.IN_GAME_NAME, StateConstants.IN_GAME_DISPLAY, true);
+        super(game, 3, IStateConstants.IN_GAME_NAME, IStateConstants.IN_GAME_DISPLAY, true);
     }
 
     @Override

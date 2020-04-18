@@ -1,13 +1,13 @@
-package me.frostythedev.frostengine.modules.gameapi.gamestate.defaults;
+package me.frostythedev.frostengine.modules.gameapi.gamestate.core;
 
 import me.frostythedev.frostengine.modules.gameapi.Minigame;
 import me.frostythedev.frostengine.modules.gameapi.gamestate.GameState;
 
-public class MinigameGameState<T extends Minigame> extends GameState {
+public class MinigameState<T extends Minigame> extends GameState {
 
     private T minigame;
 
-    public MinigameGameState(int id, String name, String displayName, boolean joinable, T minigame) {
+    public MinigameState(T minigame, int id, String name, String displayName, boolean joinable) {
         super(id, name, displayName, joinable);
         this.minigame = minigame;
     }

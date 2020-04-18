@@ -1,12 +1,13 @@
-package gameapi.gamestate.defaults;
+package me.frostythedev.frostengine.modules.gameapi.gamestate.defaults;
 
+import me.frostythedev.frostengine.modules.gameapi.Minigame;
+import me.frostythedev.frostengine.modules.gameapi.arenas.GameArena;
+import me.frostythedev.frostengine.modules.gameapi.gamestate.core.IStateConstants;
+import me.frostythedev.frostengine.modules.gameapi.gamestate.core.MinigameState;
+import me.frostythedev.frostengine.modules.gameapi.gamestate.core.StateAction;
+import me.frostythedev.frostengine.modules.gameapi.teams.GameTeam;
+import me.frostythedev.frostengine.modules.gameapi.threads.EZCountdown;
 import me.frostythedev.frostengine.bukkit.messaging.Locale;
-import gameapi.Minigame;
-import gameapi.gamestate.MinigameState;
-import gameapi.gamestate.StateAction;
-import gameapi.gamestate.StateConstants;
-import gameapi.teams.GameTeam;
-import gameapi.threads.EZCountdown;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -16,17 +17,26 @@ public class PreGameState <T extends Minigame> extends MinigameState<T> {
 
 
     public PreGameState(T game) {
-        super(game, 1, StateConstants.PREGAME_NAME, StateConstants.PREGAME_DISPLAY, true);
+        super(game, 1, IStateConstants.PREGAME_NAME, IStateConstants.PREGAME_DISPLAY, true);
     }
 
     @Override
     public void onSwitch() {
+        GameArena arena = getMinigame().getArena();
+        for(int i = 0; i < getMinigame().getTeamManager().getAllPlayers().size(); i++){
+            getMinigame().getTeamManager().getAllPlayers().get(i).teleport(arena.getSpawn(i));
+        }
+        getMinigame().getGameSettings().setMovement(false);
+
         EZCountdown countdown = new EZCountdown(15, new int[]{5, 4, 3, 2, 1}) {
             public void onStart() {
                 Bukkit.broadcastMessage(Locale.toColors("&7The game will begin in 15 seconds."));
             }
 
             public void onTick() {
+                if(Bukkit.getOnlinePlayers().size() < getMinigame().getMinPlayers()){
+                    setTicks(15);
+                }
             }
 
             public void onInterval() {
@@ -34,7 +44,7 @@ public class PreGameState <T extends Minigame> extends MinigameState<T> {
             }
 
             public void onEnd() {
-                getMinigame().setGameState(getMinigame().getGameState(2));
+                getMinigame().switchState(2);
             }
         };
         countdown.schedule();

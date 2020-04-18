@@ -1,7 +1,9 @@
-package gameapi.teams;
+package me.frostythedev.frostengine.modules.gameapi.teams;
 
 import com.google.common.collect.Sets;
+import me.frostythedev.frostengine.bukkit.messaging.Locale;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Set;
@@ -30,6 +32,20 @@ public class GameTeam implements Team {
         this.nameColor = nameColor;
         this.chatColor = chatColor;
         this.players = players;
+    }
+
+    public void teamChat(String message){
+        if(!players.isEmpty()){
+            for(UUID pUUid : this.players){
+                Player ps = Bukkit.getPlayer(pUUid);
+
+                if(ps != null && ps.isOnline()){
+                    ps.sendMessage(Locale.toColors(message));
+
+                    ps = null;
+                }
+            }
+        }
     }
 
     public int getSize(){

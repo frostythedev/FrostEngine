@@ -1,5 +1,6 @@
-package gameapi.gamestate;
+package me.frostythedev.frostengine.modules.gameapi.gamestate;
 
+import me.frostythedev.frostengine.modules.gameapi.gamestate.core.StateAction;
 import org.bukkit.entity.Player;
 
 public abstract class GameState {

@@ -1,15 +1,10 @@
-package gameapi.threads;
+package me.frostythedev.frostengine.modules.gameapi.threads;
 
-import me.frostythedev.frostengine.bukkit.FEPlugin;
 import me.frostythedev.frostengine.bukkit.thread.Tasks;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Programmed by Tevin on 3/30/2016.
