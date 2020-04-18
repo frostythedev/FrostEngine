@@ -1,9 +1,9 @@
 package me.frostythedev.example.game.utilities;
 
 import me.frostythedev.example.game.DeathmatchGame;
-import me.frostythedev.frostengine.bukkit.gameapi.core.utilities.MinigameUtility;
-import me.frostythedev.frostengine.bukkit.gameapi.exception.TeamAlreadyLoadedException;
-import me.frostythedev.frostengine.bukkit.gameapi.teams.GameTeam;
+import me.frostythedev.frostengine.modules.gameapi.core.utilities.MinigameUtility;
+import me.frostythedev.frostengine.modules.gameapi.exception.TeamAlreadyLoadedException;
+import me.frostythedev.frostengine.modules.gameapi.teams.GameTeam;
 import net.md_5.bungee.api.ChatColor;
 
 public class TeamLoadUtility extends MinigameUtility<DeathmatchGame> {
@@ -25,6 +25,6 @@ public class TeamLoadUtility extends MinigameUtility<DeathmatchGame> {
 
     @Override
     public void end() {
-
+        //getMinigame().getTeamManager().
     }
 }

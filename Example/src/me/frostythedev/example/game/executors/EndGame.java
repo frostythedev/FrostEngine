@@ -1,7 +1,7 @@
 package me.frostythedev.example.game.executors;
 
 import me.frostythedev.example.game.DeathmatchGame;
-import me.frostythedev.frostengine.bukkit.gameapi.core.executors.GameEndExecutor;
+import me.frostythedev.frostengine.modules.gameapi.core.executors.GameEndExecutor;
 
 public class EndGame implements GameEndExecutor {
 

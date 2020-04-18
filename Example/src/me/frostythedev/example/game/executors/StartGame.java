@@ -1,8 +1,9 @@
 package me.frostythedev.example.game.executors;
 
 import me.frostythedev.example.game.DeathmatchGame;
-import me.frostythedev.frostengine.bukkit.gameapi.core.GameSettings;
-import me.frostythedev.frostengine.bukkit.gameapi.core.executors.GameStartExecutor;
+import me.frostythedev.frostengine.modules.gameapi.arenas.GameArena;
+import me.frostythedev.frostengine.modules.gameapi.core.GameSettings;
+import me.frostythedev.frostengine.modules.gameapi.core.executors.GameStartExecutor;
 import org.bukkit.Bukkit;
 
 public class StartGame implements GameStartExecutor {
