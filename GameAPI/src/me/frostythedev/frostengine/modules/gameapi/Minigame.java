@@ -1,34 +1,47 @@
-package gameapi.
+package me.frostythedev.frostengine.modules.gameapi;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import me.frostythedev.frostengine.bukkit.FEPlugin;
-import me.frostythedev.frostengine.bukkit.module.Module;
-import me.frostythedev.frostengine.bukkit.module.ModuleAPI;
+import me.frostythedev.frostengine.modules.gameapi.arenas.ArenaManager;
+import me.frostythedev.frostengine.modules.gameapi.arenas.GameArena;
+import me.frostythedev.frostengine.modules.gameapi.core.gui.GUIGameSettings2;
+import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
+import me.frostythedev.frostengine.modules.gameapi.core.GameSettings;
+import me.frostythedev.frostengine.modules.gameapi.core.executors.GameEndExecutor;
+import me.frostythedev.frostengine.modules.gameapi.core.executors.GameStartExecutor;
+import me.frostythedev.frostengine.modules.gameapi.core.settings.SettingManager;
+import me.frostythedev.frostengine.modules.gameapi.core.threads.GameCountdown;
+import me.frostythedev.frostengine.modules.gameapi.core.utilities.GameUtility;
+import me.frostythedev.frostengine.modules.gameapi.gamestate.GameState;
+import me.frostythedev.frostengine.modules.gameapi.gamestate.core.StateAction;
+import me.frostythedev.frostengine.modules.gameapi.gamestate.defaults.EndedGameState;
+import me.frostythedev.frostengine.modules.gameapi.gamestate.defaults.InGameState;
+import me.frostythedev.frostengine.modules.gameapi.gamestate.defaults.LobbyGameState;
+import me.frostythedev.frostengine.modules.gameapi.gamestate.defaults.PreGameState;
+import me.frostythedev.frostengine.modules.gameapi.kits.KitManager;
+import me.frostythedev.frostengine.modules.gameapi.listeners.GameListener;
+import me.frostythedev.frostengine.modules.gameapi.listeners.KitListener;
+import me.frostythedev.frostengine.modules.gameapi.teams.GameTeamManager;
 import me.frostythedev.frostengine.data.mysql.MySQL;
-import gameapi.arenas.GameArena;
-import gameapi.exception.ArenaAlreadyLoadedException;
-import gameapi.gamestate.GameState;
-import gameapi.gamestate.StateAction;
-import gameapi.gamestate.defaults.EndedGameState;
-import gameapi.gamestate.defaults.InGameState;
-import gameapi.kits.KitManager;
-import gameapi.teams.GameTeamManager;
-import gameapi.arenas.ArenaManager;
-import gameapi.gamestate.defaults.LobbyGameState;
-import gameapi.gamestate.defaults.PreGameState;
-import gameapi.listeners.GameListener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-public abstract class Minigame extends Module implements Game {
+public abstract class Minigame implements Game {
+
+    private JavaPlugin plugin;
 
     private String name;
     private String displayName;
+    private String description;
+    private String version;
+    private String author;
+
     private long ticksDelay;
     private int minPlayers;
     private int maxPlayers;
@@ -41,36 +54,52 @@ public abstract class Minigame extends Module implements Game {
     private GameSettings gameSettings;
     private GameStartExecutor gameStartExecutor;
     private GameEndExecutor gameEndExecutor;
+    private GUIGameSettings2 settings;
 
     private GameArena arena;
 
     private ArenaManager arenaManager;
     private GameTeamManager teamManager;
     private KitManager kitManager;
+    private SettingManager settingManager;
 
     private MySQL mySQL;
 
     private ArrayList<GameUtility> utilities;
 
-    public Minigame(String moduleName, String description, String version, String author) {
-        super(moduleName, description, version, author);
+    public Minigame(JavaPlugin plugin, String name, String displayName, String description,
+                    String version, String author) {
+        this.plugin = plugin;
+        this.name = name;
+        this.displayName = displayName;
+        this.description = description;
+        this.version = version;
+        this.author = author;
+      //  this.settings = new GUIGameSettings2(this);
     }
 
-    @Override
-    public void onModuleEnable() {
+    public boolean switchState(int stateId) {
+        if (getGameState(stateId) != null) {
+            setGameState(getGameState(stateId));
+            return true;
+        }
+        return false;
+    }
+
+    public void setDefaultStartingCountdown() {
+        this.setStartingCountdown(new GameCountdown(this));
+        this.getStartingCountdown().schedule();
+    }
+
+    public void onMinigameEnable() {
         setup();
 
         if (!utilities.isEmpty()) {
-            for (GameUtility utility : utilities) {
-                utility.start();
-            }
+            utilities.forEach(GameUtility::start);
         }
 
         this.registerListener(new GameListener(this));
-
-        if (ModuleAPI.getModule("GameAPI") != null) {
-            setParent(ModuleAPI.getModule("GameAPI"));
-        }
+        this.registerListener(new KitListener(this));
     }
 
 
@@ -83,22 +112,27 @@ public abstract class Minigame extends Module implements Game {
     public void setup() {
         this.gameStates = Maps.newHashMap();
         this.utilities = Lists.newArrayList();
-        this.kitManager = new KitManager();
+        this.kitManager = new KitManager(this);
         this.teamManager = new GameTeamManager();
         this.arenaManager = new ArenaManager(this);
+        this.settingManager = new SettingManager(this);
 
-        if (mySQL != null) {
-            this.kitManager.loadKits(mySQL);
+        System.out.println("SETTING MANAGER ID: " + this.settingManager.id);
+
+        /*if (mySQL != null) {
+
             try {
-                this.arenaManager.loadArenas(mySQL);
+
             } catch (ArenaAlreadyLoadedException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
 
-        if (gameSettings != null) {
-            Bukkit.getServer().getPluginManager().registerEvents(gameSettings, FEPlugin.get());
-        }
+        /*if (gameSettings == null) {
+            gameSettings = new GameSettings();
+        }*/
+
+        //Bukkit.getServer().getPluginManager().registerEvents(gameSettings, plugin);
     }
 
     @Override
@@ -125,6 +159,11 @@ public abstract class Minigame extends Module implements Game {
     // MADE METHODS
     ///////////////////////////////////////////////
 
+    public void loadManagers(){
+        this.kitManager.loadKits();
+        this.arenaManager.loadArenas();
+    }
+
     public void addUtility(GameUtility util) {
         if (!utilities.contains(util)) {
             utilities.add(util);
@@ -148,7 +187,7 @@ public abstract class Minigame extends Module implements Game {
 
     public void registerListeners(Listener... listeners) {
         for (Listener listener : listeners) {
-            Bukkit.getServer().getPluginManager().registerEvents(listener, FEPlugin.get());
+            Bukkit.getServer().getPluginManager().registerEvents(listener, plugin);
         }
     }
 
@@ -168,6 +207,30 @@ public abstract class Minigame extends Module implements Game {
     // GETTERS AND SETTERS
     ///////////////////////////////////////////////
 
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 
     public GameCountdown getStartingCountdown() {
         return startingCountdown;
@@ -235,7 +298,12 @@ public abstract class Minigame extends Module implements Game {
     }
 
     public void setGameSettings(GameSettings gameSettings) {
+        if(this.gameSettings != null){
+            HandlerList.unregisterAll(this.gameSettings);
+        }
         this.gameSettings = gameSettings;
+        Bukkit.getServer().getPluginManager().registerEvents(gameSettings, plugin);
+
     }
 
     public GameTeamManager getTeamManager() {
@@ -280,5 +348,21 @@ public abstract class Minigame extends Module implements Game {
 
     public void setArena(GameArena arena) {
         this.arena = arena;
+    }
+
+    public GUIGameSettings2 getSettings() {
+        return settings;
+    }
+
+    public void setSettings(GUIGameSettings2 settings) {
+        this.settings = settings;
+    }
+
+    public void setSettingManager(SettingManager settingManager) {
+        this.settingManager = settingManager;
+    }
+
+    public SettingManager getSettingManager() {
+        return settingManager;
     }
 }
