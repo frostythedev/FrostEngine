@@ -4,20 +4,20 @@ package me.frostythedev.example.game;
 import me.frostythedev.example.game.executors.EndGame;
 import me.frostythedev.example.game.executors.StartGame;
 import me.frostythedev.example.game.utilities.TeamLoadUtility;
-import me.frostythedev.frostengine.bukkit.gameapi.Minigame;
-import me.frostythedev.frostengine.bukkit.gameapi.core.GameSettings;
-import me.frostythedev.frostengine.bukkit.gameapi.teams.GameTeam;
+import me.frostythedev.frostengine.bukkit.FEPlugin;
+import me.frostythedev.frostengine.modules.gameapi.Minigame;
+import me.frostythedev.frostengine.modules.gameapi.core.GameSettings;
+import me.frostythedev.frostengine.modules.gameapi.teams.GameTeam;
 import me.frostythedev.frostengine.bukkit.messaging.Locale;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class DeathmatchGame extends Minigame {
 
     public DeathmatchGame() {
-        super(ModuleExample.get(), "Deathmatch","Deathmatch", "description", "1.0.0", "frostythedev");
+        super(FEPlugin.get(), "Deathmatch","Deathmatch", "description", "1.0.0", "frostythedev");
         setName("Deathmatch");
         setDisplayName("Deathmatch");
-        setMinPlayers(1);
+        setMinPlayers(2);
         setMaxPlayers(12);
     }
 
@@ -29,7 +29,22 @@ public class DeathmatchGame extends Minigame {
 
         this.addUtility(new TeamLoadUtility(this));
 
-        GameSettings settings = new GameSettings();
+        this.getSettingManager().toggleOff("Break");
+        this.getSettingManager().toggleOff("Place");
+        this.getSettingManager().toggleOff("Buckets");
+        this.getSettingManager().toggleOff("Chat");
+        this.getSettingManager().toggleOff("Drop");
+        this.getSettingManager().toggleOff("Explode");
+        this.getSettingManager().toggleOff("InteractEntity");
+        this.getSettingManager().toggleOff("Movement");
+        this.getSettingManager().toggleOff("Notify");
+        this.getSettingManager().toggleOff("Pickup");
+        this.getSettingManager().toggleOff("PVE");
+        this.getSettingManager().toggleOff("PVP");
+        this.getSettingManager().toggleOff("Target");
+        this.getSettingManager().toggleOff("Teleport");
+
+        /*GameSettings settings = new GameSettings();
         settings.setBuckets(false);
         settings.setBuild(false);
         settings.setDestroy(false);
@@ -42,8 +57,9 @@ public class DeathmatchGame extends Minigame {
         settings.setPickup(false);
         settings.setNotify(true);
         settings.setTeleport(true);
+        settings.setMovement(true);
 
-        setGameSettings(settings);
+        setGameSettings(settings);*/
 
         this.switchState(0);
 
