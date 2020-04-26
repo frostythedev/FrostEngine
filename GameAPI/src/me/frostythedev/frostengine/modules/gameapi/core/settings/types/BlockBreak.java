@@ -19,15 +19,35 @@ public class BlockBreak extends Setting<BlockBreakEvent> {
     @EventHandler
     public void onAction(BlockBreakEvent event) {
         if (!isEnabled()) {
-            event.setCancelled(true);
 
-            getMinigame().getSettingManager().get("Notify").ifPresent(
-                    s -> {
-                        if(s.isEnabled()){
-                            Locale.messagef(event.getPlayer(), "&4&l>> &cYou are not allowed to %s!", getName().toLowerCase());
+
+            //Checks to ensure event respects qualities of a minigame, and disallows spectators
+            if(getMinigame().getArena() != null){
+                if(getMinigame().getArena().isBreakable(event.getBlock())){
+
+                    if(getMinigame().getTeamManager().hasTeam(event.getPlayer())){
+                        if(getMinigame().getTeamManager().getPlayerTeam(event.getPlayer())
+                                .getName().equalsIgnoreCase("Spectator")){
+                            event.setCancelled(true);
                         }
                     }
-            );
+
+                }else{
+                    event.setCancelled(true);
+                }
+            }else{
+                event.setCancelled(true);
+            }
+
+            if(event.isCancelled()) {
+                getMinigame().getSettingManager().get("Notify").ifPresent(
+                        s -> {
+                            if (s.isEnabled()) {
+                                Locale.messagef(event.getPlayer(), "&4&l>> &cYou are not allowed to %s!", getName().toLowerCase());
+                            }
+                        }
+                );
+            }
         }
     }
 }
