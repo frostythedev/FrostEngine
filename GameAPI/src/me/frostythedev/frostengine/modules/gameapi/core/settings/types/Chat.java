@@ -4,6 +4,7 @@ import me.frostythedev.frostengine.bukkit.messaging.Locale;
 import me.frostythedev.frostengine.modules.gameapi.Minigame;
 import me.frostythedev.frostengine.modules.gameapi.core.Setting;
 import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -14,7 +15,7 @@ public class Chat extends Setting<AsyncPlayerChatEvent> {
         setIcon(new ItemStack(Material.SKULL_ITEM));
     }
 
-    @Override
+    @Override @EventHandler
     public void onAction(AsyncPlayerChatEvent event) {
         if(!isEnabled()){
             event.setCancelled(true);

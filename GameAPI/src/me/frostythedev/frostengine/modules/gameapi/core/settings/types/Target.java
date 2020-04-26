@@ -5,6 +5,7 @@ import me.frostythedev.frostengine.modules.gameapi.Minigame;
 import me.frostythedev.frostengine.modules.gameapi.ModuleGameAPI;
 import me.frostythedev.frostengine.modules.gameapi.core.Setting;
 import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -15,7 +16,7 @@ public class Target extends Setting<EntityTargetEvent> {
         setIcon(new ItemStack(Material.BOW));
     }
 
-    @Override
+    @Override @EventHandler
     public void onAction(EntityTargetEvent event) {
         if(!isEnabled()){
             event.setCancelled(true);

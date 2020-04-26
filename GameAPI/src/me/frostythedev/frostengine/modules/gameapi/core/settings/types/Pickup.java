@@ -6,6 +6,7 @@ import me.frostythedev.frostengine.modules.gameapi.Minigame;
 import me.frostythedev.frostengine.modules.gameapi.ModuleGameAPI;
 import me.frostythedev.frostengine.modules.gameapi.core.Setting;
 import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 
 public class Pickup extends Setting<PlayerPickupItemEvent> {
@@ -15,7 +16,7 @@ public class Pickup extends Setting<PlayerPickupItemEvent> {
         setIcon(new ItemBuilder(Material.DIAMOND).build());
     }
 
-    @Override
+    @Override @EventHandler
     public void onAction(PlayerPickupItemEvent event) {
         if (!isEnabled()) {
             event.setCancelled(true);

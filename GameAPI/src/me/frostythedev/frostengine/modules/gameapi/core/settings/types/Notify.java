@@ -9,7 +9,7 @@ public class Notify extends Setting {
 
     public Notify(Minigame minigame, String name, boolean enabled) {
         super(minigame, name, enabled);
-        setIcon(new ItemBuilder(Material.FIRE).build());
+        setIcon(new ItemBuilder(Material.BLAZE_POWDER).build());
     }
 
     @Override

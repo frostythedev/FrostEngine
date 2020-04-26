@@ -5,6 +5,7 @@ import me.frostythedev.frostengine.modules.gameapi.Minigame;
 import me.frostythedev.frostengine.modules.gameapi.ModuleGameAPI;
 import me.frostythedev.frostengine.modules.gameapi.core.Setting;
 import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -15,7 +16,7 @@ public class Movement extends Setting<PlayerMoveEvent> {
         setIcon(new ItemStack(Material.FEATHER));
     }
 
-    @Override
+    @Override @EventHandler
     public void onAction(PlayerMoveEvent event) {
         if (!isEnabled()) {
             if (event.getTo().getBlockX() != event.getFrom().getBlockX() ||

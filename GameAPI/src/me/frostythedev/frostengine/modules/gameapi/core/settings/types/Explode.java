@@ -3,6 +3,7 @@ package me.frostythedev.frostengine.modules.gameapi.core.settings.types;
 import me.frostythedev.frostengine.modules.gameapi.Minigame;
 import me.frostythedev.frostengine.modules.gameapi.core.Setting;
 import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -13,7 +14,7 @@ public class Explode extends Setting<EntityExplodeEvent> {
         setIcon(new ItemStack(Material.TNT));
     }
 
-    @Override
+    @Override @EventHandler
     public void onAction(EntityExplodeEvent event) {
         if(!isEnabled()){
             event.setCancelled(true);

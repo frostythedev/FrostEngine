@@ -5,6 +5,7 @@ import me.frostythedev.frostengine.modules.gameapi.Minigame;
 import me.frostythedev.frostengine.modules.gameapi.ModuleGameAPI;
 import me.frostythedev.frostengine.modules.gameapi.core.Setting;
 import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -15,7 +16,7 @@ public class InteractEntity extends Setting<PlayerInteractEntityEvent> {
         setIcon(new ItemStack(Material.SAPLING));
     }
 
-    @Override
+    @Override @EventHandler
     public void onAction(PlayerInteractEntityEvent event) {
         if(!isEnabled()){
             event.setCancelled(true);

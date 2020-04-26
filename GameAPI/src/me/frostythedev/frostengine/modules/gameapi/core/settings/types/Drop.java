@@ -6,6 +6,7 @@ import me.frostythedev.frostengine.modules.gameapi.Minigame;
 import me.frostythedev.frostengine.modules.gameapi.ModuleGameAPI;
 import me.frostythedev.frostengine.modules.gameapi.core.Setting;
 import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerDropItemEvent;
 
 public class Drop extends Setting<PlayerDropItemEvent> {
@@ -15,7 +16,7 @@ public class Drop extends Setting<PlayerDropItemEvent> {
         setIcon(new ItemBuilder(Material.ANVIL).build());
     }
 
-    @Override
+    @Override @EventHandler
     public void onAction(PlayerDropItemEvent event) {
         if (!isEnabled()) {
             event.setCancelled(true);

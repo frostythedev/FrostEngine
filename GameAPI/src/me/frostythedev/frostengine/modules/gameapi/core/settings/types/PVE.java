@@ -6,6 +6,7 @@ import me.frostythedev.frostengine.modules.gameapi.ModuleGameAPI;
 import me.frostythedev.frostengine.modules.gameapi.core.Setting;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -16,7 +17,7 @@ public class PVE extends Setting<EntityDamageByEntityEvent> {
         setIcon(new ItemStack(Material.ROTTEN_FLESH));
     }
 
-    @Override
+    @Override @EventHandler
     public void onAction(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player) {
             if (!(event.getEntity() instanceof Player)) {

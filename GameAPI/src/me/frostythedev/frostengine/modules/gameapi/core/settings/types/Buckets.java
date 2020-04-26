@@ -6,6 +6,7 @@ import me.frostythedev.frostengine.modules.gameapi.ModuleGameAPI;
 import me.frostythedev.frostengine.modules.gameapi.core.Setting;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -16,7 +17,7 @@ public class Buckets extends Setting<PlayerBucketFillEvent> {
         setIcon(new ItemStack(Material.BUCKET));
     }
 
-    @Override
+    @Override @EventHandler
     public void onAction(PlayerBucketFillEvent event) {
         if (!isEnabled()) {
             event.setCancelled(true);
