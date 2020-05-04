@@ -58,6 +58,7 @@ public class GameArenaGatherCallback implements Callback<Map<String, GameArena>>
                     }
                 }while (rs.next());
 
+                //IDK WHAT THIS IS
                 /*while (rs.next()) {
                     GameArena arena = FEPlugin.getGson().fromJson(rs.getString("data"), GameArena.class);
                     if (arena != null) {

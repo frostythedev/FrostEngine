@@ -1,6 +1,6 @@
 package me.frostythedev.frostengine.modules.gameapi.cmds;
 
-import me.frostythedev.frostengine.bukkit.cmd.api.Command;
+import me.frostythedev.frostengine.legacy.cmds.api.Command;
 import me.frostythedev.frostengine.bukkit.messaging.Locale;
 import me.frostythedev.frostengine.modules.gameapi.ModuleGameAPI;
 import me.frostythedev.frostengine.modules.gameapi.core.gui.GUIMinigame;

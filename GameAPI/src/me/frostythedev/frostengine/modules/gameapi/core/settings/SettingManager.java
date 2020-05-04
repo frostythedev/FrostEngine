@@ -1,11 +1,15 @@
 package me.frostythedev.frostengine.modules.gameapi.core.settings;
 
+import com.google.common.reflect.ClassPath;
 import me.frostythedev.frostengine.bukkit.utils.LogUtils;
 import me.frostythedev.frostengine.modules.gameapi.Minigame;
 import me.frostythedev.frostengine.modules.gameapi.ModuleGameAPI;
 import me.frostythedev.frostengine.modules.gameapi.core.Setting;
 import me.frostythedev.frostengine.modules.gameapi.core.gui.GUIGameSettings2;
 import me.frostythedev.frostengine.modules.gameapi.core.settings.types.*;
+import org.bukkit.Bukkit;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.PluginManager;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -35,12 +39,12 @@ public class SettingManager {
             load(new BlockBreak(minigame, "Break", false));
             load(new BlockPlace(minigame, "Place", false));
             load(new Buckets(minigame, "Buckets", false));
-            load(new Chat(minigame, "Chat", false));
+            load(new Chat(minigame, "Chat", true));
             load(new Drop(minigame, "Drop", false));
             load(new Explode(minigame, "Explode", false));
             load(new InteractEntity(minigame, "InteractEntity", false));
-            load(new Movement(minigame, "Movement", false));
-            load(new Notify(minigame, "Notify", false));
+            load(new Movement(minigame, "Movement", true));
+            load(new Notify(minigame, "Notify", true));
             load(new Pickup(minigame, "Pickup", false));
             load(new PVE(minigame, "PVE", false));
             load(new PvP(minigame, "PVP", false));
@@ -62,6 +66,7 @@ public class SettingManager {
 
         this.settings.put(setting.getName().toLowerCase(), setting);
        minigame.registerListeners(setting);
+      // LogUtils.info("Setting '" + setting.getName() + "' has been registered.");
     }
 
     public boolean toggle(String name){
@@ -83,7 +88,7 @@ public class SettingManager {
     }
 
     public Optional<Setting<?>> get(String name){
-        if(settings.containsKey(name)) return Optional.of(settings.get(name));
+        if(settings.containsKey(name.toLowerCase())) return Optional.of(settings.get(name.toLowerCase()));
         return Optional.empty();
     }
 

@@ -2,11 +2,20 @@ package me.frostythedev.frostengine.modules.gameapi.arenas;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import me.frostythedev.frostengine.bukkit.FEPlugin;
+import me.frostythedev.frostengine.bukkit.utils.LogUtils;
+import me.frostythedev.frostengine.config.BukkitDocument;
+import me.frostythedev.frostengine.data.mysql.MySQL;
 import me.frostythedev.frostengine.modules.gameapi.Minigame;
 import me.frostythedev.frostengine.data.core.Database;
 import me.frostythedev.frostengine.data.core.DatabaseField;
 import me.frostythedev.frostengine.modules.gameapi.arenas.data.GameArenaGatherCallback;
+import me.frostythedev.frostengine.modules.gameapi.exception.ArenaAlreadyLoadedException;
 
+import java.io.File;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -16,11 +25,17 @@ public class ArenaManager {
     private Map<String, GameArena> arenas;
     private Map<Integer, String> arenaIds;
 
+    //Figure out away to load arenaNames ones, and only update it whenever it is
+    // needed to be updated to avoid using too much memory creating a new List every
+    // time getArenaNames is called
+    //private List<String> arenaNames;
+
     private Minigame minigame;
 
     public ArenaManager(Minigame minigame) {
         this.arenas = Maps.newHashMap();
         this.arenaIds = Maps.newHashMap();
+        //this.arenaNames = new ArrayList<>();
 
         this.minigame = minigame;
     }
@@ -29,9 +44,16 @@ public class ArenaManager {
         return getArenas().size();
     }
 
+    public GameArena getLobbyArena(){
+        for(GameArena arena : getArenas()){
+            if(arena.isLobby()) return arena;
+        }
+        return null;
+    }
+
     public GameArena getFreeArena() {
         for (GameArena arena : getArenas()) {
-            if (!arena.isInUse()) {
+            if (!arena.isInUse() && !arena.isLobby()) {
                 return arena;
             }
         }
@@ -40,7 +62,7 @@ public class ArenaManager {
 
     public GameArena getFreeArena(int spawnSize) {
         for (GameArena arena : getArenas()) {
-            if (!arena.isInUse() && arena.getSize() >= spawnSize) {
+            if (!arena.isInUse() && !arena.isLobby() && arena.getSize() >= spawnSize) {
                 return arena;
             }
         }
@@ -75,31 +97,36 @@ public class ArenaManager {
         }
     }
 
-    /*public void loadArenas(File folder) throws ArenaAlreadyLoadedException {
+    public void loadArenas(File folder) throws ArenaAlreadyLoadedException {
         if(!folder.exists()){
             return;
         }
 
         if(folder.isDirectory()){
+
             File[] files = folder.listFiles();
-            for(File file : files){
-                BukkitDocument document = BukkitDocument.of(file.getAbsolutePath());
-                if(!document.getKeys(false).isEmpty()){
-                    for(String key : document.getKeys(false)){
-                        GameArena arena = FEPlugin.getGson().fromJson(key, GameArena.class);
-                        if (arena != null) {
-                            arena.setMinigame(minigame);
-                            if (getArena(arena.getArenaName()) != null) {
-                                throw new ArenaAlreadyLoadedException(arena.getArenaName());
-                            } else {
-                                arenas.put(arena.getArenaName(), arena);
-                                arenaIds.put(arena.getId(), arena.getArenaName());
+            if(files != null){
+                for(File file : files){
+                    BukkitDocument document = BukkitDocument.of(file.getAbsolutePath());
+                    if(!document.getKeys(false).isEmpty()){
+                        for(String key : document.getKeys(false)){
+                            GameArena arena = FEPlugin.getGson().fromJson(key, GameArena.class);
+                            if (arena != null) {
+                                arena.setMinigame(minigame);
+                                if (getArena(arena.getArenaName()) != null) {
+                                    throw new ArenaAlreadyLoadedException(arena.getArenaName());
+                                } else {
+                                    arenas.put(arena.getArenaName(), arena);
+                                    arenaIds.put(arena.getId(), arena.getArenaName());
+                                }
                             }
                         }
                     }
                 }
             }
+
         }else{
+
             BukkitDocument document = BukkitDocument.of(folder.getAbsolutePath());
             if(!document.getKeys(false).isEmpty()){
               for(String key : document.getKeys(false)){
@@ -125,20 +152,25 @@ public class ArenaManager {
                    loadArenas(mySQL);
                }else{
                    //TODO Error logging
+                   LogUtils.info("Could not connect to MySQL server to load arenaData!");
                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         } else {
-            String query = "SELECT * FROM `" + DatabaseField.ARENA_TABLE + "`;";
+            String query = "SELECT * FROM `" + DatabaseField.ARENA_TABLE + "` " +
+                    "WHERE minigameName=%s;";
+            query = String.format(query, this.minigame.getName());
+
             ResultSet rs = mySQL.syncQuery(query);
 
             if (rs != null) {
                 try {
-
                     if (rs.next()) {
                         do {
-                            GameArena arena = FEPlugin.getGson().fromJson(rs.getString("data"), GameArena.class);
+                            GameArena arena = FEPlugin.getGson().fromJson(
+                                    rs.getString("data"), GameArena.class);
+
                             if (arena != null) {
                                 arena.setMinigame(minigame);
                                 if (getArena(arena.getArenaName()) != null) {
@@ -150,9 +182,11 @@ public class ArenaManager {
                             }
                         } while (rs.next());
 
-                    *//*if (rs.next()) {
+                    if (rs.next()) {
                         while (rs.next()) {
-                            GameArena arena = FEPlugin.getGson().fromJson(rs.getString("data"), GameArena.class);
+                            GameArena arena = FEPlugin.getGson().fromJson(
+                                    rs.getString("data"), GameArena.class);
+
                             if (arena != null) {
                                 arena.setMinigame(minigame);
                                 if (getArena(arena.getArenaName()) != null) {
@@ -163,7 +197,7 @@ public class ArenaManager {
                                 }
                             }
                         }
-                    }*//*
+                    }
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -176,7 +210,7 @@ public class ArenaManager {
                 }
             }
         }
-    }*/
+    }
 
 
     public Collection<GameArena> getArenas() {

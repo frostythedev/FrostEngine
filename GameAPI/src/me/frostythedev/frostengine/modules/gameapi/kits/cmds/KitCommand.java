@@ -1,8 +1,8 @@
 package me.frostythedev.frostengine.modules.gameapi.kits.cmds;
 
 import me.frostythedev.frostengine.bukkit.FEPlugin;
-import me.frostythedev.frostengine.bukkit.cmd.api.Command;
-import me.frostythedev.frostengine.bukkit.cmd.api.SubCommand;
+import me.frostythedev.frostengine.legacy.cmds.api.Command;
+import me.frostythedev.frostengine.legacy.cmds.api.SubCommand;
 import me.frostythedev.frostengine.modules.gameapi.Minigame;
 import me.frostythedev.frostengine.bukkit.messaging.Locale;
 import org.bukkit.command.CommandSender;

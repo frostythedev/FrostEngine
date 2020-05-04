@@ -17,6 +17,7 @@ public abstract class Setting<T> implements PlayerSetting<T>, Listener {
     private Minigame minigame;
 
     public Setting(Minigame minigame, String name, boolean enabled) {
+        this.minigame = minigame;
         this.name = name;
         this.enabled = enabled;
         this.description = "&7Default Description =(";
@@ -74,7 +75,7 @@ public abstract class Setting<T> implements PlayerSetting<T>, Listener {
     }
 
     public Minigame getMinigame() {
-        return minigame;
+        return this.minigame;
     }
 
     public void setMinigame(Minigame minigame) {

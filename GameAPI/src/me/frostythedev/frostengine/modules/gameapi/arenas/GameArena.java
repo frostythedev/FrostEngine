@@ -59,6 +59,11 @@ public class GameArena implements Arena, JsonConvertable<GameArena> {
     // MADE METHODS
     ///////////////////////////////////////////////
 
+    public boolean loadArena(){
+
+        return false;
+    }
+
 
     // MAKE MINGIAMES REPORT THE AMOUNT OF PLAYERS ARE WITHIN IT TO REFLECT ON ARENA
     // ICON
@@ -105,18 +110,6 @@ public class GameArena implements Arena, JsonConvertable<GameArena> {
         return false;
     }
 
-    public int getSize(){
-        return spawnLocations.size();
-    }
-
-    public Location getSpawn(int index){
-        return spawnLocations.get(index);
-    }
-
-    public Location getRandomSpawn(){
-        return getSpawn(ThreadLocalRandom.current().nextInt(getSize()));
-    }
-
     public boolean isRegisteredLocation(Location loc, boolean ignoreYawPitch){
         if(ignoreYawPitch){
           for(Location locs : this.getSpawnLocations()) {
@@ -142,6 +135,18 @@ public class GameArena implements Arena, JsonConvertable<GameArena> {
             }
         }
         return null;
+    }
+
+    public int getSize(){
+        return spawnLocations.size();
+    }
+
+    public Location getSpawn(int index){
+        return spawnLocations.get(index);
+    }
+
+    public Location getRandomSpawn(){
+        return getSpawn(ThreadLocalRandom.current().nextInt(getSize()));
     }
 
 

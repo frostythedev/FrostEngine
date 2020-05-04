@@ -154,6 +154,8 @@ public class GUIGameSettings2 {
 
         @Override
         public void init(Player player, InventoryContents invC) {
+            //invC.property("update-ticks", 0);
+
             invC.fillBorders(ClickableItem.empty(new ItemStack(Material.STAINED_GLASS_PANE, 1)));
 
             for (int i = 0; i < buttons.length; i++) {
@@ -163,13 +165,11 @@ public class GUIGameSettings2 {
 
         @Override
         public void update(Player player, InventoryContents contents) {
-
-            int state = contents.property("state", 0);
-            contents.setProperty("state", state++);
-
-            if(state % 10 != 0){
+            /*int state = contents.property("update-ticks");
+            contents.setProperty("update-ticks", state+1);
+            if(state % 20 != 0){
                 return;
-            }
+            }*/
 
             for (int[] available_slot : available_slots) {
                 if (contents.get(available_slot[0], available_slot[1]).isPresent()) {

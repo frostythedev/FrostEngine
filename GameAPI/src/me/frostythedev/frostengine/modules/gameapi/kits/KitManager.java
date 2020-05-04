@@ -77,14 +77,19 @@ public class KitManager {
     }
 
     public void loadKits() {
-        GameKitGatherCallback gkCallback = new GameKitGatherCallback();
-        Database.get().syncQuery("SELECT * FROM " + DatabaseField.KIT_TABLE +
-                " WHERE minigameName=?",
-                new Object[]{minigame.getName()}, gkCallback);
+        if(Database.get().hasConnection()){
+            GameKitGatherCallback gkCallback = new GameKitGatherCallback();
+            Database.get().syncQuery("SELECT * FROM " + DatabaseField.KIT_TABLE +
+                            " WHERE minigameName=?",
+                    new Object[]{minigame.getName()}, gkCallback);
 
-        if (gkCallback.result() != null && !gkCallback.result().isEmpty()) {
-            gkCallback.result().values().forEach(kit -> kitsId.put(kit.getName(), kit.getId()));
-            this.kits = gkCallback.result();
+            if (gkCallback.result() != null && !gkCallback.result().isEmpty()) {
+                gkCallback.result().values().forEach(kit -> kitsId.put(kit.getName(), kit.getId()));
+                this.kits = gkCallback.result();
+            }
+        }else{
+
+            loadKits(new File("kits.yml"));
         }
     }
 

@@ -2,9 +2,8 @@ package me.frostythedev.frostengine.modules.gameapi.arenas.command;
 
 import me.frostythedev.frostengine.bukkit.FEPlugin;
 import me.frostythedev.frostengine.bukkit.Messages;
-import me.frostythedev.frostengine.bukkit.cmd.api.Command;
-import me.frostythedev.frostengine.bukkit.cmd.api.SubCommand;
-import me.frostythedev.frostengine.bukkit.module.Module;
+import me.frostythedev.frostengine.legacy.cmds.api.Command;
+import me.frostythedev.frostengine.legacy.cmds.api.SubCommand;
 import me.frostythedev.frostengine.modules.gameapi.ModuleGameAPI;
 import me.frostythedev.frostengine.modules.gameapi.arenas.GameArena;
 import me.frostythedev.frostengine.bukkit.messaging.Locale;
