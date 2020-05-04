@@ -23,8 +23,8 @@ public class Locale {
 
     private static HashMap<String, String> messages;
 
-    public static final String ERROR_PREF = "&4&lERROR &4» &r";
-    public static final String SUCCESS_PREF = "&2&lSUCCESS &2» &r";
+    public static final String ERROR_PREF = "&4&l>> &c";
+    public static final String SUCCESS_PREF = "&2&l>> &a";
 
     public static final String SQL_TABLE_PREFIX = FEPlugin.get().getConfig().getString("MySQL.Table-prefix");
 
@@ -80,9 +80,9 @@ public class Locale {
         return input;
     }
 
-    public static String toColors(Lang lang, String... values) {
+    /*public static String toColors(Lang lang, String... values) {
         return toColors(lang.getValue(), lang.getVariables(), values);
-    }
+    }*/
 
     public static List<String> toColors(List<String> lines) {
         List<String> l = Lists.newArrayList();
@@ -108,9 +108,11 @@ public class Locale {
         Bukkit.broadcastMessage(toColors(message, vars, value));
     }
 
+/*
     public static void broadcast(Lang lang, String... values) {
         broadcast(lang.getValue(), lang.getVariables(), values);
     }
+*/
 
     public static void broadcast(String permission, String message) {
         Bukkit.getOnlinePlayers().stream().filter(ps -> ps.hasPermission(permission)).forEach(p -> message(p, message));
