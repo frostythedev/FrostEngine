@@ -1,6 +1,6 @@
 package me.frostythedev.frostengine.bukkit.reflection;
 
-import me.frostythedev.frostengine.bukkit.debug.Debugger;
+import me.frostythedev.frostengine.bukkit.utils.LogUtils;
 import org.bukkit.Bukkit;
 
 import java.lang.annotation.Annotation;
@@ -39,7 +39,7 @@ public class ReflectionUtilities {
         try {
             return Class.forName(name);
         } catch (ClassNotFoundException e) {
-            Debugger.debug("Could not find class: " + name + "!");
+            LogUtils.warning("Could not find class: " + name + "!");
         }
         return null;
     }
@@ -110,7 +110,7 @@ public class ReflectionUtilities {
             setAccessible(field);
             return field;
         } catch (Exception e) {
-            Debugger.debug("No such field: " + fieldName + "!");
+            LogUtils.warning("No such field: " + fieldName + "!");
         }
         return null;
     }
@@ -119,7 +119,7 @@ public class ReflectionUtilities {
         try {
             return (T) getField(clazz, fieldName).get(instance);
         } catch (IllegalAccessException e) {
-            Debugger.debug("Failed to access field: " + fieldName + "!");
+            LogUtils.warning("Failed to access field: " + fieldName + "!");
         }
         return null;
     }
@@ -128,7 +128,7 @@ public class ReflectionUtilities {
         try {
             getField(clazz, fieldName).set(instance, value);
         } catch (IllegalAccessException e) {
-            Debugger.debug("Could not set new field value for: " + fieldName);
+            LogUtils.warning("Could not set new field value for: " + fieldName);
         }
     }
 
@@ -160,7 +160,7 @@ public class ReflectionUtilities {
 
             return method;
         } catch (NoSuchMethodException e) {
-            Debugger.debug("No such method: " + methodName + " on class" + clazz.getCanonicalName() + "!");
+            LogUtils.warning("No such method: " + methodName + " on class" + clazz.getCanonicalName() + "!");
         }
         return null;
     }
@@ -169,9 +169,9 @@ public class ReflectionUtilities {
         try {
             return (T) method.invoke(instance, args);
         } catch (IllegalAccessException e) {
-            Debugger.debug("Failed to access method: " + method.getName() + "!");
+            LogUtils.warning("Failed to access method: " + method.getName() + "!");
         } catch (InvocationTargetException e) {
-            Debugger.debug("Failed to invoke method: " + method.getName() + "!");
+            LogUtils.warning("Failed to invoke method: " + method.getName() + "!");
         }
         return null;
     }
@@ -186,7 +186,7 @@ public class ReflectionUtilities {
 
             return constructor;
         } catch (NoSuchMethodException e) {
-            Debugger.debug("No such constructor!");
+            LogUtils.warning("No such constructor!");
         }
         return null;
     }
@@ -195,13 +195,13 @@ public class ReflectionUtilities {
         try {
             return (T) constructor.newInstance(args);
         } catch (InstantiationException e) {
-            Debugger.debug("Failed to instantiate constructor: " + constructor.getName());
+            LogUtils.warning("Failed to instantiate constructor: " + constructor.getName());
             e.printStackTrace();
         } catch (IllegalAccessException e) {
-            Debugger.debug("Failed to access constructor: " + constructor.getName());
+            LogUtils.warning("Failed to access constructor: " + constructor.getName());
             e.printStackTrace();
         } catch (InvocationTargetException e) {
-            Debugger.debug("Failed to invoke constructor: " + constructor.getName());
+            LogUtils.warning("Failed to invoke constructor: " + constructor.getName());
             e.printStackTrace();
         }
         return null;
@@ -240,7 +240,7 @@ public class ReflectionUtilities {
         setAccessible(field);
 
         if (!isFinal(field)) {
-            Debugger.debug("Field " + field.getName() + " in class " + field.getClass().getCanonicalName() + " is not final.. Cannot remove final");
+            LogUtils.warning("Field " + field.getName() + " in class " + field.getClass().getCanonicalName() + " is not final.. Cannot remove final");
             return;
         }
 

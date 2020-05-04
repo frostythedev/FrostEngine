@@ -1,6 +1,6 @@
 package me.frostythedev.frostengine.bukkit.reflection;
 
-import me.frostythedev.frostengine.bukkit.debug.Debugger;
+import me.frostythedev.frostengine.bukkit.utils.LogUtils;
 
 import java.lang.reflect.Field;
 
@@ -23,7 +23,7 @@ public class SafeField<T> {
         try {
             return (T) field.get(instance);
         } catch (IllegalAccessException e) {
-            Debugger.debug("Could not access field: " + toString());
+            LogUtils.warning("Could not access field: " + toString());
             return null;
         }
     }
@@ -32,7 +32,7 @@ public class SafeField<T> {
         try {
             this.field.set(instance, value);
         } catch (IllegalAccessException e) {
-            Debugger.debug("Could not access field: " + toString());
+            LogUtils.warning("Could not access field: " + toString());
         }
     }
 }
