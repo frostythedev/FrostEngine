@@ -22,7 +22,7 @@ public class MinigameManager {
 
     public void loadMinigame(Minigame minigame){
         if(getMinigame(minigame.getName()).isPresent()){
-            Debugger.info("Cannot load a minigame with that name as it is already loaded!");
+            LogUtils.info("Cannot load a minigame with that name as it is already loaded!");
             return;
         }
 

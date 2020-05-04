@@ -117,7 +117,7 @@ public abstract class Minigame implements Game {
         this.arenaManager = new ArenaManager(this);
         this.settingManager = new SettingManager(this);
 
-        System.out.println("SETTING MANAGER ID: " + this.settingManager.id);
+        //System.out.println("SETTING MANAGER ID: " + this.settingManager.id);
 
         /*if (mySQL != null) {
 
@@ -187,6 +187,7 @@ public abstract class Minigame implements Game {
 
     public void registerListeners(Listener... listeners) {
         for (Listener listener : listeners) {
+            //System.out.printf("REGISTERED LISTENER: %s\n", listener.getClass().getName());
             Bukkit.getServer().getPluginManager().registerEvents(listener, plugin);
         }
     }
@@ -364,5 +365,13 @@ public abstract class Minigame implements Game {
 
     public SettingManager getSettingManager() {
         return settingManager;
+    }
+
+    public JavaPlugin getPlugin() {
+        return plugin;
+    }
+
+    public void setPlugin(JavaPlugin plugin) {
+        this.plugin = plugin;
     }
 }
