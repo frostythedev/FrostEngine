@@ -49,7 +49,6 @@ public class Messages {
 
 
 
-
     public static final String INVENTORY_CLEARED = "&aYour inventory has been cleared";
     public static final String PLAYER_OFFLINE = "&cThe requested player is offline";
     public static final String CHAT_SILENCED = "&7Chat is currently silenced, you are only able to chat if you have the required permissions";
