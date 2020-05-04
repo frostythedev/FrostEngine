@@ -1,11 +1,8 @@
 package me.frostythedev.frostengine.bukkit.module;
 
-import me.frostythedev.frostengine.bukkit.cmd.api.Command;
-import me.frostythedev.frostengine.bukkit.cmd.api.CommandUtils;
-import me.frostythedev.frostengine.bukkit.event.api.ListenerUtils;
-import me.frostythedev.frostengine.bukkit.messaging.Locale;
+import co.aikar.commands.BaseCommand;
+import me.frostythedev.frostengine.legacy.cmds.api.Command;
 import me.frostythedev.frostengine.bukkit.thread.RunnableManager;
-import me.frostythedev.frostengine.bukkit.utils.NumberUtil;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,7 +17,7 @@ import java.util.Set;
 public abstract class Plugin extends JavaPlugin implements ModuleBase {
 
     private Set<Listener> listeners;
-    private Set<Command> commands;
+    private Set<BaseCommand> commands;
     private Set<Module> childModules;
     private RunnableManager runnableManager;
     private ModuleLoader moduleLoader;
@@ -104,7 +101,7 @@ public abstract class Plugin extends JavaPlugin implements ModuleBase {
     }
 
     @Override
-    public Set<Command> getCommands() {
+    public Set<BaseCommand> getCommands() {
         return commands;
     }
 

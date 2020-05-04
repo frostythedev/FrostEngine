@@ -1,11 +1,11 @@
 package me.frostythedev.frostengine.bukkit.module;
 
 
-import me.frostythedev.frostengine.bukkit.cmd.api.Command;
-import me.frostythedev.frostengine.bukkit.cmd.api.CommandUtils;
+import co.aikar.commands.BaseCommand;
+import me.frostythedev.frostengine.legacy.cmds.api.Command;
+import me.frostythedev.frostengine.legacy.cmds.api.CommandUtils;
 import me.frostythedev.frostengine.bukkit.event.api.AbstractListener;
 import me.frostythedev.frostengine.bukkit.event.api.ListenerUtils;
-import me.frostythedev.frostengine.bukkit.messaging.Locale;
 import me.frostythedev.frostengine.bukkit.utils.NumberUtil;
 import org.bukkit.event.Listener;
 
@@ -32,7 +32,7 @@ public interface ModuleBase extends IModule {
         }
     }
 
-    default void addCommand(Command command) {
+    default void addCommand(BaseCommand command) {
         if (!isLoaded()) return;
         getCommands().add(command);
     }
@@ -57,20 +57,6 @@ public interface ModuleBase extends IModule {
         if (getCommands() != null && !getCommands().isEmpty()) {
             CommandUtils.enableAll(getCommands());
         }
-
-        /*if (getChildModules() != null && !getChildModules().isEmpty() &&
-        getModuleLoader() != null) {
-            for (Module module : getChildModules()) {
-
-                if(!getModuleLoader().isLoaded(module.getModuleName())){
-                    Locale.log("Starting child module '" + module.getModuleName() + "' ...");
-                    long now = System.currentTimeMillis();
-                    module.enable();
-                    Locale.log("Finished starting child module '" + module.getModuleName() + "' in [" + NumberUtil.elapse(now) + "m/s]");
-
-                }
-            }
-        }*/
 
         setLoaded(true);
         System.out.println("Finished starting child module '" + getModuleName() + "' in [" + NumberUtil.elapse(now) + "m/s]");

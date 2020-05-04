@@ -1,8 +1,7 @@
 package me.frostythedev.frostengine.bukkit.module;
 
+import co.aikar.commands.BaseCommand;
 import com.google.common.collect.Sets;
-import me.frostythedev.frostengine.bukkit.FEPlugin;
-import me.frostythedev.frostengine.bukkit.cmd.api.Command;
 import me.frostythedev.frostengine.bukkit.event.api.AbstractListener;
 import me.frostythedev.frostengine.bukkit.event.api.ListenerUtils;
 import me.frostythedev.frostengine.bukkit.impl.Constants;
@@ -28,7 +27,7 @@ public class Module implements ModuleBase {
     private String author;
     private boolean loaded;
     private Set<Listener> listeners;
-    private Set<Command> commands;
+    private Set<BaseCommand> commands;
     private Set<Module> childModules;
 
     public Module(String moduleName) {
@@ -71,7 +70,7 @@ public class Module implements ModuleBase {
         }
     }
 
-    public void addCommand(Command command) {
+    public void addCommand(BaseCommand command) {
         if (!isLoaded()) return;
         getCommands().add(command);
     }
@@ -163,7 +162,7 @@ public class Module implements ModuleBase {
     }
 
     @Override
-    public Set<Command> getCommands() {
+    public Set<BaseCommand> getCommands() {
         return commands;
     }
 

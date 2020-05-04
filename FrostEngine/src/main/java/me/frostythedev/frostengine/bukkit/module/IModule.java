@@ -1,7 +1,8 @@
 package me.frostythedev.frostengine.bukkit.module;
 
-import me.frostythedev.frostengine.bukkit.cmd.api.Command;
+import co.aikar.commands.BaseCommand;
 import me.frostythedev.frostengine.bukkit.event.api.AbstractListener;
+import me.frostythedev.frostengine.legacy.cmds.api.Command;
 import org.bukkit.event.Listener;
 
 import java.util.Set;
@@ -18,7 +19,7 @@ public interface IModule {
     boolean isLoaded();
     void setLoaded(boolean b);
     Set<Listener> getListeners();
-    Set<Command> getCommands();
+    Set<BaseCommand> getCommands();
     Set<Module> getChildModules();
 
     default void addListener(AbstractListener listener){}
