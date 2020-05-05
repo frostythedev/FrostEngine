@@ -44,7 +44,7 @@ public class FEPlugin extends Plugin {
 
     private StatisticManager statisticManager;
 
-    private BukkitCommandManager manager;
+    private BukkitCommandManager commandManager;
     private Injector injector;
 
     @Inject ModuleCommand moduleCommand;
@@ -56,13 +56,13 @@ public class FEPlugin extends Plugin {
         inst = this;
         LogUtils.init(this);
 
-        this.manager = new BukkitCommandManager(this);
+        this.commandManager = new BukkitCommandManager(this);
 
-        FEBinderModule sbm = new FEBinderModule(this, manager);
+        FEBinderModule sbm = new FEBinderModule(this, commandManager);
         this.injector = sbm.createInjector();
         this.injector.injectMembers(this);
 
-        this.manager.registerCommand(moduleCommand);
+        this.getCommandManager().registerCommand(moduleCommand);
 
         if (!new File(this.getDataFolder(), "config.yml").exists()) {
             this.saveDefaultConfig();
@@ -110,7 +110,7 @@ public class FEPlugin extends Plugin {
 
    private void registerCommands(BaseCommand... commands) {
        for(BaseCommand cmd : commands){
-           this.getManager().registerCommand(cmd);
+           this.getCommandManager().registerCommand(cmd);
        }
     }
 
@@ -126,8 +126,8 @@ public class FEPlugin extends Plugin {
 //        return moduleLoader;
 //    }
 
-    public BukkitCommandManager getManager() {
-        return manager;
+    public BukkitCommandManager getCommandManager() {
+        return commandManager;
     }
 
     public Map<Class<?>, JsonAdaptor> getAdaptors() {
@@ -146,6 +146,9 @@ public class FEPlugin extends Plugin {
         return statisticManager;
     }
 
+    public Injector getInjector() {
+        return injector;
+    }
 
     /*public NPCManager getNpcManager() {
         return npcManager;
