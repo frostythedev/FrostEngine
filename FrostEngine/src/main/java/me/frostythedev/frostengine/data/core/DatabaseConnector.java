@@ -1,6 +1,6 @@
 package me.frostythedev.frostengine.data.core;
 
-import me.frostythedev.frostengine.bukkit.debug.Debugger;
+import me.frostythedev.frostengine.bukkit.utils.LogUtils;
 import me.frostythedev.frostengine.legacy.ui.SendConsole;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -18,14 +18,14 @@ public abstract class DatabaseConnector {
 
     private void initConnection() {
         try {
-            Debugger.debug("Attempting to establish a connection the MySQL server!");
+            LogUtils.info("Attempting to establish a connection the MySQL server!");
             Class.forName("com.mysql.jdbc.Driver");
             sqlConnection = DriverManager.getConnection("jdbc:mysql://" + config.getString("data.MySQL.host") +
                     ":" + config.getString("data.MySQL.port") + "/" + config.getString("data.MySQL.database")
                     + "?autoReconnect=true", config.getString("data.MySQL.username"),
                     config.getString("data.MySQL.password"));
           //  stopwatch.stop();
-            Debugger.debug("Connection to MySQL server established! (" + config.getString("data.MySQL.host") +
+            LogUtils.warning("Connection to MySQL server established! (" + config.getString("data.MySQL.host") +
                     ":" + config.getString("data.MySQL.port") + ")");
             //Chat.debug("Connection took " + stopwatch + "ms!");
         } catch (SQLException e) {

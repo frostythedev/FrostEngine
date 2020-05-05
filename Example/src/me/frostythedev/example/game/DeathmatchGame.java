@@ -3,15 +3,21 @@ package me.frostythedev.example.game;
 
 import me.frostythedev.example.game.executors.EndGame;
 import me.frostythedev.example.game.executors.StartGame;
+import me.frostythedev.example.game.gamestates.LobbyState;
 import me.frostythedev.example.game.utilities.TeamLoadUtility;
 import me.frostythedev.frostengine.bukkit.FEPlugin;
 import me.frostythedev.frostengine.modules.gameapi.Minigame;
 import me.frostythedev.frostengine.modules.gameapi.core.GameSettings;
+import me.frostythedev.frostengine.modules.gameapi.gamestate.defaults.EndedGameState;
+import me.frostythedev.frostengine.modules.gameapi.gamestate.defaults.InGameState;
+import me.frostythedev.frostengine.modules.gameapi.gamestate.defaults.PreGameState;
 import me.frostythedev.frostengine.modules.gameapi.teams.GameTeam;
 import me.frostythedev.frostengine.bukkit.messaging.Locale;
 import org.bukkit.entity.Player;
 
 public class DeathmatchGame extends Minigame {
+
+    //MEANT TO BE AN EXAMPLE OF A SERVER WIDE MINIGAME
 
     public DeathmatchGame() {
         super(FEPlugin.get(), "Deathmatch","Deathmatch", "description", "1.0.0", "frostythedev");
@@ -25,24 +31,18 @@ public class DeathmatchGame extends Minigame {
     public void setup() {
         super.setup();
 
-        this.withDefaultStates();
+        //this.withDefaultStates();
+        this.registerGameStates(
+                new LobbyState(this),
+                new PreGameState<>(this),
+                new InGameState<>(this),
+                new EndedGameState<>(this));
 
         this.addUtility(new TeamLoadUtility(this));
 
-        this.getSettingManager().toggleOff("Break");
-        this.getSettingManager().toggleOff("Place");
-        this.getSettingManager().toggleOff("Buckets");
-        this.getSettingManager().toggleOff("Chat");
-        this.getSettingManager().toggleOff("Drop");
-        this.getSettingManager().toggleOff("Explode");
-        this.getSettingManager().toggleOff("InteractEntity");
-        this.getSettingManager().toggleOff("Movement");
-        this.getSettingManager().toggleOff("Notify");
-        this.getSettingManager().toggleOff("Pickup");
-        this.getSettingManager().toggleOff("PVE");
-        this.getSettingManager().toggleOff("PVP");
-        this.getSettingManager().toggleOff("Target");
-        this.getSettingManager().toggleOff("Teleport");
+        this.getSettingManager().toggleOn("Chat");
+        this.getSettingManager().toggleOn("Movement");
+        this.getSettingManager().toggleOn("Notify");
 
         /*GameSettings settings = new GameSettings();
         settings.setBuckets(false);

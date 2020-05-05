@@ -1,8 +1,8 @@
 package me.frostythedev.frostengine.bukkit.utils.scoreboard;
 
-import me.frostythedev.frostengine.bukkit.debug.Debugger;
-import me.frostythedev.frostengine.bukkit.utils.scoreboard.scrolling.ScrollingScoreboardWrapper;
+import me.frostythedev.frostengine.bukkit.utils.LogUtils;
 import me.frostythedev.frostengine.bukkit.utils.StringUtil;
+import me.frostythedev.frostengine.bukkit.utils.scoreboard.scrolling.ScrollingScoreboardWrapper;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
@@ -51,7 +51,7 @@ public class ObjectiveRegisterData {
 
     public Objective register(Scoreboard board) {
         if (board == null) {
-            Debugger.debug("Cannot register objectives onto a null board");
+            LogUtils.warning("Cannot register objectives onto a null board");
             return null;
         }
 

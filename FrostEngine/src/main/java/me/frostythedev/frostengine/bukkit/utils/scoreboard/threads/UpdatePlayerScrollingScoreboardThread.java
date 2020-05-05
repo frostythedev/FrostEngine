@@ -1,10 +1,10 @@
 package me.frostythedev.frostengine.bukkit.utils.scoreboard.threads;
 
-import me.frostythedev.frostengine.bukkit.debug.Debugger;
+import me.frostythedev.frostengine.bukkit.utils.LogUtils;
+import me.frostythedev.frostengine.bukkit.utils.TextCycler;
 import me.frostythedev.frostengine.bukkit.utils.scoreboard.ScoreboardEntry;
 import me.frostythedev.frostengine.bukkit.utils.scoreboard.scrolling.ScrollingScoreboardEntry;
 import me.frostythedev.frostengine.bukkit.utils.scoreboard.scrolling.ScrollingScoreboardWrapper;
-import me.frostythedev.frostengine.bukkit.utils.TextCycler;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
@@ -35,7 +35,7 @@ public class UpdatePlayerScrollingScoreboardThread extends BukkitRunnable {
 
         int entryCount = entries.size();
 
-        Debugger.debug("Entries count = " + entryCount);
+        LogUtils.info("Entries count = " + entryCount);
 
         Scoreboard scoreboard = wrapper.getScoreboard();
 //

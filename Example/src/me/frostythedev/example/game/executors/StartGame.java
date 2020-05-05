@@ -16,9 +16,13 @@ public class StartGame implements GameStartExecutor {
 
     @Override
     public void startGame() {
-        GameSettings settings = minigame.getGameSettings();
+        //NO LONGER USED, SYSTEM HAS BEEN UPDATED TO UTILIZE THE SETTING MANAGER
+/*        GameSettings settings = minigame.getGameSettings();
         settings.setPvp(true);
-        settings.setPve(true);
+        settings.setPve(true);*/
+
+        minigame.getSettingManager().toggleOn("PVP");
+        minigame.getSettingManager().toggleOn("PVE");
 
         Bukkit.broadcastMessage("THE GAME HAS BEGAN");
     }

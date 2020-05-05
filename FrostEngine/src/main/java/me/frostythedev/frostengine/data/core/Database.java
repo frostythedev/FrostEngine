@@ -1,8 +1,8 @@
 package me.frostythedev.frostengine.data.core;
 
 import com.zaxxer.hikari.HikariDataSource;
-import me.frostythedev.frostengine.bukkit.debug.Debugger;
 import me.frostythedev.frostengine.bukkit.FEPlugin;
+import me.frostythedev.frostengine.bukkit.utils.LogUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -77,9 +77,9 @@ public class Database {
             callback.digestSync();
         } catch (SQLException e) {
             e.printStackTrace();
-            Debugger.log(Level.SEVERE, e.getMessage());
+            LogUtils.log(Level.SEVERE, e.getMessage());
             try {
-                Debugger.log(Level.SEVERE, stat.toString());
+                LogUtils.log(Level.SEVERE, stat.toString());
             } catch (Exception e1) {
             }
         } finally {
@@ -118,7 +118,7 @@ public class Database {
                     }.runTask(FEPlugin.get());
                 } catch (SQLException e) {
                     e.printStackTrace();
-                    Debugger.log(Level.SEVERE, e.getMessage());
+                    LogUtils.log(Level.SEVERE, e.getMessage());
                 } finally {
                     tryClose(rs);
                     tryClose(stat);
@@ -147,9 +147,9 @@ public class Database {
             callback.digestAsync();
         } catch (SQLException e) {
             e.printStackTrace();
-            Debugger.log(Level.SEVERE, e.getMessage());
+            LogUtils.log(Level.SEVERE, e.getMessage());
             try {
-                Debugger.log(Level.SEVERE, stat.toString());
+                LogUtils.log(Level.SEVERE, stat.toString());
             } catch (Exception e1) {
             }
         } finally {
@@ -174,9 +174,9 @@ public class Database {
             return stat.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            Debugger.log(Level.SEVERE, e.getMessage());
+            LogUtils.log(Level.SEVERE, e.getMessage());
             try {
-                Debugger.log(Level.SEVERE, stat.toString());
+                LogUtils.log(Level.SEVERE, stat.toString());
             } catch (Exception e1) {
             }
         } finally {
@@ -202,9 +202,9 @@ public class Database {
                     stat.executeUpdate();
                 } catch (SQLException e) {
                     e.printStackTrace();
-                    Debugger.log(Level.SEVERE, e.getMessage());
+                    LogUtils.log(Level.SEVERE, e.getMessage());
                     try {
-                        Debugger.log(Level.SEVERE, stat.toString());
+                        LogUtils.log(Level.SEVERE, stat.toString());
                     } catch (Exception e1) {
                     }
                 } finally {
@@ -230,9 +230,9 @@ public class Database {
             return stat.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            Debugger.log(Level.SEVERE, e.getMessage());
+            LogUtils.log(Level.SEVERE, e.getMessage());
             try {
-                Debugger.log(Level.SEVERE, stat.toString());
+                LogUtils.log(Level.SEVERE, stat.toString());
             } catch (Exception e1) {
             }
         } finally {
@@ -260,9 +260,9 @@ public class Database {
             return rs.getInt(1);
         } catch (SQLException e) {
             e.printStackTrace();
-            Debugger.log(Level.SEVERE, e.getMessage());
+            LogUtils.log(Level.SEVERE, e.getMessage());
             try {
-                Debugger.log(Level.SEVERE, stat.toString());
+                LogUtils.log(Level.SEVERE, stat.toString());
             } catch (Exception e1) {
             }
         } finally {
@@ -291,9 +291,9 @@ public class Database {
             return rs.getInt(1);
         } catch (SQLException e) {
             e.printStackTrace();
-            Debugger.log(Level.SEVERE, e.getMessage());
+            LogUtils.log(Level.SEVERE, e.getMessage());
             try {
-                Debugger.log(Level.SEVERE, stat.toString());
+                LogUtils.log(Level.SEVERE, stat.toString());
             } catch (Exception e1) {
             }
         } finally {

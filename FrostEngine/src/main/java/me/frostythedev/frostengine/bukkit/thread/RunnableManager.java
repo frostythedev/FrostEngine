@@ -1,5 +1,6 @@
 package me.frostythedev.frostengine.bukkit.thread;
 
+import com.google.inject.Inject;
 import me.frostythedev.frostengine.bukkit.FEPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -10,14 +11,21 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 public class RunnableManager {
+
     private JavaPlugin plugin;
+
+    @Inject
+    public RunnableManager(JavaPlugin plugin) {
+        this.plugin = plugin;
+    }
+    //private JavaPlugin plugin;
     private HashMap<String, Integer> runningTasks = new HashMap<>();
 
     private Map<Integer, Runnable> runnableIds = new HashMap<>();
 
-    public RunnableManager(JavaPlugin Plugin) {
+    /*public RunnableManager(JavaPlugin Plugin) {
         this.plugin = Plugin;
-    }
+    }*/
 
     //todo implement wrapped class that holds runnable, but outputs to console from the name of the thread that had it's task executed (debug)
     // Example: [GAME UPDATE] Started Tick!

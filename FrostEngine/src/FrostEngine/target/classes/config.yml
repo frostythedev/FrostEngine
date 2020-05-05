@@ -1,5 +1,0 @@
-MySQL:
-  Address: 'localhost'
-  Name: 'test_db'
-  Username: 'root'
-  Password: 'password'
