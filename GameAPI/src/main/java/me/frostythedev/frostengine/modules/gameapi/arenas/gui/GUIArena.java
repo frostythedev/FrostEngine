@@ -27,7 +27,6 @@ public class GUIArena extends GUI {
 
     private final int amountPerLine = 9;
 
-
     private Map<Integer, String> arenaIndexes = new HashMap<>();
 
     public GUIArena(Minigame minigame) {

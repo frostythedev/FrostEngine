@@ -1,9 +1,11 @@
 package me.frostythedev.frostengine.modules.gameapi;
 
-import me.frostythedev.frostengine.bukkit.debug.Debugger;
 import me.frostythedev.frostengine.bukkit.utils.LogUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class MinigameManager {
 
