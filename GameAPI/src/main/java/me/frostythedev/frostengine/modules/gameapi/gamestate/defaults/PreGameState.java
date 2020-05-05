@@ -1,32 +1,33 @@
 package me.frostythedev.frostengine.modules.gameapi.gamestate.defaults;
 
-import me.frostythedev.frostengine.modules.gameapi.Minigame;
+import me.frostythedev.frostengine.bukkit.messaging.Locale;
 import me.frostythedev.frostengine.modules.gameapi.arenas.GameArena;
+import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
+import me.frostythedev.frostengine.modules.gameapi.gamestate.GameState;
 import me.frostythedev.frostengine.modules.gameapi.gamestate.core.IStateConstants;
-import me.frostythedev.frostengine.modules.gameapi.gamestate.core.MinigameState;
 import me.frostythedev.frostengine.modules.gameapi.gamestate.core.StateAction;
 import me.frostythedev.frostengine.modules.gameapi.teams.GameTeam;
 import me.frostythedev.frostengine.modules.gameapi.threads.EZCountdown;
-import me.frostythedev.frostengine.bukkit.messaging.Locale;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
 
-public class PreGameState <T extends Minigame> extends MinigameState<T> {
+public class PreGameState extends GameState {
 
 
-    public PreGameState(T game) {
+    public PreGameState(Game game) {
         super(game, 1, IStateConstants.PREGAME_NAME, IStateConstants.PREGAME_DISPLAY, true);
     }
 
     @Override
     public void onSwitch() {
-        GameArena arena = getMinigame().getArena();
-        for(int i = 0; i < getMinigame().getTeamManager().getAllPlayers().size(); i++){
-            getMinigame().getTeamManager().getAllPlayers().get(i).teleport(arena.getSpawn(i));
+        GameArena arena = getGame().getGameArena();
+
+        for(int i = 0; i < getGame().getTeamManager().getAllPlayers().size(); i++){
+            getGame().getTeamManager().getAllPlayers().get(i).teleport(arena.getSpawn(i));
         }
-        getMinigame().getGameSettings().setMovement(false);
+        getGame().getSettingManager().toggleOff("Movement");
 
         EZCountdown countdown = new EZCountdown(15, new int[]{5, 4, 3, 2, 1}) {
             public void onStart() {
@@ -34,7 +35,7 @@ public class PreGameState <T extends Minigame> extends MinigameState<T> {
             }
 
             public void onTick() {
-                if(Bukkit.getOnlinePlayers().size() < getMinigame().getMinPlayers()){
+                if(Bukkit.getOnlinePlayers().size() < getGame().getMinPlayers()){
                     setTicks(15);
                 }
             }
@@ -44,7 +45,7 @@ public class PreGameState <T extends Minigame> extends MinigameState<T> {
             }
 
             public void onEnd() {
-                getMinigame().switchState(2);
+                getGame().switchState(2);
             }
         };
         countdown.schedule();
@@ -56,13 +57,13 @@ public class PreGameState <T extends Minigame> extends MinigameState<T> {
             if (!player.hasPermission("frostengine.game.pregame_join")) {
                 player.kickPlayer("You do not have sufficient permission to join the game at this time.");
             } else {
-                GameTeam smallest = getMinigame().getTeamManager().getSmallestTeam(Collections.singletonList("Spectator"));
-                if (getMinigame().getTeamManager().setTeam(player, smallest)) {
+                GameTeam smallest = getGame().getTeamManager().getSmallestTeam(Collections.singletonList("Spectator"));
+                if (getGame().getTeamManager().setTeam(player, smallest)) {
                     player.sendMessage(Locale.toColors("&e>> You have joined the &b" + smallest.getName() + " &eteam!"));
                 }
             }
         } else {
-            getMinigame().getTeamManager().clearTeam(player);
+            getGame().getTeamManager().clearTeam(player);
         }
     }
 }

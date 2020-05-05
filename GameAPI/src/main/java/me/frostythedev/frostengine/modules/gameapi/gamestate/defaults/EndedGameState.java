@@ -1,20 +1,20 @@
 package me.frostythedev.frostengine.modules.gameapi.gamestate.defaults;
 
-import me.frostythedev.frostengine.modules.gameapi.Minigame;
+import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
+import me.frostythedev.frostengine.modules.gameapi.gamestate.GameState;
 import me.frostythedev.frostengine.modules.gameapi.gamestate.core.IStateConstants;
-import me.frostythedev.frostengine.modules.gameapi.gamestate.core.MinigameState;
 import me.frostythedev.frostengine.modules.gameapi.gamestate.core.StateAction;
 import org.bukkit.entity.Player;
 
-public class EndedGameState<T extends Minigame> extends MinigameState<T> {
+public class EndedGameState extends GameState {
 
-    public EndedGameState(T game) {
+    public EndedGameState(Game game) {
         super(game, 3, IStateConstants.IN_GAME_NAME, IStateConstants.IN_GAME_DISPLAY, true);
     }
 
     @Override
     public void onSwitch() {
-        getMinigame().getGameEndExecutor().endGame();
+        getGame().getGameEndExecutor().endGame(getGame());
     }
 
     @Override
@@ -24,7 +24,7 @@ public class EndedGameState<T extends Minigame> extends MinigameState<T> {
                 player.kickPlayer("You do not have sufficient permission to join the game at this time.");
             }
         } else {
-            getMinigame().getTeamManager().clearTeam(player);
+            getGame().getTeamManager().clearTeam(player);
         }
     }
 }

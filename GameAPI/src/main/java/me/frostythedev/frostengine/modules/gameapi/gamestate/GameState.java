@@ -1,5 +1,6 @@
 package me.frostythedev.frostengine.modules.gameapi.gamestate;
 
+import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import me.frostythedev.frostengine.modules.gameapi.gamestate.core.StateAction;
 import org.bukkit.entity.Player;
 
@@ -10,11 +11,22 @@ public abstract class GameState {
     private String displayName;
     private boolean joinable;
 
-    public GameState(int id, String name, String displayName, boolean joinable) {
+    private Game game;
+
+    public GameState(Game game, int id, String name, String displayName, boolean joinable) {
+        this.game = game;
         this.id = id;
         this.name = name;
         this.displayName = displayName;
         this.joinable = joinable;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 
     public int getId() {
