@@ -6,7 +6,6 @@ import me.frostythedev.frostengine.modules.gameapi.arenas.ArenaManager;
 import me.frostythedev.frostengine.modules.gameapi.arenas.GameArena;
 import me.frostythedev.frostengine.modules.gameapi.core.gui.GUIGameSettings2;
 import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
-import me.frostythedev.frostengine.modules.gameapi.core.GameSettings;
 import me.frostythedev.frostengine.modules.gameapi.core.executors.GameEndExecutor;
 import me.frostythedev.frostengine.modules.gameapi.core.executors.GameStartExecutor;
 import me.frostythedev.frostengine.modules.gameapi.core.settings.SettingManager;
@@ -25,7 +24,6 @@ import me.frostythedev.frostengine.modules.gameapi.teams.GameTeamManager;
 import me.frostythedev.frostengine.data.mysql.MySQL;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -51,7 +49,6 @@ public abstract class Minigame implements Game {
     private GameState gameState;
     private Map<Integer, GameState> gameStates;
 
-    private GameSettings gameSettings;
     private GameStartExecutor gameStartExecutor;
     private GameEndExecutor gameEndExecutor;
     private GUIGameSettings2 settings;
@@ -76,14 +73,6 @@ public abstract class Minigame implements Game {
         this.version = version;
         this.author = author;
       //  this.settings = new GUIGameSettings2(this);
-    }
-
-    public boolean switchState(int stateId) {
-        if (getGameState(stateId) != null) {
-            setGameState(getGameState(stateId));
-            return true;
-        }
-        return false;
     }
 
     public void setDefaultStartingCountdown() {
@@ -117,22 +106,6 @@ public abstract class Minigame implements Game {
         this.arenaManager = new ArenaManager(this);
         this.settingManager = new SettingManager(this);
 
-        //System.out.println("SETTING MANAGER ID: " + this.settingManager.id);
-
-        /*if (mySQL != null) {
-
-            try {
-
-            } catch (ArenaAlreadyLoadedException e) {
-                e.printStackTrace();
-            }
-        }*/
-
-        /*if (gameSettings == null) {
-            gameSettings = new GameSettings();
-        }*/
-
-        //Bukkit.getServer().getPluginManager().registerEvents(gameSettings, plugin);
     }
 
     @Override
@@ -170,24 +143,8 @@ public abstract class Minigame implements Game {
         }
     }
 
-    public void withDefaultStates() {
-        this.registerGameStates(
-                new LobbyGameState<>(this),
-                new PreGameState<>(this),
-                new InGameState<>(this),
-                new EndedGameState<>(this));
-    }
-
-    public GameState getGameState(int id) {
-        if (gameStates.containsKey(id)) {
-            return gameStates.get(id);
-        }
-        return null;
-    }
-
     public void registerListeners(Listener... listeners) {
         for (Listener listener : listeners) {
-            //System.out.printf("REGISTERED LISTENER: %s\n", listener.getClass().getName());
             Bukkit.getServer().getPluginManager().registerEvents(listener, plugin);
         }
     }
@@ -203,11 +160,38 @@ public abstract class Minigame implements Game {
     public void killPlayer(Player player) {
     }
 
+    @Override
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+        gameState.onSwitch();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     ///////////////////////////////////////////////
     // GETTERS AND SETTERS
     ///////////////////////////////////////////////
 
+
+    @Override
+    public ArrayList<GameUtility> getUtilities() {
+        return this.utilities;
+    }
 
     public String getDescription() {
         return description;
@@ -285,26 +269,8 @@ public abstract class Minigame implements Game {
         return gameState;
     }
 
-    public void setGameState(GameState gameState) {
-        this.gameState = gameState;
-        gameState.onSwitch();
-    }
-
     public void setGameStates(Map<Integer, GameState> gameStates) {
         this.gameStates = gameStates;
-    }
-
-    public GameSettings getGameSettings() {
-        return gameSettings;
-    }
-
-    public void setGameSettings(GameSettings gameSettings) {
-        if(this.gameSettings != null){
-            HandlerList.unregisterAll(this.gameSettings);
-        }
-        this.gameSettings = gameSettings;
-        Bukkit.getServer().getPluginManager().registerEvents(gameSettings, plugin);
-
     }
 
     public GameTeamManager getTeamManager() {
@@ -365,13 +331,5 @@ public abstract class Minigame implements Game {
 
     public SettingManager getSettingManager() {
         return settingManager;
-    }
-
-    public JavaPlugin getPlugin() {
-        return plugin;
-    }
-
-    public void setPlugin(JavaPlugin plugin) {
-        this.plugin = plugin;
     }
 }
