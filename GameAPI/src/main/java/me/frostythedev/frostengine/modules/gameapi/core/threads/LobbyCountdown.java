@@ -8,11 +8,11 @@ import me.frostythedev.frostengine.bukkit.messaging.Locale;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 
-public class GameCountdown extends EZCountdown {
+public class LobbyCountdown extends EZCountdown {
 
     private Game minigame;
 
-    public GameCountdown(Game minigame) {
+    public LobbyCountdown(Game minigame) {
         super(GameConstants.TICKS, GameConstants.TICKS_ARRAY);
 
         this.minigame = minigame;
