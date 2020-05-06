@@ -1,3 +1,16 @@
 *.xml
 AchievementMaker/AchievementMaker.iml
 *.class
+out/production/Achievements/config.yml
+out/production/Achievements/module.info
+out/production/Example/META-INF/Example.kotlin_module
+out/production/Example/module.info
+out/production/Example/plugin.yml
+out/production/GameAPI/config.yml
+out/production/GameAPI/META-INF/GameAPI.kotlin_module
+out/production/GameAPI/module.info
+Example/Example.iml
+Example/Example.iml
+*.iml
+*.iml
+*.iml
