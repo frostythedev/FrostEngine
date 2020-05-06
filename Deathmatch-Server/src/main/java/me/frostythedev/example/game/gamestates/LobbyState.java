@@ -5,7 +5,7 @@ import me.frostythedev.frostengine.modules.gameapi.gamestate.core.StateAction;
 import me.frostythedev.frostengine.modules.gameapi.gamestate.defaults.LobbyGameState;
 import org.bukkit.entity.Player;
 
-public class LobbyState extends LobbyGameState<DeathmatchGame> {
+public class LobbyState extends LobbyGameState {
 
     public LobbyState(DeathmatchGame game) {
         super(game);
