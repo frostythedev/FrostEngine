@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class GUIGameSettings {
 
-    public SmartInventory getSettingsGUI(Minigame minigame){
+    public SmartInventory getSettingsGUI(Game minigame){
         return SmartInventory.builder()
                 .id("gui_"  + minigame.getName().toLowerCase())
                 .size(6,9)

@@ -4,6 +4,7 @@ import me.frostythedev.frostengine.bukkit.messaging.Locale;
 import me.frostythedev.frostengine.modules.gameapi.Minigame;
 import me.frostythedev.frostengine.modules.gameapi.ModuleGameAPI;
 import me.frostythedev.frostengine.modules.gameapi.core.Setting;
+import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -11,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class Movement extends Setting<PlayerMoveEvent> {
 
-    public Movement(Minigame minigame, String name, boolean enabled) {
+    public Movement(Game minigame, String name, boolean enabled) {
         super(minigame, name, enabled);
         setIcon(new ItemStack(Material.FEATHER));
     }

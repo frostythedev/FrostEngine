@@ -4,6 +4,7 @@ import me.frostythedev.frostengine.bukkit.messaging.Locale;
 import me.frostythedev.frostengine.modules.gameapi.Minigame;
 import me.frostythedev.frostengine.modules.gameapi.ModuleGameAPI;
 import me.frostythedev.frostengine.modules.gameapi.core.Setting;
+import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class PVE extends Setting<EntityDamageByEntityEvent> {
 
-    public PVE(Minigame minigame, String name, boolean enabled) {
+    public PVE(Game minigame, String name, boolean enabled) {
         super(minigame, name, enabled);
         setIcon(new ItemStack(Material.ROTTEN_FLESH));
     }

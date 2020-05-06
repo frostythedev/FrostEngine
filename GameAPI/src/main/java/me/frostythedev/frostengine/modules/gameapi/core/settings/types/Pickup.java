@@ -5,13 +5,14 @@ import me.frostythedev.frostengine.bukkit.utils.items.ItemBuilder;
 import me.frostythedev.frostengine.modules.gameapi.Minigame;
 import me.frostythedev.frostengine.modules.gameapi.ModuleGameAPI;
 import me.frostythedev.frostengine.modules.gameapi.core.Setting;
+import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 
 public class Pickup extends Setting<PlayerPickupItemEvent> {
 
-    public Pickup(Minigame minigame, String name, boolean enabled) {
+    public Pickup(Game minigame, String name, boolean enabled) {
         super(minigame, name, enabled);
         setIcon(new ItemBuilder(Material.DIAMOND).build());
     }

@@ -1,15 +1,12 @@
 package me.frostythedev.frostengine.modules.gameapi.core.settings;
 
-import com.google.common.reflect.ClassPath;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import me.frostythedev.frostengine.bukkit.utils.LogUtils;
-import me.frostythedev.frostengine.modules.gameapi.Minigame;
 import me.frostythedev.frostengine.modules.gameapi.ModuleGameAPI;
 import me.frostythedev.frostengine.modules.gameapi.core.Setting;
-import me.frostythedev.frostengine.modules.gameapi.core.gui.GUIGameSettings2;
+import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import me.frostythedev.frostengine.modules.gameapi.core.settings.types.*;
-import org.bukkit.Bukkit;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.PluginManager;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,20 +14,24 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
+@Singleton
 public class SettingManager {
 
     private Map<String, Setting<?>> settings;
 
     public int id;
-    private Minigame minigame;
+    private Game minigame;
 
-    public SettingManager(Minigame minigame) {
+    @Inject
+    ModuleGameAPI gameAPI;
+
+    public SettingManager(Game minigame) {
 
         if(minigame != null){
 
             this.minigame = minigame;
 
-            minigame.setSettingManager(this);
+            //minigame.setSettingManager(this);
             this.settings = new HashMap<>();
             id = ThreadLocalRandom.current().nextInt();
             System.out.println("Minigame passthrough setting manager: " + minigame.getName());
@@ -51,11 +52,11 @@ public class SettingManager {
             load(new Target(minigame, "Target", false));
             load(new Teleport(minigame, "Teleport", false));
 
-            if(minigame.getSettingManager() != null){
+            /*if(minigame.getSettingManager() != null){
                 minigame.setSettings(new GUIGameSettings2(minigame));
             }else{
                 LogUtils.severe("Could not find settings manager for minigame");
-            }
+            }*/
         }else{
             LogUtils.severe("Could not find supplied minigame!");
         }
@@ -65,7 +66,7 @@ public class SettingManager {
         if(get(setting.getName()).isPresent()) return;
 
         this.settings.put(setting.getName().toLowerCase(), setting);
-       minigame.registerListeners(setting);
+       gameAPI.registerListeners(setting);
       // LogUtils.info("Setting '" + setting.getName() + "' has been registered.");
     }
 

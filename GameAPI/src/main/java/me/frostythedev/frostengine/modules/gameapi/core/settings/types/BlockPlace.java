@@ -5,6 +5,7 @@ import me.frostythedev.frostengine.bukkit.utils.items.ItemBuilder;
 import me.frostythedev.frostengine.modules.gameapi.Minigame;
 import me.frostythedev.frostengine.modules.gameapi.ModuleGameAPI;
 import me.frostythedev.frostengine.modules.gameapi.core.Setting;
+import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -14,7 +15,7 @@ import java.util.function.Consumer;
 
 public class BlockPlace extends Setting<BlockPlaceEvent> {
 
-    public BlockPlace(Minigame minigame, String name, boolean enabled) {
+    public BlockPlace(Game minigame, String name, boolean enabled) {
         super(minigame, name, enabled);
         setIcon(new ItemBuilder(Material.LEAVES).build());
     }
@@ -24,8 +25,8 @@ public class BlockPlace extends Setting<BlockPlaceEvent> {
         if (!isEnabled()) {
 
             //Checks to ensure event respects qualities of a minigame, and disallows spectators
-            if(getMinigame().getArena() != null){
-                if(getMinigame().getArena().isPlaceable(event.getBlock())){
+            if(getMinigame().getGameArena() != null){
+                if(getMinigame().getGameArena().isPlaceable(event.getBlock())){
 
                     if(getMinigame().getTeamManager().hasTeam(event.getPlayer())){
                         if(getMinigame().getTeamManager().getPlayerTeam(event.getPlayer())

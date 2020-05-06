@@ -12,6 +12,7 @@ import me.frostythedev.frostengine.bukkit.utils.items.ItemBuilder;
 import me.frostythedev.frostengine.modules.gameapi.ModuleGameAPI;
 import me.frostythedev.frostengine.modules.gameapi.core.GameSettings;
 import me.frostythedev.frostengine.modules.gameapi.core.Setting;
+import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -20,7 +21,7 @@ public class GUIGameSettings2 {
 
     private SmartInventory settingsInv;
 
-    public GUIGameSettings2(Minigame minigame) {
+    public GUIGameSettings2(Game minigame) {
         settingsInv = SmartInventory.builder()
                 .id("gui_" + minigame.getName().toLowerCase())
                 .size(6, 9)
@@ -37,7 +38,7 @@ public class GUIGameSettings2 {
 
     private class SettingsProvider implements InventoryProvider {
 
-        private Minigame mgProvider;
+        private Game mgProvider;
         private ClickableButton[] buttons;
 
         private final int[][] available_slots = {
@@ -46,7 +47,7 @@ public class GUIGameSettings2 {
                 {4, 1}, {4, 2}, {4, 3}, {4, 4}, {4, 5}, {4, 6}, {4, 7},
         };
 
-        public SettingsProvider(Minigame mgProvider) {
+        public SettingsProvider(Game mgProvider) {
             this.mgProvider = mgProvider;
             buttons = new ClickableButton[14];
             initButtons();

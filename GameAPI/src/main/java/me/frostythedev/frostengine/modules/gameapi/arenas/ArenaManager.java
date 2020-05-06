@@ -10,6 +10,7 @@ import me.frostythedev.frostengine.modules.gameapi.Minigame;
 import me.frostythedev.frostengine.data.core.Database;
 import me.frostythedev.frostengine.data.core.DatabaseField;
 import me.frostythedev.frostengine.modules.gameapi.arenas.data.GameArenaGatherCallback;
+import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import me.frostythedev.frostengine.modules.gameapi.exception.ArenaAlreadyLoadedException;
 
 import java.io.File;
@@ -30,9 +31,9 @@ public class ArenaManager {
     // time getArenaNames is called
     //private List<String> arenaNames;
 
-    private Minigame minigame;
+    private Game minigame;
 
-    public ArenaManager(Minigame minigame) {
+    public ArenaManager(Game minigame) {
         this.arenas = Maps.newHashMap();
         this.arenaIds = Maps.newHashMap();
         //this.arenaNames = new ArrayList<>();

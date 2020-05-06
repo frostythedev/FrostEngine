@@ -2,26 +2,22 @@ package me.frostythedev.frostengine.modules.gameapi;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import me.frostythedev.frostengine.data.mysql.MySQL;
 import me.frostythedev.frostengine.modules.gameapi.arenas.ArenaManager;
 import me.frostythedev.frostengine.modules.gameapi.arenas.GameArena;
-import me.frostythedev.frostengine.modules.gameapi.core.gui.GUIGameSettings2;
-import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import me.frostythedev.frostengine.modules.gameapi.core.executors.GameEndExecutor;
 import me.frostythedev.frostengine.modules.gameapi.core.executors.GameStartExecutor;
+import me.frostythedev.frostengine.modules.gameapi.core.gui.GUIGameSettings2;
+import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import me.frostythedev.frostengine.modules.gameapi.core.settings.SettingManager;
 import me.frostythedev.frostengine.modules.gameapi.core.threads.GameCountdown;
 import me.frostythedev.frostengine.modules.gameapi.core.utilities.GameUtility;
 import me.frostythedev.frostengine.modules.gameapi.gamestate.GameState;
 import me.frostythedev.frostengine.modules.gameapi.gamestate.core.StateAction;
-import me.frostythedev.frostengine.modules.gameapi.gamestate.defaults.EndedGameState;
-import me.frostythedev.frostengine.modules.gameapi.gamestate.defaults.InGameState;
-import me.frostythedev.frostengine.modules.gameapi.gamestate.defaults.LobbyGameState;
-import me.frostythedev.frostengine.modules.gameapi.gamestate.defaults.PreGameState;
 import me.frostythedev.frostengine.modules.gameapi.kits.KitManager;
 import me.frostythedev.frostengine.modules.gameapi.listeners.GameListener;
 import me.frostythedev.frostengine.modules.gameapi.listeners.KitListener;
 import me.frostythedev.frostengine.modules.gameapi.teams.GameTeamManager;
-import me.frostythedev.frostengine.data.mysql.MySQL;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -33,6 +29,8 @@ import java.util.Map;
 public abstract class Minigame implements Game {
 
     private JavaPlugin plugin;
+
+    private int gameId;
 
     private String name;
     private String displayName;
@@ -106,6 +104,9 @@ public abstract class Minigame implements Game {
         this.arenaManager = new ArenaManager(this);
         this.settingManager = new SettingManager(this);
 
+        if(getSettingManager() != null){
+            setSettings(new GUIGameSettings2(this));
+        }
     }
 
     @Override
@@ -187,6 +188,14 @@ public abstract class Minigame implements Game {
     // GETTERS AND SETTERS
     ///////////////////////////////////////////////
 
+    @Override
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
+    }
 
     @Override
     public ArrayList<GameUtility> getUtilities() {

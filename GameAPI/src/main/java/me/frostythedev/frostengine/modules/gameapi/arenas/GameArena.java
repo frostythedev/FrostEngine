@@ -8,6 +8,7 @@ import me.frostythedev.frostengine.bukkit.FEPlugin;
 import me.frostythedev.frostengine.modules.gameapi.Minigame;
 import me.frostythedev.frostengine.bukkit.utils.items.ItemBuilder;
 import me.frostythedev.frostengine.data.JsonConvertable;
+import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,7 +22,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class GameArena implements Arena, JsonConvertable<GameArena> {
 
-    private Minigame minigame;
+    private Game minigame;
 
     private int id;
     private String arenaName;
@@ -37,7 +38,7 @@ public class GameArena implements Arena, JsonConvertable<GameArena> {
     private Set<Integer> breakable;
     private Set<Integer> placeable;
 
-    public GameArena(int id, Minigame minigame, String arenaName, String worldName,
+    public GameArena(int id, Game minigame, String arenaName, String worldName,
                      String minigameName, List<Location> spawnLocations, boolean enabled,
                      boolean lobby, Set<Integer> breakable, Set<Integer> placeable) {
         this.id = id;
@@ -182,11 +183,11 @@ public class GameArena implements Arena, JsonConvertable<GameArena> {
         this.id = id;
     }
 
-    public Minigame getMinigame() {
+    public Game getMinigame() {
         return minigame;
     }
 
-    public void setMinigame(Minigame minigame) {
+    public void setMinigame(Game minigame) {
         this.minigame = minigame;
     }
 

@@ -2,6 +2,7 @@ package me.frostythedev.frostengine.modules.gameapi.listeners;
 
 import me.frostythedev.frostengine.bukkit.FEPlugin;
 import me.frostythedev.frostengine.modules.gameapi.Minigame;
+import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import me.frostythedev.frostengine.modules.gameapi.kits.GameKit;
 import me.frostythedev.frostengine.bukkit.messaging.Locale;
 import org.bukkit.Material;
@@ -12,9 +13,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 public class KitListener implements Listener {
 
-    private Minigame minigame;
+    private Game minigame;
 
-    public KitListener(Minigame minigame) {
+    public KitListener(Game minigame) {
         this.minigame = minigame;
     }
 

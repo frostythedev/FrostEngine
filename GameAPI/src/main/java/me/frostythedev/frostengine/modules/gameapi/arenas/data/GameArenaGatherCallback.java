@@ -5,6 +5,7 @@ import me.frostythedev.frostengine.bukkit.FEPlugin;
 import me.frostythedev.frostengine.bukkit.utils.LogUtils;
 import me.frostythedev.frostengine.modules.gameapi.Minigame;
 import me.frostythedev.frostengine.modules.gameapi.arenas.GameArena;
+import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import me.frostythedev.frostengine.modules.gameapi.exception.ArenaAlreadyLoadedException;
 import me.frostythedev.frostengine.data.core.Callback;
 import org.bukkit.Bukkit;
@@ -17,9 +18,9 @@ public class GameArenaGatherCallback implements Callback<Map<String, GameArena>>
 
     private Map<String, GameArena> arenas;
 
-    private Minigame minigame;
+    private Game minigame;
 
-    public GameArenaGatherCallback(Minigame minigame) {
+    public GameArenaGatherCallback(Game minigame) {
         this.minigame = minigame;
     }
 

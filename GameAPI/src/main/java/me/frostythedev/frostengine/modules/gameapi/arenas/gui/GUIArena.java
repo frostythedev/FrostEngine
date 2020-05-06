@@ -1,10 +1,10 @@
 package me.frostythedev.frostengine.modules.gameapi.arenas.gui;
 
-import me.frostythedev.frostengine.modules.gameapi.Minigame;
-import me.frostythedev.frostengine.modules.gameapi.arenas.GameArena;
-import me.frostythedev.frostengine.modules.gameapi.core.gui.GUIMinigame;
 import me.frostythedev.frostengine.bukkit.utils.gui.GUI;
 import me.frostythedev.frostengine.bukkit.utils.items.ItemBuilder;
+import me.frostythedev.frostengine.modules.gameapi.arenas.GameArena;
+import me.frostythedev.frostengine.modules.gameapi.core.gui.GUIMinigame;
+import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class GUIArena extends GUI {
 
-    private Minigame minigame;
+    private Game minigame;
     private int arenaAmount;
 
     private int page = 1;
@@ -29,7 +29,7 @@ public class GUIArena extends GUI {
 
     private Map<Integer, String> arenaIndexes = new HashMap<>();
 
-    public GUIArena(Minigame minigame) {
+    public GUIArena(Game minigame) {
         super(ChatColor.BOLD + minigame.getName() + "'s Arenas",
                 ((int)(Math.ceil((minigame.getArenaManager().getSize()/9.0))+1.0)*9)
         );

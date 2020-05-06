@@ -2,6 +2,7 @@ package me.frostythedev.frostengine.modules.gameapi.core;
 
 import me.frostythedev.frostengine.bukkit.utils.items.ItemBuilder;
 import me.frostythedev.frostengine.modules.gameapi.Minigame;
+import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import me.frostythedev.frostengine.modules.gameapi.core.settings.PlayerSetting;
 import org.bukkit.Material;
 import org.bukkit.event.Listener;
@@ -14,9 +15,9 @@ public abstract class Setting<T> implements PlayerSetting<T>, Listener {
     private ItemStack icon;
     private String description;
 
-    private Minigame minigame;
+    private Game minigame;
 
-    public Setting(Minigame minigame, String name, boolean enabled) {
+    public Setting(Game minigame, String name, boolean enabled) {
         this.minigame = minigame;
         this.name = name;
         this.enabled = enabled;
@@ -74,11 +75,11 @@ public abstract class Setting<T> implements PlayerSetting<T>, Listener {
         return enabled;
     }
 
-    public Minigame getMinigame() {
+    public Game getMinigame() {
         return this.minigame;
     }
 
-    public void setMinigame(Minigame minigame) {
+    public void setMinigame(Game minigame) {
         this.minigame = minigame;
     }
 }

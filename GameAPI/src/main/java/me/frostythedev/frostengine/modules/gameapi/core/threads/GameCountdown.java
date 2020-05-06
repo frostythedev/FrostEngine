@@ -1,6 +1,7 @@
 package me.frostythedev.frostengine.modules.gameapi.core.threads;
 
 import me.frostythedev.frostengine.modules.gameapi.Minigame;
+import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import me.frostythedev.frostengine.modules.gameapi.core.interfaces.GameConstants;
 import me.frostythedev.frostengine.modules.gameapi.threads.EZCountdown;
 import me.frostythedev.frostengine.bukkit.messaging.Locale;
@@ -9,9 +10,9 @@ import org.bukkit.Sound;
 
 public class GameCountdown extends EZCountdown {
 
-    private Minigame minigame;
+    private Game minigame;
 
-    public GameCountdown(Minigame minigame) {
+    public GameCountdown(Game minigame) {
         super(GameConstants.TICKS, GameConstants.TICKS_ARRAY);
 
         this.minigame = minigame;
@@ -42,7 +43,7 @@ public class GameCountdown extends EZCountdown {
             setTicks(GameConstants.TICKS);
         }else{
             minigame.setArena(minigame.getArenaManager().getFreeArena(minigame.getMaxPlayers()));
-            if(minigame.getArena() == null){
+            if(minigame.getGameArena() == null){
                 //TODO No arenas could be found to handle the amount of players of this game, shutdown
                 //Debugger.log(Level.SEVERE, "No arena could be found to handle the amount of players");
 

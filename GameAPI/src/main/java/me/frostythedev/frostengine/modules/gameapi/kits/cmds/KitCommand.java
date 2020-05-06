@@ -11,9 +11,9 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 public class KitCommand extends Command {
 
-    private Minigame minigame;
+    private Game minigame;
 
-    public KitCommand(Minigame minigame) {
+    public KitCommand(Game minigame) {
         super("kit", "frostengine.kit.admin");
 
         this.minigame = minigame;

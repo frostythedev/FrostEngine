@@ -59,6 +59,15 @@ public class ArenaMinigame implements Game {
     }
 
     @Override
+    public int getGameId() {
+        return this.gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
+    }
+
+    @Override
     public String getName() {
         return name;
     }

@@ -1,9 +1,9 @@
 package me.frostythedev.frostengine.modules.gameapi.listeners;
 
-import me.frostythedev.frostengine.modules.gameapi.Minigame;
+import me.frostythedev.frostengine.bukkit.messaging.Locale;
+import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import me.frostythedev.frostengine.modules.gameapi.gamestate.core.StateAction;
 import me.frostythedev.frostengine.modules.gameapi.teams.GameTeam;
-import me.frostythedev.frostengine.bukkit.messaging.Locale;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -13,9 +13,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class GameListener implements Listener {
 
-    private Minigame minigame;
+    private Game minigame;
 
-    public GameListener(Minigame minigame) {
+    public GameListener(Game minigame) {
         this.minigame = minigame;
     }
 

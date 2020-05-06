@@ -4,6 +4,7 @@ import me.frostythedev.frostengine.modules.gameapi.Minigame;
 import me.frostythedev.frostengine.modules.gameapi.arenas.gui.GUIArena;
 import me.frostythedev.frostengine.bukkit.utils.gui.GUI;
 import me.frostythedev.frostengine.bukkit.utils.items.ItemBuilder;
+import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -14,9 +15,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class GUIMinigame extends GUI{
 
-    private Minigame minigame;
+    private Game minigame;
 
-    public GUIMinigame(Minigame minigame) {
+    public GUIMinigame(Game minigame) {
         super(minigame.getName() + "'s Minigame Settings", 36);
 
         this.minigame = minigame;

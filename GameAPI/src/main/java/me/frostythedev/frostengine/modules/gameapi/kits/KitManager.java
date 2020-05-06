@@ -2,11 +2,11 @@ package me.frostythedev.frostengine.modules.gameapi.kits;
 
 import com.google.common.collect.Maps;
 import me.frostythedev.frostengine.bukkit.FEPlugin;
-import me.frostythedev.frostengine.bukkit.debug.Debugger;
-import me.frostythedev.frostengine.modules.gameapi.Minigame;
+import me.frostythedev.frostengine.bukkit.utils.LogUtils;
 import me.frostythedev.frostengine.config.BukkitDocument;
 import me.frostythedev.frostengine.data.core.Database;
 import me.frostythedev.frostengine.data.core.DatabaseField;
+import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import me.frostythedev.frostengine.modules.gameapi.kits.data.GameKitGatherCallback;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -17,13 +17,13 @@ import java.util.UUID;
 
 public class KitManager {
 
-    private Minigame minigame;
+    private Game minigame;
 
     private Map<Integer, GameKit> kits;
     private Map<String, Integer> kitsId;
     private Map<UUID, String> playerKits;
 
-    public KitManager(Minigame minigame) {
+    public KitManager(Game minigame) {
         this.minigame = minigame;
         this.kits = Maps.newHashMap();
         this.kitsId = Maps.newHashMap();
@@ -118,7 +118,7 @@ public class KitManager {
                             GameKit gameKit = FEPlugin.getGson().fromJson(key, GameKit.class);
                             if (gameKit != null) {
                                 if (kits.containsKey(gameKit.getId())) {
-                                    Debugger.info("A kit is already loaded with the id '" + gameKit.getId() + "'");
+                                    LogUtils.info("A kit is already loaded with the id '" + gameKit.getId() + "'");
                                 } else {
                                     kits.put(gameKit.getId(), gameKit);
                                     kitsId.put(gameKit.getName(), gameKit.getId());
@@ -128,11 +128,11 @@ public class KitManager {
                     }
                 }
             } else {
-                Debugger.info("Could not find any files in this folder");
+                LogUtils.info("Could not find any files in this folder");
             }
         }
 
-        Debugger.info("Could not locate a folder for this file. ");
+        LogUtils.info("Could not locate a folder for this file. ");
         /*else{
             BukkitDocument document = BukkitDocument.of(folder.getAbsolutePath());
             if(!document.getKeys(false).isEmpty()){
