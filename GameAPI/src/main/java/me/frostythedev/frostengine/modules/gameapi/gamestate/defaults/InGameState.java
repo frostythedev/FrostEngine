@@ -16,7 +16,7 @@ public class InGameState extends GameState {
 
     @Override
     public void onSwitch() {
-        getGame().getSettingManager().toggleOff("Movement");
+        getGame().getSettingManager().toggleOn("Movement");
         getGame().getGameStartExecutor().startGame(getGame());
     }
 

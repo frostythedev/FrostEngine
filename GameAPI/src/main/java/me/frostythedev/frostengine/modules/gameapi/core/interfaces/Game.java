@@ -8,7 +8,7 @@ import me.frostythedev.frostengine.modules.gameapi.core.executors.GameEndExecuto
 import me.frostythedev.frostengine.modules.gameapi.core.executors.GameStartExecutor;
 import me.frostythedev.frostengine.modules.gameapi.core.gui.GUIGameSettings2;
 import me.frostythedev.frostengine.modules.gameapi.core.settings.SettingManager;
-import me.frostythedev.frostengine.modules.gameapi.core.threads.GameCountdown;
+import me.frostythedev.frostengine.modules.gameapi.core.threads.LobbyCountdown;
 import me.frostythedev.frostengine.modules.gameapi.core.utilities.GameUtility;
 import me.frostythedev.frostengine.modules.gameapi.exception.GameStateRegisteredException;
 import me.frostythedev.frostengine.modules.gameapi.gamestate.GameState;
@@ -42,7 +42,7 @@ public interface Game {
     @Deprecated
     GameArena getGameArena();
 
-    GameCountdown getStartingCountdown();
+    LobbyCountdown getStartingCountdown();
 
     GameState getGameState();
     Map<Integer, GameState> getGameStates();
@@ -65,7 +65,9 @@ public interface Game {
     void loadManagers();
     void setGameState(GameState state);
     void killPlayer(Player player);
-    void setArena(GameArena arena);
+    default void setArena(GameArena arena) {
+
+    }
 
     default void setup() {
     }

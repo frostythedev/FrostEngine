@@ -29,10 +29,10 @@ public class GameTeamManager {
         }
     }
 
-    public Set<Player> getPlayersOfTeam(String teamName){
+    public ArrayList<Player> getPlayersOfTeam(String teamName){
 
         if(getTeam(teamName) != null){
-            Set<Player> players = new HashSet<>();
+            ArrayList<Player> players = new ArrayList<>();
             for(UUID uuid : getTeam(teamName).getPlayers()){
 
                 Player p = Bukkit.getPlayer(uuid);

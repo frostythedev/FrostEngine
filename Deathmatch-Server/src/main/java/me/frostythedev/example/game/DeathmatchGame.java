@@ -3,16 +3,12 @@ package me.frostythedev.example.game;
 
 import me.frostythedev.example.game.executors.EndGame;
 import me.frostythedev.example.game.executors.StartGame;
-import me.frostythedev.example.game.gamestates.LobbyState;
 import me.frostythedev.example.game.utilities.TeamLoadUtility;
 import me.frostythedev.frostengine.bukkit.FEPlugin;
-import me.frostythedev.frostengine.modules.gameapi.Minigame;
-import me.frostythedev.frostengine.modules.gameapi.core.GameSettings;
-import me.frostythedev.frostengine.modules.gameapi.gamestate.defaults.EndedGameState;
-import me.frostythedev.frostengine.modules.gameapi.gamestate.defaults.InGameState;
-import me.frostythedev.frostengine.modules.gameapi.gamestate.defaults.PreGameState;
-import me.frostythedev.frostengine.modules.gameapi.teams.GameTeam;
 import me.frostythedev.frostengine.bukkit.messaging.Locale;
+import me.frostythedev.frostengine.modules.gameapi.Minigame;
+import me.frostythedev.frostengine.modules.gameapi.arenas.GameArena;
+import me.frostythedev.frostengine.modules.gameapi.teams.GameTeam;
 import org.bukkit.entity.Player;
 
 public class DeathmatchGame extends Minigame {
@@ -28,15 +24,21 @@ public class DeathmatchGame extends Minigame {
     }
 
     @Override
+    public GameArena getGameArena() {
+        return null;
+    }
+
+    @Override
     public void setup() {
         super.setup();
 
         //this.withDefaultStates();
-        this.registerGameStates(
+        this.withDefaultStates();
+        /*this.registerGameStates(
                 new LobbyState(this),
                 new PreGameState<>(this),
                 new InGameState<>(this),
-                new EndedGameState<>(this));
+                new EndedGameState<>(this));*/
 
         this.addUtility(new TeamLoadUtility(this));
 
@@ -63,8 +65,8 @@ public class DeathmatchGame extends Minigame {
 
         this.switchState(0);
 
-        this.setGameStartExecutor(new StartGame(this));
-        this.setGameEndExecutor(new EndGame(this));
+        this.setGameStartExecutor(new StartGame());
+        this.setGameEndExecutor(new EndGame());
 
         this.setDefaultStartingCountdown();
     }
