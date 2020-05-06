@@ -8,7 +8,7 @@ import me.frostythedev.frostengine.modules.gameapi.core.executors.GameStartExecu
 import me.frostythedev.frostengine.modules.gameapi.core.gui.GUIGameSettings2;
 import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import me.frostythedev.frostengine.modules.gameapi.core.settings.SettingManager;
-import me.frostythedev.frostengine.modules.gameapi.core.threads.GameCountdown;
+import me.frostythedev.frostengine.modules.gameapi.core.threads.LobbyCountdown;
 import me.frostythedev.frostengine.modules.gameapi.core.utilities.GameUtility;
 import me.frostythedev.frostengine.modules.gameapi.gamestate.GameState;
 import me.frostythedev.frostengine.modules.gameapi.gamestate.core.StateAction;
@@ -19,7 +19,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class ArenaMinigame implements Game {
+public class ArenaBaseMinigame implements Game {
 
     private int gameId;
 
@@ -31,7 +31,7 @@ public class ArenaMinigame implements Game {
     private int minPlayers, maxPlayers;
     private long tickDelay;
 
-    private GameCountdown startingCountdown;
+    private LobbyCountdown startingCountdown;
 
     private GameState gameState;
     private Map<Integer, GameState> gameStates;
@@ -51,12 +51,49 @@ public class ArenaMinigame implements Game {
 
     private ArrayList<GameUtility> utilities;
 
-    public ArenaMinigame(String displayName, String description, int minPlayers, int maxPlayers) {
+    public ArenaBaseMinigame(String displayName, String description, int minPlayers, int maxPlayers) {
         this.displayName = displayName;
         this.description = description;
         this.minPlayers = minPlayers;
         this.maxPlayers = maxPlayers;
     }
+
+
+
+
+    ///////////////////////////////////////////////
+    // OVERRIDES
+    ///////////////////////////////////////////////
+
+
+
+    @Override
+    public void handle(Player player, StateAction action) {
+
+    }
+
+    @Override
+    public void loadManagers() {
+
+    }
+
+    @Override
+    public void setGameState(GameState state) {
+
+    }
+
+    @Override
+    public void killPlayer(Player player) {
+
+    }
+
+
+
+
+    ///////////////////////////////////////////////
+    // GETTERS AND SETTERS
+    ///////////////////////////////////////////////
+
 
     @Override
     public int getGameId() {
@@ -113,7 +150,7 @@ public class ArenaMinigame implements Game {
     }
 
     @Override
-    public GameCountdown getStartingCountdown() {
+    public LobbyCountdown getStartingCountdown() {
         return startingCountdown;
     }
 
@@ -177,18 +214,79 @@ public class ArenaMinigame implements Game {
         return 0;
     }
 
-    @Override
-    public void handle(Player player, StateAction action) {
-
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @Override
-    public void loadManagers() {
-
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
-    @Override
-    public void setGameState(GameState state) {
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public void setMinPlayers(int minPlayers) {
+        this.minPlayers = minPlayers;
+    }
+
+    public void setMaxPlayers(int maxPlayers) {
+        this.maxPlayers = maxPlayers;
+    }
+
+    public void setTickDelay(long tickDelay) {
+        this.tickDelay = tickDelay;
+    }
+
+    public void setStartingCountdown(LobbyCountdown startingCountdown) {
+        this.startingCountdown = startingCountdown;
+    }
+
+    public void setGameStates(Map<Integer, GameState> gameStates) {
+        this.gameStates = gameStates;
+    }
+
+    public void setGameStartExecutor(GameStartExecutor gameStartExecutor) {
+        this.gameStartExecutor = gameStartExecutor;
+    }
+
+    public void setGameEndExecutor(GameEndExecutor gameEndExecutor) {
+        this.gameEndExecutor = gameEndExecutor;
+    }
+
+    public void setSettingsGUI(GUIGameSettings2 settingsGUI) {
+        this.settingsGUI = settingsGUI;
+    }
+
+    public void setGameArena(GameArena gameArena) {
+        this.gameArena = gameArena;
+    }
+
+    public void setArenaManager(ArenaManager arenaManager) {
+        this.arenaManager = arenaManager;
+    }
+
+    public void setTeamManager(GameTeamManager teamManager) {
+        this.teamManager = teamManager;
+    }
+
+    public void setKitManager(KitManager kitManager) {
+        this.kitManager = kitManager;
+    }
+
+    public void setSettingManager(SettingManager settingManager) {
+        this.settingManager = settingManager;
+    }
+
+    public void setMySQL(MySQL mySQL) {
+        this.mySQL = mySQL;
+    }
+
+    public void setUtilities(ArrayList<GameUtility> utilities) {
+        this.utilities = utilities;
     }
 }

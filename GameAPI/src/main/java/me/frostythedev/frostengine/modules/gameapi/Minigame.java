@@ -10,7 +10,7 @@ import me.frostythedev.frostengine.modules.gameapi.core.executors.GameStartExecu
 import me.frostythedev.frostengine.modules.gameapi.core.gui.GUIGameSettings2;
 import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import me.frostythedev.frostengine.modules.gameapi.core.settings.SettingManager;
-import me.frostythedev.frostengine.modules.gameapi.core.threads.GameCountdown;
+import me.frostythedev.frostengine.modules.gameapi.core.threads.LobbyCountdown;
 import me.frostythedev.frostengine.modules.gameapi.core.utilities.GameUtility;
 import me.frostythedev.frostengine.modules.gameapi.gamestate.GameState;
 import me.frostythedev.frostengine.modules.gameapi.gamestate.core.StateAction;
@@ -42,7 +42,7 @@ public abstract class Minigame implements Game {
     private int minPlayers;
     private int maxPlayers;
 
-    private GameCountdown startingCountdown;
+    private LobbyCountdown startingCountdown;
 
     private GameState gameState;
     private Map<Integer, GameState> gameStates;
@@ -74,7 +74,7 @@ public abstract class Minigame implements Game {
     }
 
     public void setDefaultStartingCountdown() {
-        this.setStartingCountdown(new GameCountdown(this));
+        this.setStartingCountdown(new LobbyCountdown(this));
         this.getStartingCountdown().schedule();
     }
 
@@ -226,11 +226,11 @@ public abstract class Minigame implements Game {
         this.author = author;
     }
 
-    public GameCountdown getStartingCountdown() {
+    public LobbyCountdown getStartingCountdown() {
         return startingCountdown;
     }
 
-    public void setStartingCountdown(GameCountdown startingCountdown) {
+    public void setStartingCountdown(LobbyCountdown startingCountdown) {
         this.startingCountdown = startingCountdown;
     }
 
