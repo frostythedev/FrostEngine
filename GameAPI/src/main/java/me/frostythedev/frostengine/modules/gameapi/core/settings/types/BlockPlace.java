@@ -2,16 +2,11 @@ package me.frostythedev.frostengine.modules.gameapi.core.settings.types;
 
 import me.frostythedev.frostengine.bukkit.messaging.Locale;
 import me.frostythedev.frostengine.bukkit.utils.items.ItemBuilder;
-import me.frostythedev.frostengine.modules.gameapi.Minigame;
-import me.frostythedev.frostengine.modules.gameapi.ModuleGameAPI;
 import me.frostythedev.frostengine.modules.gameapi.core.Setting;
 import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-
-import java.util.function.Consumer;
 
 public class BlockPlace extends Setting<BlockPlaceEvent> {
 
@@ -29,7 +24,7 @@ public class BlockPlace extends Setting<BlockPlaceEvent> {
                 if(getMinigame().getGameArena().isPlaceable(event.getBlock())){
 
                     if(getMinigame().getTeamManager().hasTeam(event.getPlayer())){
-                        if(getMinigame().getTeamManager().getPlayerTeam(event.getPlayer())
+                        if(getMinigame().getTeamManager().getPlayerTeam(event.getPlayer()).get()
                                 .getName().equalsIgnoreCase("Spectator")){
                             event.setCancelled(true);
                         }

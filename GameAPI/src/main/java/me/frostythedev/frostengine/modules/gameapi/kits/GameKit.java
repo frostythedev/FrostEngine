@@ -3,6 +3,7 @@ package me.frostythedev.frostengine.modules.gameapi.kits;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.inject.Inject;
 import me.frostythedev.frostengine.bukkit.FEPlugin;
 import me.frostythedev.frostengine.bukkit.messaging.Locale;
 import me.frostythedev.frostengine.bukkit.player.PlayerUtil;
@@ -20,6 +21,9 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Map;
 
 public class GameKit implements Kit, JsonConvertable<GameKit> {
+    
+    @Inject
+    private static FEPlugin plugin;
 
     private int id;
     private String name;
@@ -169,32 +173,32 @@ public class GameKit implements Kit, JsonConvertable<GameKit> {
     }
 
     public String armorToString() {
-        String mapData = "";
+        StringBuilder mapData = new StringBuilder();
         if (armor != null && !armor.isEmpty()) {
             for (Map.Entry<ArmorSlot, ItemStack> entry : armor.entrySet()) {
-                if (mapData.equals("")) {
-                    mapData += entry.getKey().toString() + ";" + FEPlugin.getGson().toJson(entry.getValue());
+                if (mapData.toString().equals("")) {
+                    mapData.append(entry.getKey().toString()).append(";").append(plugin.getGson().toJson(entry.getValue()));
                 } else {
-                    mapData += "#" + entry.getKey().toString() + ";" + FEPlugin.getGson().toJson(entry.getValue());
+                    mapData.append("#").append(entry.getKey().toString()).append(";").append(plugin.getGson().toJson(entry.getValue()));
                 }
             }
         }
-        return mapData;
+        return mapData.toString();
     }
 
     public String contentsToString() {
-        String contentsData = "";
+        StringBuilder contentsData = new StringBuilder();
         if (contents.length > 0) {
             for (ItemStack stack : contents) {
-                String stackData = FEPlugin.getGson().toJson(stack);
-                if (contentsData.equals("")) {
-                    contentsData += stackData;
+                String stackData = plugin.getGson().toJson(stack);
+                if (contentsData.toString().equals("")) {
+                    contentsData.append(stackData);
                 } else {
-                    contentsData += ";" + stackData;
+                    contentsData.append(";").append(stackData);
                 }
             }
         }
-        return contentsData;
+        return contentsData.toString();
     }
 
     public static ItemStack[] contentsFromString(String data) {
@@ -205,7 +209,7 @@ public class GameKit implements Kit, JsonConvertable<GameKit> {
                 contents = new ItemStack[data.split(";").length];
             } else {
                 contents = new ItemStack[1];
-                ItemStack stack = FEPlugin.getGson().fromJson(data, ItemStack.class);
+                ItemStack stack = plugin.getGson().fromJson(data, ItemStack.class);
                 contents[0] = stack;
                 return contents;
             }
@@ -213,7 +217,7 @@ public class GameKit implements Kit, JsonConvertable<GameKit> {
             String[] array = data.split(";");
             int index = 0;
             for (String str : array) {
-                ItemStack stack = FEPlugin.getGson().fromJson(str, ItemStack.class);
+                ItemStack stack = plugin.getGson().fromJson(str, ItemStack.class);
                 contents[index] = stack;
                 index++;
             }
@@ -232,14 +236,14 @@ public class GameKit implements Kit, JsonConvertable<GameKit> {
             for (String str : parts) {
                 String[] array = str.split(";");
                 ArmorSlot slot = ArmorSlot.valueOf(array[0]);
-                ItemStack stack = FEPlugin.getGson().fromJson(array[1], ItemStack.class);
+                ItemStack stack = plugin.getGson().fromJson(array[1], ItemStack.class);
                 armor.put(slot, stack);
             }
             return armor;
         } else {
             String[] array = data.split(";");
             ArmorSlot slot = ArmorSlot.valueOf(array[0]);
-            ItemStack stack = FEPlugin.getGson().fromJson(array[1], ItemStack.class);
+            ItemStack stack = plugin.getGson().fromJson(array[1], ItemStack.class);
             armor.put(slot, stack);
             return armor;
         }
@@ -269,7 +273,7 @@ public class GameKit implements Kit, JsonConvertable<GameKit> {
 
         String iconData = "";
         if (icon != null) {
-            iconData = FEPlugin.getGson().toJson(icon);
+            iconData = plugin.getGson().toJson(icon);
         }
         jsonObject.addProperty("icon", iconData);
 
@@ -284,7 +288,7 @@ public class GameKit implements Kit, JsonConvertable<GameKit> {
         jsonObject.addProperty("name", getName());
         jsonObject.addProperty("displayName", getDisplayName());
         jsonObject.addProperty("permission", getPermission());
-        jsonObject.addProperty("icon", FEPlugin.getGson().toJson(getIcon()));
+        jsonObject.addProperty("icon", plugin.getGson().toJson(getIcon()));
         jsonObject.addProperty("armor", armorToString());
         jsonObject.addProperty("contents", contentsToString());*//*
         return jsonObject;*/
@@ -301,7 +305,7 @@ public class GameKit implements Kit, JsonConvertable<GameKit> {
 
         String iconData = jsonObject.get("icon").getAsString();
         if (!iconData.equals("")) {
-            stack = FEPlugin.getGson().fromJson(iconData, ItemStack.class);
+            stack = plugin.getGson().fromJson(iconData, ItemStack.class);
         }
 
         Map<ArmorSlot, ItemStack> armor = GameKit.armorFromString(jsonObject.get("armor").getAsString());
@@ -319,7 +323,7 @@ public class GameKit implements Kit, JsonConvertable<GameKit> {
         String name = jsonObject.get("name").getAsString();
         String displayName = jsonObject.get("displayName").getAsString();
         String permission = jsonObject.get("permission").getAsString();
-        ItemStack icon = FEPlugin.getGson().fromJson(jsonObject.get("icon").getAsString(), ItemStack.class);
+        ItemStack icon = plugin.getGson().fromJson(jsonObject.get("icon").getAsString(), ItemStack.class);
         Map<ArmorSlot, ItemStack> armor = armorFromString(jsonObject.get("armor").getAsString());
         ItemStack[] contents = contentsFromString(jsonObject.get("contents").getAsString());
 

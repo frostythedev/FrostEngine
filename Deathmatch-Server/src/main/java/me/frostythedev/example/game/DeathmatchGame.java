@@ -1,6 +1,8 @@
 package me.frostythedev.example.game;
 
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import me.frostythedev.example.game.executors.EndGame;
 import me.frostythedev.example.game.executors.StartGame;
 import me.frostythedev.example.game.utilities.TeamLoadUtility;
@@ -9,30 +11,31 @@ import me.frostythedev.frostengine.bukkit.messaging.Locale;
 import me.frostythedev.frostengine.modules.gameapi.Minigame;
 import me.frostythedev.frostengine.modules.gameapi.arenas.GameArena;
 import me.frostythedev.frostengine.modules.gameapi.teams.GameTeam;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 
+@Singleton
 public class DeathmatchGame extends Minigame {
 
     //MEANT TO BE AN EXAMPLE OF A SERVER WIDE MINIGAME
 
+
     public DeathmatchGame() {
-        super(FEPlugin.get(), "Deathmatch","Deathmatch", "description", "1.0.0", "frostythedev");
+        super("Deathmatch","Deathmatch", "description", "1.0.0", "frostythedev");
         setName("Deathmatch");
         setDisplayName("Deathmatch");
         setMinPlayers(2);
         setMaxPlayers(12);
     }
 
-    @Override
-    public GameArena getGameArena() {
-        return null;
-    }
+    @Inject
+    private FEPlugin plugin;
 
     @Override
     public void setup() {
         super.setup();
 
-        //this.withDefaultStates();
         this.withDefaultStates();
         /*this.registerGameStates(
                 new LobbyState(this),
@@ -72,16 +75,48 @@ public class DeathmatchGame extends Minigame {
     }
 
     @Override
+    public void broadcast(String message) {
+        for(Player ps : Bukkit.getOnlinePlayers()){
+            ps.sendMessage(message);
+        }
+    }
+
+    @Override
+    public void registerListener(Listener listener) {
+        plugin.registerListeners(listener);
+    }
+
+    @Override
+    public boolean addPlayer(Player player) {
+        return false;
+    }
+
+    @Override
+    public boolean removePlayer(Player player) {
+        return false;
+    }
+
+    @Override
     public void chat(Player player, String message) {
          System.out.println("Chat call in: " + getClass().getName());
         if (!getTeamManager().hasTeam(player)) {
             Locale.error(player, "&cYou are not apart of a team, please contact an administrator if the problem persist.");
         } else {
-            GameTeam team = getTeamManager().getPlayerTeam(player);
+            GameTeam team = getTeamManager().getPlayerTeam(player).get();
             String format = team.getDisplayName() + "&r " + team.getNameColor() + player.getName() + "&r&7: " +
                     team.getChatColor() + message;
 
             team.teamChat(format);
         }
+    }
+
+    @Override
+    public boolean isTeamChat() {
+        return true;
+    }
+
+    @Override
+    public GameArena getGameArena() {
+        return null;
     }
 }

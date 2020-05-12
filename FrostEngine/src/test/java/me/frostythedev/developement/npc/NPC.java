@@ -1,10 +1,13 @@
 package me.frostythedev.developement.npc;
 
+import com.google.inject.Inject;
 import me.frostythedev.developement.npc.core.NPCClickAction;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 
 public class NPC {
+
+    @Inject ModuleNPC moduleNPC;
 
     private String name;
     private String displayName;
@@ -21,7 +24,7 @@ public class NPC {
     }
 
     public boolean spawn(){
-        if(ModuleNPC.get().getNpcManager().isNPC(name)){
+        if(moduleNPC.getNpcManager().isNPC(name)){
             return false;
         }
 

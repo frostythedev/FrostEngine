@@ -1,0 +1,6 @@
+name: 1v1s
+main: me.frostythedev.versus.VersusPlugin
+version: 1.0.0
+depend: [GameAPI]
+author: frostythedev
+commands:

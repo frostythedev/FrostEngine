@@ -1,11 +1,13 @@
 package me.frostythedev.frostengine.modules.gameapi.teams;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import me.frostythedev.frostengine.bukkit.messaging.Locale;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -16,17 +18,17 @@ public class GameTeam implements Team {
     private ChatColor nameColor;
     private ChatColor chatColor;
 
-    private Set<UUID> players;
+    private List<UUID> players;
 
     public GameTeam(String name, String displayName) {
-       this(name, displayName, ChatColor.GREEN, ChatColor.WHITE, Sets.newHashSet());
+       this(name, displayName, ChatColor.GREEN, ChatColor.WHITE, Lists.newArrayList());
     }
 
     public GameTeam(String name, String displayName, ChatColor nameColor, ChatColor chatColor) {
-        this(name, displayName, nameColor, chatColor, Sets.newHashSet());
+        this(name, displayName, nameColor, chatColor, Lists.newArrayList());
     }
 
-    public GameTeam(String name, String displayName, ChatColor nameColor, ChatColor chatColor, Set<UUID> players) {
+    public GameTeam(String name, String displayName, ChatColor nameColor, ChatColor chatColor, List<UUID> players) {
         this.name = name;
         this.displayName = displayName;
         this.nameColor = nameColor;
@@ -41,7 +43,6 @@ public class GameTeam implements Team {
 
                 if(ps != null && ps.isOnline()){
                     ps.sendMessage(Locale.toColors(message));
-
                     ps = null;
                 }
             }
@@ -98,7 +99,16 @@ public class GameTeam implements Team {
     }
 
     @Override
-    public Set<UUID> getPlayers() {
+    public List<UUID> getPlayers() {
+
+        for(UUID uuid : this.players){
+            Player p = Bukkit.getPlayer(uuid);
+            if(p == null || !p.isOnline()){
+                removePlayer(p);
+            }
+           p = null;
+        }
+        // Validate uuids of all players in the set before returning
         return players;
     }
 }

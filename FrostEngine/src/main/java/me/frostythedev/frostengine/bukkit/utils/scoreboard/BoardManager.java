@@ -1,8 +1,8 @@
 package me.frostythedev.frostengine.bukkit.utils.scoreboard;
 
-import me.frostythedev.frostengine.bukkit.module.Plugin;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.UUID;
@@ -108,7 +108,7 @@ public interface BoardManager {
     /**
      * @return parent plugin for this board manager.
      */
-    public Plugin getPlugin();
+    public JavaPlugin getPlugin();
 
     /**
      * Create a new scoreboard builder, used in customizing and creating scoreboards for player.

@@ -1,55 +1,50 @@
 package me.frostythedev.frostengine.modules.gameapi.kits.cmds;
 
-import me.frostythedev.frostengine.bukkit.FEPlugin;
-import me.frostythedev.frostengine.legacy.cmds.api.Command;
-import me.frostythedev.frostengine.legacy.cmds.api.SubCommand;
-import me.frostythedev.frostengine.modules.gameapi.Minigame;
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Subcommand;
+import com.google.inject.Inject;
 import me.frostythedev.frostengine.bukkit.messaging.Locale;
-import org.bukkit.command.CommandSender;
+import me.frostythedev.frostengine.modules.gameapi.GameAPI;
+import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 
-public class KitCommand extends Command {
+@CommandAlias("kits|fekits|fekit")
+public class KitCommand extends BaseCommand {
 
-    private Game minigame;
+    @Inject
+    private GameAPI plugin;
 
-    public KitCommand(Game minigame) {
-        super("kit", "frostengine.kit.admin");
+    private Game game;
 
-        this.minigame = minigame;
-        this.addSubCommand(new CreateCommand());
+    public KitCommand(Game game) {
+        this.game = game;
     }
 
-    class CreateCommand extends SubCommand {
+    @Subcommand("create")
+    @CommandPermission("")
+    public void onCreate(Player player, String[] args){
 
-        public CreateCommand() {
-            super("create", "");
-
-            setPlayerOnly(true);
+        if (args.length <= 1) {
+            Locale.error(player, "&cYou need to specify a name and permission for this kit.");
         }
 
-        @Override
-        public void run(CommandSender sender, String[] args) {
-            Player player = (Player) sender;
-
-            if (args.length <= 2) {
-                Locale.error(sender, "&cYou need to specify a name and permission for this kit.");
-            }
-
-            String kitName = args[1];
-            String perm = args[2];
-            if (KitCommand.this.minigame.getKitManager().getKit(kitName) !=  null){
-                Locale.error(sender, "&cA kit with this name already exists.");
-                return;
-            }
-
-            if(player.hasMetadata("kit-creation")){
-                Locale.error(player, "&cYou are still in the process of creating a kit.");
-                return;
-            }
-
-            player.setMetadata("kit-creation", new FixedMetadataValue(FEPlugin.get(), (kitName + ";" + perm)));
-            Locale.success(player, "&aRight click a chest to create kit '" + kitName + "' with that content.");
+        String kitName = args[1];
+        String perm = args[2];
+        if (game.getKitManager().getKit(kitName) !=  null){
+            Locale.error(player, "&cA kit with this name already exists.");
+            return;
         }
+
+        if(player.hasMetadata("kit-creation")){
+            Locale.error(player, "&cYou are still in the process of creating a kit.");
+            return;
+        }
+
+        player.setMetadata("kit-creation", new FixedMetadataValue(plugin, (kitName + ";" + perm)));
+        Locale.success(player, "&aRight click a chest to create kit '" + kitName + "' with that content.");
+
     }
 }

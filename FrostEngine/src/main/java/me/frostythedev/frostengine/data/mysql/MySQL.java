@@ -1,18 +1,18 @@
 package me.frostythedev.frostengine.data.mysql;
 
-import me.frostythedev.frostengine.bukkit.module.Module;
 import me.frostythedev.frostengine.bukkit.thread.Tasks;
 import me.frostythedev.frostengine.config.BukkitDocument;
 import me.frostythedev.frostengine.data.core.SQL;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.*;
 
 public class MySQL implements SQL {
 
-    private Module plugin;
+    private JavaPlugin plugin;
     private Connection connection;
 
-    public MySQL(Module plugin) {
+    public MySQL(JavaPlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -37,7 +37,7 @@ public class MySQL implements SQL {
 
         if (!hasConnection()) {
 
-            BukkitDocument document = BukkitDocument.of(plugin.getModuleDirectory() + "/mysql.yml");
+            BukkitDocument document = BukkitDocument.of(plugin.getDataFolder() + "/mysql.yml");
 
             if (!document.exists()) {
                 document.create(true);

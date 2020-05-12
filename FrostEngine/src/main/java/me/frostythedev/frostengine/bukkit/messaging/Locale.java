@@ -1,5 +1,6 @@
 package me.frostythedev.frostengine.bukkit.messaging;
 
+import com.avaje.ebean.validation.NotNull;
 import com.google.common.collect.Lists;
 import me.frostythedev.frostengine.bukkit.FEPlugin;
 import net.md_5.bungee.api.ChatColor;
@@ -26,7 +27,7 @@ public class Locale {
     public static final String ERROR_PREF = "&4&l>> &c";
     public static final String SUCCESS_PREF = "&2&l>> &a";
 
-    public static final String SQL_TABLE_PREFIX = FEPlugin.get().getConfig().getString("MySQL.Table-prefix");
+    //public static final String SQL_TABLE_PREFIX = FEPlugin.get().getConfig().getString("MySQL.Table-prefix");
 
     public static final String ERROR_MESSAGE = ERROR_PREF + "&cAn error occurred please contact an administrator for more information.";
     public static final String ERROR_ELEMENT_DUPLICATION = ERROR_PREF + "&cAn error occurred as this element already exists and cannot co-exist anymore.";
@@ -40,12 +41,18 @@ public class Locale {
     public static final String COMMAND_NO_PERMS = ERROR_PREF + "&cYou are not allowed to do this.";
     public static final String COMMAND_UNKNOWN_ARGS = ERROR_PREF + "&cCould not find argument with the specified name.";
 
-    public static void log(String message) {
+    /*public static void log(String message) {
         Bukkit.getLogger().info("[" + FEPlugin.get().getDescription().getName() + "] " + message);
-    }
+    }*/
 
     public static void message(CommandSender sender, String message) {
         sender.sendMessage(toColors(message));
+    }
+
+    public static void message(String message, CommandSender... senders) {
+        for(CommandSender sender : senders){
+            sender.sendMessage(toColors(message));
+        }
     }
 
     public static void messagef(CommandSender sender, String message, Object... args){

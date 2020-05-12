@@ -1,7 +1,6 @@
 package me.frostythedev.frostengine.data.core;
 
 import me.frostythedev.frostengine.bukkit.utils.LogUtils;
-import me.frostythedev.frostengine.legacy.ui.SendConsole;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.sql.*;
@@ -29,9 +28,9 @@ public abstract class DatabaseConnector {
                     ":" + config.getString("data.MySQL.port") + ")");
             //Chat.debug("Connection took " + stopwatch + "ms!");
         } catch (SQLException e) {
-            SendConsole.message("Could not connect to MySQL server! because: " + e.getMessage());
+            LogUtils.warning("Could not connect to MySQL server! because: " + e.getMessage());
         } catch (ClassNotFoundException e) {
-            SendConsole.message("JDBC Driver not found!");
+            LogUtils.warning("JDBC Driver not found!");
         }
     }
 

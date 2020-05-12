@@ -18,8 +18,12 @@ import me.frostythedev.frostengine.modules.gameapi.gamestate.defaults.InGameStat
 import me.frostythedev.frostengine.modules.gameapi.gamestate.defaults.LobbyGameState;
 import me.frostythedev.frostengine.modules.gameapi.gamestate.defaults.PreGameState;
 import me.frostythedev.frostengine.modules.gameapi.kits.KitManager;
+import me.frostythedev.frostengine.modules.gameapi.listeners.GameListener;
+import me.frostythedev.frostengine.modules.gameapi.listeners.KitListener;
 import me.frostythedev.frostengine.modules.gameapi.teams.GameTeamManager;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -39,8 +43,12 @@ public interface Game {
     int getMinPlayers();
     int getMaxPlayers();
 
+    boolean isTeamChat();
+
     @Deprecated
-    GameArena getGameArena();
+    default GameArena getGameArena(){
+        return null;
+    };
 
     LobbyCountdown getStartingCountdown();
 
@@ -65,15 +73,29 @@ public interface Game {
     void loadManagers();
     void setGameState(GameState state);
     void killPlayer(Player player);
-    default void setArena(GameArena arena) {
+    default void setArena(GameArena arena) { }
 
-    }
-
-    default void setup() {
-    }
+    void setup();
+    void broadcast(String message);
 
     default void update() {
     }
+
+
+    boolean addPlayer(Player player);
+    boolean removePlayer(Player player);
+
+    default void onMinigameEnable() {
+        setup();
+
+        if (!getUtilities().isEmpty()) {
+            getUtilities().forEach(GameUtility::start);
+        }
+
+        this.registerListeners(new GameListener(this), new KitListener(this));
+    }
+
+     void registerListeners(Listener... listeners);
 
     default void registerGameState(GameState gameState) {
         if (!getGameStates().containsKey(gameState.getId())) {

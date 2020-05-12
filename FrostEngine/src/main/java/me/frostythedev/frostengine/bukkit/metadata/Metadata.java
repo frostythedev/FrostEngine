@@ -1,5 +1,6 @@
 package me.frostythedev.frostengine.bukkit.metadata;
 
+import com.google.inject.Inject;
 import me.frostythedev.frostengine.bukkit.FEPlugin;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.Metadatable;
@@ -8,29 +9,31 @@ import org.bukkit.metadata.Metadatable;
  * Programmed by Tevin on 7/22/2016.
  */
 public class Metadata {
+    
+    @Inject private static FEPlugin plugin;
 
     public static void removeIfPresent(Metadatable metadatable, String path, IMetadata iMetadata) {
         if (metadatable.hasMetadata(path)) {
-            metadatable.removeMetadata(path, FEPlugin.get());
+            metadatable.removeMetadata(path, plugin);
             iMetadata.accept();
         }
     }
 
     public static void applyTrue(Metadatable metadata, String path) {
         removeIfPresent(metadata, path, () -> {
-            metadata.setMetadata(path, new FixedMetadataValue(FEPlugin.get(), true));
+            metadata.setMetadata(path, new FixedMetadataValue(plugin, true));
         });
     }
 
     public static void applyFalse(Metadatable metadata, String path) {
         removeIfPresent(metadata, path, () -> {
-            metadata.setMetadata(path, new FixedMetadataValue(FEPlugin.get(), false));
+            metadata.setMetadata(path, new FixedMetadataValue(plugin, false));
         });
     }
 
     public static void applyNull(Metadatable metadata, String path) {
         removeIfPresent(metadata, path, () -> {
-            metadata.setMetadata(path, new FixedMetadataValue(FEPlugin.get(), null));
+            metadata.setMetadata(path, new FixedMetadataValue(plugin, null));
         });
     }
 
@@ -45,7 +48,7 @@ public class Metadata {
         if(getValue(metadatable, path) == null){
             return false;
         }
-        return Boolean.valueOf(String.valueOf(getValue(metadatable, path)));
+        return Boolean.parseBoolean(String.valueOf(getValue(metadatable, path)));
     }
 
 

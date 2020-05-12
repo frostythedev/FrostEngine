@@ -1,5 +1,7 @@
 package me.frostythedev.frostengine.data.core;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.zaxxer.hikari.HikariDataSource;
 import me.frostythedev.frostengine.bukkit.FEPlugin;
 import me.frostythedev.frostengine.bukkit.utils.LogUtils;
@@ -9,7 +11,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.sql.*;
 import java.util.logging.Level;
 
+@Singleton
 public class Database {
+
+    @Inject
+    private FEPlugin plugin;
 
     private static Database instance;
 
@@ -17,7 +23,7 @@ public class Database {
 
     private Database() {
 
-        FileConfiguration config = FEPlugin.get().getConfig();
+        FileConfiguration config = plugin.getConfig();
         try {
             // Force driver to load if not yet loaded
             Class.forName("com.mysql.jdbc.Driver");
@@ -115,7 +121,7 @@ public class Database {
                         public void run() {
                             callback.digestSync();
                         }
-                    }.runTask(FEPlugin.get());
+                    }.runTask(plugin);
                 } catch (SQLException e) {
                     e.printStackTrace();
                     LogUtils.log(Level.SEVERE, e.getMessage());
@@ -125,7 +131,7 @@ public class Database {
                     tryClose(con);
                 }
             }
-        }.runTaskAsynchronously(FEPlugin.get());
+        }.runTaskAsynchronously(plugin);
     }
 
     /**
@@ -212,7 +218,7 @@ public class Database {
                     tryClose(con);
                 }
             }
-        }.runTaskAsynchronously(FEPlugin.get());
+        }.runTaskAsynchronously(plugin);
     }
 
     /**

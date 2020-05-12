@@ -1,8 +1,9 @@
 package me.frostythedev.frostengine.modules.gameapi.kits.data;
 
 import com.google.common.collect.Maps;
+import com.google.inject.Inject;
 import me.frostythedev.frostengine.bukkit.FEPlugin;
-import me.frostythedev.frostengine.bukkit.debug.Debugger;
+import me.frostythedev.frostengine.bukkit.utils.LogUtils;
 import me.frostythedev.frostengine.data.core.Callback;
 import me.frostythedev.frostengine.modules.gameapi.kits.GameKit;
 
@@ -12,6 +13,8 @@ import java.util.Map;
 
 public class GameKitGatherCallback implements Callback<Map<Integer, GameKit>>{
 
+    @Inject
+    FEPlugin plugin;
     private Map<Integer, GameKit> kits;
 
     @Override
@@ -21,10 +24,10 @@ public class GameKitGatherCallback implements Callback<Map<Integer, GameKit>>{
         if(rs != null){
             if (rs.next()) {
                 do {
-                    GameKit gameKit = FEPlugin.getGson().fromJson(rs.getString("data"), GameKit.class);
+                    GameKit gameKit = plugin.getGson().fromJson(rs.getString("data"), GameKit.class);
                     if (gameKit != null) {
                         if (kits.containsKey(gameKit.getId())) {
-                            Debugger.info("A kit is already loaded with the id '" + gameKit.getId() + "'");
+                            LogUtils.info("A kit is already loaded with the id '" + gameKit.getId() + "'");
                         } else {
                             kits.put(gameKit.getId(), gameKit);
                         }

@@ -17,8 +17,8 @@ public class LobbyState extends LobbyGameState {
 
         // Teleport to Lobby
         if(action == StateAction.JOIN){
-            if(getMinigame().getArenaManager().getLobbyArena() != null){
-                player.teleport(getMinigame().getArenaManager().getLobbyArena().getSpawn(0));
+            if(getGame().getArenaManager().getLobbyArena() != null){
+                player.teleport(getGame().getArenaManager().getLobbyArena().getSpawn(0));
             }
         }
     }

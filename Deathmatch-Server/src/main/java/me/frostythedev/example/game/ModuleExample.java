@@ -1,71 +1,40 @@
 package me.frostythedev.example.game;
 
-import me.frostythedev.frostengine.bukkit.FEPlugin;
+import com.google.inject.Inject;
 import me.frostythedev.frostengine.bukkit.module.Module;
-import me.frostythedev.frostengine.modules.gameapi.ModuleGameAPI;
+import me.frostythedev.frostengine.bukkit.module.ModuleHandler;
+import me.frostythedev.frostengine.bukkit.module.ModuleInfo;
+import me.frostythedev.frostengine.modules.gameapi.GameAPI;
+import org.bukkit.plugin.java.JavaPlugin;
 
-public class ModuleExample extends Module {
+@ModuleInfo(name = "Deathmatch", authors = "frostythedev", version = "1.0.0")
+public class ModuleExample extends JavaPlugin implements Module {
 
-
-    private static ModuleExample inst;
-
-    public ModuleExample() {
-        super("Deathmatch");
-        setParentName("GameAPI");
-    }
     private DeathmatchGame game;
 
+    @Inject
+    GameAPI gameAPI;
+
     @Override
-    public void onModuleEnable() {
-        super.onModuleEnable();
-
-        inst = this;
-
-        if(FEPlugin.get().getModuleLoader().isLoaded("GameAPI")){
-
-           // System.out.println("ModuleGameAPI is loaded");
-
-            ModuleGameAPI.get().getChildModules().add(this);
-
-            this.game = new DeathmatchGame();
-            this.game.onMinigameEnable();
-            ModuleGameAPI.get().getMinigameManager().loadMinigame(this.game);
-        }else{
-            //System.out.println("ModuleGameAPI is NOT loaded");
-        }
-
-       /* if(!FEPlugin.get().getModuleLoader().isLoaded("GameAPI")){
-            System.out.println("GameAPI is not loaded, try to load...");
-
-            if(FEPlugin.get().getModuleLoader().loadExternModule(ModuleGameAPI.class) != null){
-                System.out.println("Minigame Example is not laoded!");
-
-            }else{
-                System.out.println("ModuleGameAPI could not be loaded");
-            }
-        }else{
-            System.out.println("GameAPI IS loaded.");
-        }*/
+    public void onLoad() {
+        ModuleHandler.offerModule(this);
     }
 
     @Override
-    public void onCompleteLoad() {
+    public void enable() {
+        this.game = new DeathmatchGame();
+        this.game.onMinigameEnable();
+        gameAPI.getMinigameManager().loadMinigame(this.game);
         this.game.loadManagers();
-        //System.out.println("[EXAMPLE] Loaded managers!");
     }
 
     @Override
-    public void onModuleDisable() {
-        super.onModuleDisable();
-    }
+    public void disable() {
 
+    }
 
     public DeathmatchGame getGame() {
         return game;
-    }
-
-    public static ModuleExample get() {
-        return inst;
     }
 
 }

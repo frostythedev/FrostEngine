@@ -12,12 +12,8 @@ import java.util.logging.Logger;
 
 public class RunnableManager {
 
-    private JavaPlugin plugin;
+    @Inject FEPlugin plugin;
 
-    @Inject
-    public RunnableManager(JavaPlugin plugin) {
-        this.plugin = plugin;
-    }
     //private JavaPlugin plugin;
     private HashMap<String, Integer> runningTasks = new HashMap<>();
 
@@ -31,37 +27,37 @@ public class RunnableManager {
     // Example: [GAME UPDATE] Started Tick!
 
     public int registerSyncRepeatTask(String name, Runnable task, long delayInTicks, long repeatTimeInTicks) {
-        int taskId = FEPlugin.get().getServer().getScheduler().scheduleSyncRepeatingTask(plugin, task, delayInTicks, repeatTimeInTicks);
+        int taskId = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, task, delayInTicks, repeatTimeInTicks);
         runningTasks.put(name, taskId);
         runnableIds.put(taskId, task);
         return taskId;
     }
 
     public int registerAsyncRepeatTask(String name, Runnable task, long delayInTicks, long repeatTimeInTicks) {
-        int taskId = FEPlugin.get().getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, task, delayInTicks, repeatTimeInTicks);
+        int taskId = plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, task, delayInTicks, repeatTimeInTicks);
         runningTasks.put(name, taskId);
         runnableIds.put(taskId, task);
         return taskId;
     }
 
     public void runTaskNow(Runnable task) {
-        FEPlugin.get().getServer().getScheduler().runTask(this.plugin, task);
+        plugin.getServer().getScheduler().runTask(this.plugin, task);
     }
 
     public void runTaskAsync(Runnable task) {
-        FEPlugin.get().getServer().getScheduler().runTaskAsynchronously(plugin, task);
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, task);
     }
 
     public void runTaskLater(Runnable task, long delayInTicks) {
-        FEPlugin.get().getServer().getScheduler().runTaskLater(plugin, task, delayInTicks);
+        plugin.getServer().getScheduler().runTaskLater(plugin, task, delayInTicks);
     }
 
     public void runTaskOneTickLater(Runnable task) {
-        FEPlugin.get().getServer().getScheduler().runTaskLater(plugin, task, 1);
+        plugin.getServer().getScheduler().runTaskLater(plugin, task, 1);
     }
 
     public void runTaskLaterAsync(Runnable task, long delay) {
-        FEPlugin.get().getServer().getScheduler().runTaskLaterAsynchronously(plugin, task, delay);
+        plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, task, delay);
     }
 
     public boolean cancelTask(String name) {
@@ -74,11 +70,11 @@ public class RunnableManager {
     }
 
     public void cancelTask(int taskId) {
-        FEPlugin.get().getServer().getScheduler().cancelTask(taskId);
+        plugin.getServer().getScheduler().cancelTask(taskId);
     }
 
     public void cancelTasks() {
-        Logger logger = FEPlugin.get().getLogger();
+        Logger logger = plugin.getLogger();
         BukkitScheduler scheduler = Bukkit.getScheduler();
         for (Integer i : runningTasks.values()) {
             if (scheduler.isCurrentlyRunning(i) || scheduler.isQueued(i)) {

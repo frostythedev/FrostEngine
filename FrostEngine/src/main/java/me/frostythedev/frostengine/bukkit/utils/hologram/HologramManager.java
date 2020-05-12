@@ -1,12 +1,14 @@
 package me.frostythedev.frostengine.bukkit.utils.hologram;
 
 import com.google.common.collect.Maps;
+import com.google.inject.Singleton;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@Singleton
 public class HologramManager {
 
     private Map<UUID, List<Hologram>> playerHolograms;

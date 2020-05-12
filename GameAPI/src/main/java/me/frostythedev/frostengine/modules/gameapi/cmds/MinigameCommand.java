@@ -4,8 +4,8 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import com.google.inject.Inject;
 import me.frostythedev.frostengine.bukkit.messaging.Locale;
-import me.frostythedev.frostengine.modules.gameapi.Minigame;
-import me.frostythedev.frostengine.modules.gameapi.ModuleGameAPI;
+import me.frostythedev.frostengine.modules.gameapi.GameAPI;
+import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 public class MinigameCommand extends BaseCommand {
 
     @Inject
-    ModuleGameAPI gameAPI;
+    GameAPI gameAPI;
 
     @Default
     @HelpCommand
@@ -31,7 +31,7 @@ public class MinigameCommand extends BaseCommand {
                 Locale.error(player, "&cThere is no minigame with that name loaded!");
                 return;
             }
-            Minigame mg = gameAPI.getMinigameManager().getMinigame(minigameName).get();
+            Game mg = gameAPI.getMinigameManager().getMinigame(minigameName).get();
             mg.getSettings().getSettingsGUI().open(player);
 
         }else{

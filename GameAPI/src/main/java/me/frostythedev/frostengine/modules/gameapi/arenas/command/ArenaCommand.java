@@ -4,7 +4,7 @@ import co.aikar.commands.annotation.*;
 import com.google.inject.Inject;
 import me.frostythedev.frostengine.bukkit.Messages;
 import me.frostythedev.frostengine.bukkit.messaging.Locale;
-import me.frostythedev.frostengine.modules.gameapi.ModuleGameAPI;
+import me.frostythedev.frostengine.modules.gameapi.GameAPI;
 import me.frostythedev.frostengine.modules.gameapi.arenas.GameArena;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 public class ArenaCommand {
 
     @Inject
-    private ModuleGameAPI gameAPI;
+    private GameAPI gameAPI;
 
     @HelpCommand
     public void onHelp(Player player){

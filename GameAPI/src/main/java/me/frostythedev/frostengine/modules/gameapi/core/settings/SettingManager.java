@@ -3,7 +3,7 @@ package me.frostythedev.frostengine.modules.gameapi.core.settings;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import me.frostythedev.frostengine.bukkit.utils.LogUtils;
-import me.frostythedev.frostengine.modules.gameapi.ModuleGameAPI;
+import me.frostythedev.frostengine.modules.gameapi.GameAPI;
 import me.frostythedev.frostengine.modules.gameapi.core.Setting;
 import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import me.frostythedev.frostengine.modules.gameapi.core.settings.types.*;
@@ -20,16 +20,12 @@ public class SettingManager {
     private Map<String, Setting<?>> settings;
 
     public int id;
-    private Game minigame;
 
-    @Inject
-    ModuleGameAPI gameAPI;
+    @Inject private GameAPI gameAPI;
 
     public SettingManager(Game minigame) {
 
         if(minigame != null){
-
-            this.minigame = minigame;
 
             //minigame.setSettingManager(this);
             this.settings = new HashMap<>();

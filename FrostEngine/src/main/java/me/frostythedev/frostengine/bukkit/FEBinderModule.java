@@ -4,17 +4,31 @@ import co.aikar.commands.BukkitCommandManager;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import me.frostythedev.frostengine.bukkit.module.Module;
+import me.frostythedev.frostengine.bukkit.statistics.StatisticManager;
+import me.frostythedev.frostengine.bukkit.utils.hologram.HologramManager;
+
+import java.util.Map;
 
 public class FEBinderModule extends AbstractModule {
 
     private FEPlugin plugin;
-    private BukkitCommandManager manager;
-
+    private BukkitCommandManager commandManager;
+    private StatisticManager statisticManager;
+    private HologramManager hologramManager;
+    private Map<Class<Module>, Module> offeredModules;
 
     // This is also dependency injection, but without any libraries/frameworks since we can't use those here yet.
-    public FEBinderModule(FEPlugin plugin, BukkitCommandManager manager) {
+
+
+    public FEBinderModule(FEPlugin plugin, BukkitCommandManager commandManager,
+                          StatisticManager statisticManager, HologramManager hologramManager,
+                          Map<Class<Module>, Module> offeredModules) {
         this.plugin = plugin;
-        this.manager = manager;
+        this.commandManager = commandManager;
+        this.statisticManager = statisticManager;
+        this.hologramManager = hologramManager;
+        this.offeredModules = offeredModules;
     }
 
     public Injector createInjector() {
@@ -25,6 +39,10 @@ public class FEBinderModule extends AbstractModule {
     protected void configure() {
         // Here we tell Guice to use our plugin instance everytime we need it
         this.bind(FEPlugin.class).toInstance(this.plugin);
-        this.bind(BukkitCommandManager.class).toInstance(this.manager);
+        this.bind(BukkitCommandManager.class).toInstance(this.commandManager);
+        this.bind(StatisticManager.class).toInstance(this.statisticManager);
+        this.bind(HologramManager.class).toInstance(this.hologramManager);
+
+        offeredModules.forEach((key, value) -> bind(key).toInstance(value));
     }
 }

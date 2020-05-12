@@ -1,5 +1,6 @@
 package me.frostythedev.frostengine.modules.gameapi;
 
+import com.google.inject.Inject;
 import me.frostythedev.frostengine.data.mysql.MySQL;
 import me.frostythedev.frostengine.modules.gameapi.arenas.ArenaManager;
 import me.frostythedev.frostengine.modules.gameapi.arenas.GameArena;
@@ -15,11 +16,15 @@ import me.frostythedev.frostengine.modules.gameapi.gamestate.core.StateAction;
 import me.frostythedev.frostengine.modules.gameapi.kits.KitManager;
 import me.frostythedev.frostengine.modules.gameapi.teams.GameTeamManager;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 
 import java.util.ArrayList;
 import java.util.Map;
 
 public class ArenaBaseMinigame implements Game {
+
+    @Inject
+    GameAPI gameAPI;
 
     private int gameId;
 
@@ -30,6 +35,7 @@ public class ArenaBaseMinigame implements Game {
 
     private int minPlayers, maxPlayers;
     private long tickDelay;
+    private boolean teamChat;
 
     private LobbyCountdown startingCountdown;
 
@@ -65,7 +71,30 @@ public class ArenaBaseMinigame implements Game {
     // OVERRIDES
     ///////////////////////////////////////////////
 
+    @Override
+    public void setup() {
 
+    }
+
+    @Override
+    public void broadcast(String message) {
+
+    }
+
+    @Override
+    public boolean addPlayer(Player player) {
+        return false;
+    }
+
+    @Override
+    public boolean removePlayer(Player player) {
+        return false;
+    }
+
+    @Override
+    public void registerListeners(Listener... listeners) {
+        gameAPI.registerListeners(listeners);
+    }
 
     @Override
     public void handle(Player player, StateAction action) {
@@ -86,8 +115,6 @@ public class ArenaBaseMinigame implements Game {
     public void killPlayer(Player player) {
 
     }
-
-
 
 
     ///////////////////////////////////////////////
@@ -142,6 +169,11 @@ public class ArenaBaseMinigame implements Game {
     @Override
     public int getMaxPlayers() {
         return maxPlayers;
+    }
+
+    @Override
+    public boolean isTeamChat() {
+        return teamChat;
     }
 
     @Override

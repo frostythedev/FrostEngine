@@ -1,7 +1,8 @@
 package me.frostythedev.frostengine.bukkit.utils.scoreboard;
 
+import com.google.inject.Inject;
 import lombok.NonNull;
-import me.frostythedev.frostengine.bukkit.module.Plugin;
+import me.frostythedev.frostengine.bukkit.FEPlugin;
 import me.frostythedev.frostengine.bukkit.thread.RunnableManager;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
@@ -11,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
@@ -21,8 +23,10 @@ import java.util.Map;
 import java.util.UUID;
 
 public class ScoreboardManager implements BoardManager, Listener {
-    protected Plugin plugin;
+    //protected JavaPlugin plugin;
     private long delay;
+
+    @Inject FEPlugin plugin;
 
     private ScoreboardWrapper defaultWrapper;
 
@@ -34,13 +38,13 @@ public class ScoreboardManager implements BoardManager, Listener {
 
     private final Map<UUID, ScoreboardWrapper> data = new HashMap<>();
 
-    public ScoreboardManager(Plugin plugin, long delay) {
+    public ScoreboardManager(FEPlugin plugin, long delay) {
         Validate.notNull(plugin, "The host plugin is null!");
         Validate.isTrue(delay > 0, "The scheduler delay must be positive.");
         this.plugin = plugin;
         this.delay = delay;
 
-        plugin.registerListeners(this);
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     /**
@@ -50,7 +54,7 @@ public class ScoreboardManager implements BoardManager, Listener {
      * @param tasks The tasks to schedule.
      */
     private void schedule(Collection<? extends Runnable> tasks) {
-        RunnableManager manager = plugin.getThreadManager();
+        RunnableManager manager = plugin.getRunnableManager();
         for (Runnable runnable : tasks) {
             manager.registerSyncRepeatTask(UUID.randomUUID().toString(), runnable, delay, delay);
         }
@@ -122,7 +126,7 @@ public class ScoreboardManager implements BoardManager, Listener {
     }
 
     @Override
-    public Plugin getPlugin() {
+    public JavaPlugin getPlugin() {
         return plugin;
     }
 

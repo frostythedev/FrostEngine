@@ -1,6 +1,7 @@
 package me.frostythedev.frostengine.bukkit.thread;
 
 import com.google.common.collect.Lists;
+import com.google.inject.Inject;
 import me.frostythedev.frostengine.bukkit.FEPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
@@ -9,22 +10,25 @@ import java.util.Collection;
 import java.util.List;
 
 public class Tasks {
+    
+    @Inject
+    private static FEPlugin plugin;
 
     public static BukkitTask runOneTickLater(Runnable runnable){
         return runLater(runnable, 1);
     }
 
     public static BukkitTask run(Runnable runnable) {
-        return Bukkit.getScheduler().runTask(FEPlugin.get(), runnable);
+        return Bukkit.getScheduler().runTask(plugin, runnable);
     }
 
     public static BukkitTask runLater(Runnable runnable, long delayInTicks) {
-        return Bukkit.getScheduler().runTaskLater(FEPlugin.get(), runnable, delayInTicks);
+        return Bukkit.getScheduler().runTaskLater(plugin, runnable, delayInTicks);
     }
 
 
     public static BukkitTask runLaterAsync(Runnable runnable, long delayInTicks) {
-        return Bukkit.getScheduler().runTaskLaterAsynchronously(FEPlugin.get(), runnable, delayInTicks);
+        return Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, runnable, delayInTicks);
     }
 
 
@@ -39,17 +43,17 @@ public class Tasks {
 
 
     public static BukkitTask runRepeating(Runnable runnable, long startDelayInTicks, long delayInTicks) {
-        return Bukkit.getScheduler().runTaskTimer(FEPlugin.get(), runnable, startDelayInTicks, delayInTicks);
+        return Bukkit.getScheduler().runTaskTimer(plugin, runnable, startDelayInTicks, delayInTicks);
     }
 
 
     public static BukkitTask runRepeatingAsync(Runnable runnable, long startDelayInTicks, long delayInTicks) {
-        return Bukkit.getScheduler().runTaskTimerAsynchronously(FEPlugin.get(), runnable, startDelayInTicks, delayInTicks);
+        return Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, runnable, startDelayInTicks, delayInTicks);
     }
 
 
     public static BukkitTask runAsync(Runnable runnable) {
-        return Bukkit.getScheduler().runTaskAsynchronously(FEPlugin.get(), runnable);
+        return Bukkit.getScheduler().runTaskAsynchronously(plugin, runnable);
     }
 
 

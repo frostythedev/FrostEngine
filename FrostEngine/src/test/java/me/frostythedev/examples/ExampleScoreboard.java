@@ -1,5 +1,6 @@
 package me.frostythedev.examples;
 
+import com.google.inject.Inject;
 import me.frostythedev.frostengine.bukkit.FEPlugin;
 import me.frostythedev.frostengine.bukkit.utils.scoreboard.ScoreboardBuilder;
 import me.frostythedev.frostengine.bukkit.utils.scoreboard.ScoreboardManager;
@@ -9,8 +10,10 @@ import org.bukkit.scoreboard.DisplaySlot;
 
 public class ExampleScoreboard{
 
+    @Inject FEPlugin plugin;
+
     public void scoreboard(){
-        ScoreboardManager sbManager = new ScoreboardManager(FEPlugin.get(), 10);
+        ScoreboardManager sbManager = new ScoreboardManager(plugin, 10);
         ScoreboardWrapper wrapper = new ScoreboardBuilder(sbManager, DisplaySlot.SIDEBAR)
                 .title("Test Scoreboard")
                 .entry(0, "Line1")

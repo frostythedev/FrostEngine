@@ -1,5 +1,6 @@
 package me.frostythedev.frostengine.bukkit.utils.items.customitems;
 
+import com.google.inject.Inject;
 import me.frostythedev.frostengine.bukkit.utils.ux.HUDUtils;
 import me.frostythedev.frostengine.bukkit.FEPlugin;
 import me.frostythedev.frostengine.bukkit.utils.items.ItemUtil;
@@ -16,8 +17,11 @@ public class CustomItemListener implements Listener {
 
     public static String INTERACTION_DELAY_META = "interactiondelay";
 
+    @Inject
+    FEPlugin plugin;
+
     public  void updateSpecialItemCooldown(Player player) {
-        player.setMetadata(INTERACTION_DELAY_META, new FixedMetadataValue(FEPlugin.get(), System.currentTimeMillis()));
+        player.setMetadata(INTERACTION_DELAY_META, new FixedMetadataValue(plugin, System.currentTimeMillis()));
     }
 
 

@@ -1,5 +1,6 @@
 package me.frostythedev.frostengine.modules.gameapi.listeners;
 
+import com.google.inject.Inject;
 import me.frostythedev.frostengine.bukkit.FEPlugin;
 import me.frostythedev.frostengine.modules.gameapi.Minigame;
 import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
@@ -14,6 +15,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public class KitListener implements Listener {
 
     private Game minigame;
+
+    @Inject
+    FEPlugin plugin;
 
     public KitListener(Game minigame) {
         this.minigame = minigame;
@@ -31,7 +35,7 @@ public class KitListener implements Listener {
                     if (newKit.getKitFromChest(event.getPlayer(), event.getClickedBlock())) {
                         if (minigame.getKitManager().createKit(newKit)) {
                             Locale.success(event.getPlayer(), "&aKit: " + kitName + " has been created and saved to mysql.");
-                            event.getPlayer().removeMetadata("kit-creation", FEPlugin.get());
+                            event.getPlayer().removeMetadata("kit-creation", plugin);
                         }
                     }
                 }

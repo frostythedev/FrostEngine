@@ -1,0 +1,6 @@
+name: GameAPI
+main: me.frostythedev.frostengine.modules.gameapi.GameAPI
+version: 1.0.0
+depend: [FrostEngine]
+author: frostythedev
+commands:

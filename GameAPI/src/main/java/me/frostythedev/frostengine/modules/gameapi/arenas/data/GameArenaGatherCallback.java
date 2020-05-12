@@ -1,6 +1,7 @@
 package me.frostythedev.frostengine.modules.gameapi.arenas.data;
 
 import com.google.common.collect.Maps;
+import com.google.inject.Inject;
 import me.frostythedev.frostengine.bukkit.FEPlugin;
 import me.frostythedev.frostengine.bukkit.utils.LogUtils;
 import me.frostythedev.frostengine.modules.gameapi.Minigame;
@@ -15,6 +16,9 @@ import java.sql.SQLException;
 import java.util.Map;
 
 public class GameArenaGatherCallback implements Callback<Map<String, GameArena>>{
+
+    @Inject
+    FEPlugin plugin;
 
     private Map<String, GameArena> arenas;
 
@@ -33,14 +37,14 @@ public class GameArenaGatherCallback implements Callback<Map<String, GameArena>>
 
                 do {
 
-                    if(FEPlugin.getGson() == null){
+                    if(plugin.getGson() == null){
                         System.out.println("[ARENAGATHER] GSON has not bee loaded yet");
                         return;
                     }else{
                         System.out.println("[ARENAGATHER] GSON IS LOADED");
                     }
 
-                    GameArena arena = FEPlugin.getGson().fromJson(rs.getString("data"), GameArena.class);
+                    GameArena arena = plugin.getGson().fromJson(rs.getString("data"), GameArena.class);
                     if (arena != null) {
                         if(arena.getId() < 0){
                             arena.setId(rs.getInt("id"));

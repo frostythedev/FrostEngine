@@ -2,20 +2,12 @@ package me.frostythedev.frostengine.bukkit.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
-import com.google.inject.Inject;
-import me.frostythedev.frostengine.bukkit.FEPlugin;
-import me.frostythedev.frostengine.bukkit.messaging.Locale;
-import me.frostythedev.frostengine.bukkit.module.Module;
-import me.frostythedev.frostengine.bukkit.module.ModuleAPI;
-import me.frostythedev.frostengine.bukkit.module.ModuleUtils;
-import me.frostythedev.frostengine.bukkit.utils.LogUtils;
-import org.bukkit.command.CommandSender;
 
 @CommandAlias("module|mod")
 @CommandPermission("frostengine.admin.module")
 public class ModuleCommand extends BaseCommand {
 
-    @Inject private FEPlugin plugin;
+    /*@Inject private FEPlugin plugin;
 
     @Default
     @HelpCommand
@@ -82,5 +74,5 @@ public class ModuleCommand extends BaseCommand {
             //System.out.println("Module Name is: " + moduleName);
             Locale.message(sender, Locale.GENERAL_MODULE_NOT_FOUND);
         }
-    }
+    }*/
 }

@@ -28,8 +28,6 @@ import java.util.Map;
 
 public abstract class Minigame implements Game {
 
-    private JavaPlugin plugin;
-
     private int gameId;
 
     private String name;
@@ -62,9 +60,8 @@ public abstract class Minigame implements Game {
 
     private ArrayList<GameUtility> utilities;
 
-    public Minigame(JavaPlugin plugin, String name, String displayName, String description,
+    public Minigame(String name, String displayName, String description,
                     String version, String author) {
-        this.plugin = plugin;
         this.name = name;
         this.displayName = displayName;
         this.description = description;
@@ -78,7 +75,7 @@ public abstract class Minigame implements Game {
         this.getStartingCountdown().schedule();
     }
 
-    public void onMinigameEnable() {
+   /* public void onMinigameEnable() {
         setup();
 
         if (!utilities.isEmpty()) {
@@ -87,7 +84,7 @@ public abstract class Minigame implements Game {
 
         this.registerListener(new GameListener(this));
         this.registerListener(new KitListener(this));
-    }
+    }*/
 
 
     ///////////////////////////////////////////////
@@ -144,10 +141,11 @@ public abstract class Minigame implements Game {
         }
     }
 
+    @Override
     public void registerListeners(Listener... listeners) {
-        for (Listener listener : listeners) {
+       /* for (Listener listener : listeners) {
             Bukkit.getServer().getPluginManager().registerEvents(listener, plugin);
-        }
+        }*/
     }
 
     public void registerListener(Listener listener) {

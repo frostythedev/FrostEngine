@@ -1,29 +1,35 @@
 package me.frostythedev.developement.npc;
 
+import com.google.inject.Singleton;
 import me.frostythedev.frostengine.bukkit.module.Module;
+import me.frostythedev.frostengine.bukkit.module.ModuleHandler;
+import me.frostythedev.frostengine.bukkit.module.ModuleInfo;
+import org.bukkit.plugin.java.JavaPlugin;
 
-public class ModuleNPC extends Module {
-
-    public ModuleNPC(String moduleName) {
-        super(moduleName);
-    }
-
-    private static ModuleNPC inst;
-
-    public static ModuleNPC get() {
-        return inst;
-    }
+@Singleton
+@ModuleInfo(name = "NPCLib", authors = "frostythedev" , version = "1.0.0")
+public class ModuleNPC extends JavaPlugin implements Module {
 
     private NPCManager npcManager;
 
     @Override
-    public void onModuleEnable() {
-        super.onModuleEnable();
+    public void onLoad() {
+        ModuleHandler.offerModule(this);
+    }
 
-        inst = this;
+    @Override
+    public void enable() {
+        this.npcManager = new NPCManager();
+    }
+
+    @Override
+    public void disable() {
+
 
         this.npcManager = new NPCManager();
     }
+
+
 
     public NPCManager getNpcManager() {
         return npcManager;

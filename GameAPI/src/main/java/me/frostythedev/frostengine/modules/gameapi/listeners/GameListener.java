@@ -43,10 +43,18 @@ public class GameListener implements Listener {
             Locale.error(event.getPlayer(), "&cYou are not apart of a team, please contact an administrator if the problem persist.");
             event.setCancelled(true);
         } else {
-            GameTeam team = minigame.getTeamManager().getPlayerTeam(event.getPlayer());
+
+            GameTeam team = minigame.getTeamManager().getPlayerTeam(event.getPlayer()).get();
             String format = team.getDisplayName() + "&r " + team.getNameColor() + event.getPlayer().getName() + "&r&7: " +
                     team.getChatColor() + event.getMessage();
-            event.setFormat(Locale.toColors(format));
+
+            if(!minigame.isTeamChat()){
+                event.setFormat(Locale.toColors(format));
+            }else{
+                event.setCancelled(true);
+                team.teamChat(format);
+            }
+
         }
     }
 

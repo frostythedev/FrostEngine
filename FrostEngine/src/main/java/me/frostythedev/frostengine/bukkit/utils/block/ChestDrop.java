@@ -1,5 +1,6 @@
 package me.frostythedev.frostengine.bukkit.utils.block;
 
+import com.google.inject.Inject;
 import me.frostythedev.frostengine.bukkit.FEPlugin;
 import me.frostythedev.frostengine.bukkit.utils.firework.InstantFirework;
 import me.frostythedev.frostengine.bukkit.thread.Tasks;
@@ -14,6 +15,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class ChestDrop {
+
+    @Inject
+    private FEPlugin plugin;
 
     private Location location;
 
@@ -47,7 +51,7 @@ public class ChestDrop {
                     }
                 }
             };
-            runnable.runTaskTimerAsynchronously(FEPlugin.get(), 5, 5);
+            runnable.runTaskTimerAsynchronously(plugin, 5, 5);
         });
     }
 

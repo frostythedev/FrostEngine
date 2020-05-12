@@ -1,6 +1,7 @@
 package me.frostythedev.frostengine.modules.gameapi.kits;
 
 import com.google.common.collect.Maps;
+import com.google.inject.Inject;
 import me.frostythedev.frostengine.bukkit.FEPlugin;
 import me.frostythedev.frostengine.bukkit.utils.LogUtils;
 import me.frostythedev.frostengine.config.BukkitDocument;
@@ -8,6 +9,7 @@ import me.frostythedev.frostengine.data.core.Database;
 import me.frostythedev.frostengine.data.core.DatabaseField;
 import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import me.frostythedev.frostengine.modules.gameapi.kits.data.GameKitGatherCallback;
+import org.apache.commons.lang3.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -22,6 +24,12 @@ public class KitManager {
     private Map<Integer, GameKit> kits;
     private Map<String, Integer> kitsId;
     private Map<UUID, String> playerKits;
+    
+    @Inject
+    Database database;
+    
+    @Inject 
+    FEPlugin plugin;
 
     public KitManager(Game minigame) {
         this.minigame = minigame;
@@ -76,10 +84,18 @@ public class KitManager {
         }
     }
 
+    public void giveKit(Player player){
+        Validate.notNull(player, "Player cannot be null");
+
+        if(playerKits.containsKey(player.getUniqueId())){
+            getKit(playerKits.get(player.getUniqueId())).giveKit(player);
+        }
+    }
+
     public void loadKits() {
-        if(Database.get().hasConnection()){
+        if(database.hasConnection()){
             GameKitGatherCallback gkCallback = new GameKitGatherCallback();
-            Database.get().syncQuery("SELECT * FROM " + DatabaseField.KIT_TABLE +
+            database.syncQuery("SELECT * FROM " + DatabaseField.KIT_TABLE +
                             " WHERE minigameName=?",
                     new Object[]{minigame.getName()}, gkCallback);
 
@@ -96,7 +112,7 @@ public class KitManager {
     public boolean createKit(GameKit gameKit) {
         if (getKit(gameKit.getName()) != null) return false;
 
-        Database.get().asyncSyncInsert("INSERT INTO " + DatabaseField.KIT_TABLE + "(minigameName, kitName,data)" +
+        database.asyncSyncInsert("INSERT INTO " + DatabaseField.KIT_TABLE + "(minigameName, kitName,data)" +
                 " VALUES (?,?,?)",
                 new Object[]{minigame.getName(),  gameKit.getName(),
                         gameKit.serialize().toString()});
@@ -115,7 +131,7 @@ public class KitManager {
                     BukkitDocument document = BukkitDocument.of(file.getAbsolutePath());
                     if (!document.getKeys(false).isEmpty()) {
                         for (String key : document.getKeys(false)) {
-                            GameKit gameKit = FEPlugin.getGson().fromJson(key, GameKit.class);
+                            GameKit gameKit = plugin.getGson().fromJson(key, GameKit.class);
                             if (gameKit != null) {
                                 if (kits.containsKey(gameKit.getId())) {
                                     LogUtils.info("A kit is already loaded with the id '" + gameKit.getId() + "'");
@@ -137,7 +153,7 @@ public class KitManager {
             BukkitDocument document = BukkitDocument.of(folder.getAbsolutePath());
             if(!document.getKeys(false).isEmpty()){
                 for(String key : document.getKeys(false)){
-                    GameKit gameKit = FEPlugin.getGson().fromJson(key, GameKit.class);
+                    GameKit gameKit = plugin.getGson().fromJson(key, GameKit.class);
                     if (gameKit != null) {
                         if (kits.containsKey(gameKit.getId())) {
                             Debugger.info("A kit is already loaded with the id '" + gameKit.getId() + "'");
@@ -166,7 +182,7 @@ public class KitManager {
                 try {
                     if (rs.next()) {
                         do {
-                            GameKit gameKit = FEPlugin.getGson().fromJson(rs.getString("data"), GameKit.class);
+                            GameKit gameKit = plugin.getGson().fromJson(rs.getString("data"), GameKit.class);
                             if (gameKit != null) {
                                 if (kits.containsKey(gameKit.getId())) {
                                     Debugger.info("A kit is already loaded with the id '" + gameKit.getId() + "'");
@@ -178,7 +194,7 @@ public class KitManager {
                         } while (rs.next());
 
                         *//**//*while (rs.next()) {
-                            GameKit gameKit = FEPlugin.getGson().fromJson(rs.getString("data"), GameKit.class);
+                            GameKit gameKit = plugin.getGson().fromJson(rs.getString("data"), GameKit.class);
                             if (gameKit != null) {
                                 if (kits.containsKey(gameKit.getId())) {
                                     LogUtils.severe("A kit is already loaded with the id '" + gameKit.getId() + "'");

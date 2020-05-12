@@ -2,13 +2,13 @@ package me.frostythedev.frostengine.modules.gameapi.arenas;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.inject.Inject;
 import me.frostythedev.frostengine.bukkit.FEPlugin;
 import me.frostythedev.frostengine.bukkit.utils.LogUtils;
 import me.frostythedev.frostengine.config.BukkitDocument;
-import me.frostythedev.frostengine.data.mysql.MySQL;
-import me.frostythedev.frostengine.modules.gameapi.Minigame;
 import me.frostythedev.frostengine.data.core.Database;
 import me.frostythedev.frostengine.data.core.DatabaseField;
+import me.frostythedev.frostengine.data.mysql.MySQL;
 import me.frostythedev.frostengine.modules.gameapi.arenas.data.GameArenaGatherCallback;
 import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import me.frostythedev.frostengine.modules.gameapi.exception.ArenaAlreadyLoadedException;
@@ -16,7 +16,6 @@ import me.frostythedev.frostengine.modules.gameapi.exception.ArenaAlreadyLoadedE
 import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +31,12 @@ public class ArenaManager {
     //private List<String> arenaNames;
 
     private Game minigame;
+    
+    @Inject
+    Database database;
+    
+    @Inject
+    FEPlugin plugin;
 
     public ArenaManager(Game minigame) {
         this.arenas = Maps.newHashMap();
@@ -85,9 +90,9 @@ public class ArenaManager {
     }
 
     public void loadArenas(){
-        if(Database.get().hasConnection()){
+        if(database.hasConnection()){
             GameArenaGatherCallback gaCallback = new GameArenaGatherCallback(minigame);
-            Database.get().syncQuery("SELECT * FROM " + DatabaseField.ARENA_TABLE +
+            database.syncQuery("SELECT * FROM " + DatabaseField.ARENA_TABLE +
                             " WHERE minigameName=?"
                     , new Object[]{minigame.getName()}, gaCallback);
 
@@ -111,7 +116,7 @@ public class ArenaManager {
                     BukkitDocument document = BukkitDocument.of(file.getAbsolutePath());
                     if(!document.getKeys(false).isEmpty()){
                         for(String key : document.getKeys(false)){
-                            GameArena arena = FEPlugin.getGson().fromJson(key, GameArena.class);
+                            GameArena arena = plugin.getGson().fromJson(key, GameArena.class);
                             if (arena != null) {
                                 arena.setMinigame(minigame);
                                 if (getArena(arena.getArenaName()) != null) {
@@ -131,7 +136,7 @@ public class ArenaManager {
             BukkitDocument document = BukkitDocument.of(folder.getAbsolutePath());
             if(!document.getKeys(false).isEmpty()){
               for(String key : document.getKeys(false)){
-                GameArena arena = FEPlugin.getGson().fromJson(key, GameArena.class);
+                GameArena arena = plugin.getGson().fromJson(key, GameArena.class);
                   if (arena != null) {
                       arena.setMinigame(minigame);
                       if (getArena(arena.getArenaName()) != null) {
@@ -169,7 +174,7 @@ public class ArenaManager {
                 try {
                     if (rs.next()) {
                         do {
-                            GameArena arena = FEPlugin.getGson().fromJson(
+                            GameArena arena = plugin.getGson().fromJson(
                                     rs.getString("data"), GameArena.class);
 
                             if (arena != null) {
@@ -185,7 +190,7 @@ public class ArenaManager {
 
                     if (rs.next()) {
                         while (rs.next()) {
-                            GameArena arena = FEPlugin.getGson().fromJson(
+                            GameArena arena = plugin.getGson().fromJson(
                                     rs.getString("data"), GameArena.class);
 
                             if (arena != null) {

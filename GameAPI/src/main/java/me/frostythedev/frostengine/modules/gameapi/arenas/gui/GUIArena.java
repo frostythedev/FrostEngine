@@ -1,6 +1,7 @@
+/*
 package me.frostythedev.frostengine.modules.gameapi.arenas.gui;
 
-import me.frostythedev.frostengine.bukkit.utils.gui.GUI;
+import me.frostythedev.frostengine.legacy.gui.GUI;
 import me.frostythedev.frostengine.bukkit.utils.items.ItemBuilder;
 import me.frostythedev.frostengine.modules.gameapi.arenas.GameArena;
 import me.frostythedev.frostengine.modules.gameapi.core.gui.GUIMinigame;
@@ -123,3 +124,4 @@ public class GUIArena extends GUI {
         return prevPage;
     }
 }
+*/

@@ -24,14 +24,14 @@ public class PreGameState extends GameState {
     public void onSwitch() {
         GameArena arena = getGame().getGameArena();
 
-        for(int i = 0; i < getGame().getTeamManager().getAllPlayers().size(); i++){
-            getGame().getTeamManager().getAllPlayers().get(i).teleport(arena.getSpawn(i));
+        for(int i = 0; i < getGame().getTeamManager().getAllPlayers().get().size(); i++){
+            Bukkit.getPlayer(getGame().getTeamManager().getAllPlayers().get().get(i)).teleport(arena.getSpawn(i));
         }
         getGame().getSettingManager().toggleOff("Movement");
 
         EZCountdown countdown = new EZCountdown(15, new int[]{5, 4, 3, 2, 1}) {
             public void onStart() {
-                Bukkit.broadcastMessage(Locale.toColors("&7The game will begin in 15 seconds."));
+                getGame().broadcast(Locale.toColors("&7The game will begin in 15 seconds."));
             }
 
             public void onTick() {
@@ -41,7 +41,7 @@ public class PreGameState extends GameState {
             }
 
             public void onInterval() {
-                Bukkit.broadcastMessage(Locale.toColors("&7The game will begin in " + getTicks() + " seconds."));
+                getGame().broadcast(Locale.toColors("&7The game will begin in " + getTicks() + " seconds."));
             }
 
             public void onEnd() {

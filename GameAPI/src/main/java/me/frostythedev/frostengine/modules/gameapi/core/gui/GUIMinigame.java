@@ -1,8 +1,8 @@
+/*
 package me.frostythedev.frostengine.modules.gameapi.core.gui;
 
-import me.frostythedev.frostengine.modules.gameapi.Minigame;
 import me.frostythedev.frostengine.modules.gameapi.arenas.gui.GUIArena;
-import me.frostythedev.frostengine.bukkit.utils.gui.GUI;
+import me.frostythedev.frostengine.legacy.gui.GUI;
 import me.frostythedev.frostengine.bukkit.utils.items.ItemBuilder;
 import me.frostythedev.frostengine.modules.gameapi.core.interfaces.Game;
 import org.bukkit.Material;
@@ -60,3 +60,4 @@ public class GUIMinigame extends GUI{
         }
     }
 }
+*/

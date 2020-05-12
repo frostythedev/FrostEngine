@@ -2,6 +2,7 @@ package me.frostythedev.frostengine.modules.gameapi.teams;
 
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -15,7 +16,7 @@ public interface Team {
 
     }
 
-    Set<UUID> getPlayers();
+    List<UUID> getPlayers();
 
     default boolean addPlayer(Player player){
         return false;

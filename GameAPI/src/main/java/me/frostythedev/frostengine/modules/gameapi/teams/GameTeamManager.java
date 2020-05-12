@@ -2,7 +2,6 @@ package me.frostythedev.frostengine.modules.gameapi.teams;
 
 import com.google.common.collect.Maps;
 import me.frostythedev.frostengine.modules.gameapi.exception.TeamAlreadyLoadedException;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -10,7 +9,7 @@ import java.util.*;
 public class GameTeamManager {
 
     private Map<String, GameTeam> teams;
-    private Map<UUID, GameTeam> playerTeams;
+    private Map<UUID, String> playerTeams;
 
     public GameTeamManager() {
         this.teams = Maps.newHashMap();
@@ -18,7 +17,7 @@ public class GameTeamManager {
     }
 
     public boolean hasTeam(Player player) {
-        return getPlayerTeam(player) != null;
+        return getPlayerTeam(player).isPresent();
     }
 
     public void loadTeam(String name, GameTeam team) throws TeamAlreadyLoadedException {
@@ -29,8 +28,19 @@ public class GameTeamManager {
         }
     }
 
-    public ArrayList<Player> getPlayersOfTeam(String teamName){
+    public boolean createTeam(String teamName){
+        if(getTeam(teamName).isPresent()) return false;
+       return this.teams.put(teamName, new GameTeam(teamName, "Players")) != null;
+    }
 
+    public Optional<List<UUID>> getPlayersOfTeam(String teamName){
+//        Optional<GameTeam> team = getTeam(teamName);
+        return getTeam(teamName).map(GameTeam::getPlayers);
+
+
+        /*
+
+        LEGACY
         if(getTeam(teamName) != null){
             ArrayList<Player> players = new ArrayList<>();
             for(UUID uuid : getTeam(teamName).getPlayers()){
@@ -43,18 +53,19 @@ public class GameTeamManager {
 
 
             }
-            return players;
-        }
-
-        return null;
+            return Optional.of(players);
+        }*/
     }
 
-    public ArrayList<Player> getAllPlayers(){
-        ArrayList<Player> allPlayers = new ArrayList<>();
+    public Optional<ArrayList<UUID>> getAllPlayers(){
+        if(getTeams().size() == 0) return Optional.empty();
+
+        ArrayList<UUID> allPlayers = new ArrayList<>();
+
         for(String team : getTeams().keySet()){
-            allPlayers.addAll(getPlayersOfTeam(team));
+            getPlayersOfTeam(team).ifPresent(allPlayers::addAll);
         }
-        return allPlayers;
+        return Optional.of(allPlayers);
     }
 
     public void loadTeam(GameTeam team) throws TeamAlreadyLoadedException {
@@ -62,17 +73,20 @@ public class GameTeamManager {
     }
 
     public boolean setTeam(Player player, GameTeam team) {
-        if (getPlayerTeam(player) != null) {
+
+        if(clearTeam(player)){
+            if (team.addPlayer(player)) {
+                return playerTeams.replace(player.getUniqueId(), team.getName()) != null;
+            }
+        }
+        return false;
+
+        /*if (getPlayerTeam(player) != null) {
             Team oldTeam = getPlayerTeam(player);
 
             if (oldTeam.containsPlayer(player)) {
                 if (oldTeam.removePlayer(player)) {
-                    if (team.addPlayer(player)) {
-                        playerTeams.replace(player.getUniqueId(), team);
-                        return true;
-                    } else {
-                        return false;
-                    }
+
                 } else {
                     return false;
                 }
@@ -87,31 +101,35 @@ public class GameTeamManager {
             } else {
                 return false;
             }
-        }
+        }*/
+    }
+
+    public boolean setTeam(Player player, String teamName){
+        if(!getTeam(teamName).isPresent()) return false;
+        return setTeam(player, getTeam(teamName).get());
     }
 
     public boolean clearTeam(Player player) {
-        if (getPlayerTeam(player) != null) {
-            Team oldTeam = getPlayerTeam(player);
-            if (oldTeam.containsPlayer(player)) {
-                return oldTeam.removePlayer(player);
-            }
+        if(getPlayerTeam(player).isPresent()){
+            playerTeams.remove(player.getUniqueId());
+            return getPlayerTeam(player).get().removePlayer(player);
         }
+
         return true;
     }
 
-    public GameTeam getPlayerTeam(Player player) {
+    public Optional<GameTeam> getPlayerTeam(Player player) {
         if (playerTeams.containsKey(player.getUniqueId())) {
-            return playerTeams.get(player.getUniqueId());
+            return getTeam(playerTeams.get(player.getUniqueId()));
         }
-        return null;
+        return Optional.empty();
     }
 
-    public GameTeam getTeam(String name) {
+    public Optional<GameTeam> getTeam(String name) {
         if (teams.containsKey(name)) {
-            return teams.get(name);
+            return Optional.of(teams.get(name));
         }
-        return null;
+        return Optional.empty();
     }
 
     public GameTeam getSmallestTeam() {
@@ -150,7 +168,7 @@ public class GameTeamManager {
         return teams.values();
     }
 
-    public Map<UUID, GameTeam> getPlayerTeams() {
+    public Map<UUID, String> getPlayerTeams() {
         return playerTeams;
     }
 }

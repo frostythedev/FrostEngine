@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.inject.Inject;
 import me.frostythedev.frostengine.bukkit.FEPlugin;
 import me.frostythedev.frostengine.modules.gameapi.Minigame;
 import me.frostythedev.frostengine.bukkit.utils.items.ItemBuilder;
@@ -21,6 +22,9 @@ import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GameArena implements Arena, JsonConvertable<GameArena> {
+
+    @Inject
+    FEPlugin plugin;
 
     private Game minigame;
 
@@ -103,12 +107,10 @@ public class GameArena implements Arena, JsonConvertable<GameArena> {
     }
 
     public boolean isInUse(){
-        if(getMinigame() != null){
-            if(!getMinigame().getGameState().isJoinable()){
+        /*if(!getMinigame().getGameState().isJoinable()){
                return true;
-            }
-        }
-        return false;
+            }*/
+        return getMinigame() != null;
     }
 
     public boolean isRegisteredLocation(Location loc, boolean ignoreYawPitch){
@@ -293,7 +295,7 @@ public class GameArena implements Arena, JsonConvertable<GameArena> {
         List<String> spawns = Lists.newArrayList();
         if (spawnLocations != null && !spawnLocations.isEmpty()) {
             for (Location loc : spawnLocations) {
-                String location = FEPlugin.getGson().toJson(loc);
+                String location = plugin.getGson().toJson(loc);
                 spawns.add(location);
             }
         }
@@ -357,10 +359,10 @@ public class GameArena implements Arena, JsonConvertable<GameArena> {
             String spawnsData = jsonObject.get("spawns").getAsString();
 
             if(!spawnsData.contains(";")){
-                spawns.add(FEPlugin.getGson().fromJson(spawnsData, Location.class));
+                spawns.add(plugin.getGson().fromJson(spawnsData, Location.class));
             }else{
                 for(String parts : spawnsData.split(";")){
-                    Location loc = FEPlugin.getGson().fromJson(parts, Location.class);
+                    Location loc = plugin.getGson().fromJson(parts, Location.class);
                     if(loc != null){
                         spawns.add(loc);
                     }

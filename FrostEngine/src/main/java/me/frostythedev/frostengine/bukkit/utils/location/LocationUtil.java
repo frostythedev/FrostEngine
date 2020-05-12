@@ -1,12 +1,15 @@
 package me.frostythedev.frostengine.bukkit.utils.location;
 
 import com.google.common.collect.Lists;
+import com.google.inject.Inject;
 import me.frostythedev.frostengine.bukkit.FEPlugin;
 import org.bukkit.Location;
 
 import java.util.List;
 
 public class LocationUtil {
+
+    @Inject private static FEPlugin plugin;
 
     public static boolean isInRadius(Location center, Location loc, double radius) {
         /*
@@ -22,26 +25,26 @@ public class LocationUtil {
 
 
     public static String listOfLocationsToString(List<Location> locations){
-        String result = "";
+        StringBuilder result = new StringBuilder();
         if(!locations.isEmpty()){
             for(Location loc : locations){
-                if(result.equals("")){
-                    result+= FEPlugin.getGson().toJson(loc);
+                if(result.toString().equals("")){
+                    result.append(plugin.getGson().toJson(loc));
                 }else{
-                    result+="#" + FEPlugin.getGson().toJson(loc);
+                    result.append("#").append(plugin.getGson().toJson(loc));
                 }
             }
         }
-        return result;
+        return result.toString();
     }
 
     public static List<Location> listOfLocationsFromString(String data){
         List<Location> locations = Lists.newArrayList();
         if(!data.contains("#")){
-            locations.add(FEPlugin.getGson().fromJson(data, Location.class));
+            locations.add(plugin.getGson().fromJson(data, Location.class));
         }else{
             for(String part : data.split("#")){
-                Location l = FEPlugin.getGson().fromJson(part, Location.class);
+                Location l = plugin.getGson().fromJson(part, Location.class);
                 if(l != null){
                     locations.add(l);
                 }
